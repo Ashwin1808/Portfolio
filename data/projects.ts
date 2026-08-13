@@ -26,6 +26,8 @@ export type Visibility =
 export interface Project {
   slug: string;
   title: string;
+  /** Editorial wall title — used on the homepage Selected Work wall */
+  wallTitle?: string;
   category: Category;
   industry: string;
   /** Real client name — only rendered when confidential is false */
@@ -58,6 +60,7 @@ export const projects: Project[] = [
   {
     slug: "visual-ivr",
     title: "Designing Visual IVR Experiences",
+    wallTitle: "Conversational\nexperiences",
     category: "visual-ivr",
     industry: "Conversational Platforms",
     client: null,
@@ -77,6 +80,7 @@ export const projects: Project[] = [
   {
     slug: "insurance-renewal",
     title: "Insurance Policy Renewal",
+    wallTitle: "Making insurance\neasier to act on",
     category: "insurance",
     industry: "Insurance",
     client: "HDFC ERGO",
@@ -96,6 +100,7 @@ export const projects: Project[] = [
   {
     slug: "credit-card-onboarding",
     title: "Pre-Approved Credit Card Onboarding",
+    wallTitle: "From offer\nto activation",
     category: "banking",
     industry: "Banking",
     client: "Major Indian Private Bank",
@@ -134,6 +139,7 @@ export const projects: Project[] = [
   {
     slug: "omni-channel-dashboard",
     title: "Omni-Channel Contact Center Dashboard",
+    wallTitle: "Designing\nfor operations",
     category: "dashboards",
     industry: "Enterprise Contact Center",
     client: null,
@@ -153,6 +159,7 @@ export const projects: Project[] = [
   {
     slug: "agent-assist",
     title: "AI Agent Assist Dashboard",
+    wallTitle: "AI that assists,\nnot interrupts",
     category: "ai-genai",
     industry: "Enterprise Contact Center",
     client: null,

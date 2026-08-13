@@ -32,7 +32,7 @@ export function ProjectGrid({ limit }: { limit?: number }) {
                 className={cn(
                   "rounded-full border px-3.5 py-1.5 font-mono text-[11px] uppercase tracking-[0.12em] transition-colors",
                   selected
-                    ? "border-ink bg-ink text-white"
+                    ? "border-accent bg-accent/10 text-accent"
                     : "border-line-strong bg-surface text-muted hover:border-ink/40 hover:text-ink",
                 )}
               >

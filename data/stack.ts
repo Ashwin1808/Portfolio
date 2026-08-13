@@ -11,6 +11,6 @@ export const stackMarquee = [
   "GitHub Actions",
   "Prometheus",
   "Grafana",
-  "Bash",
-  "PostgreSQL",
 ];
+
+export const devopsTechLine = stackMarquee;

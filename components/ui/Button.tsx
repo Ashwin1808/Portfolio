@@ -15,7 +15,7 @@ const variants: Record<Variant, string> = {
   outline:
     "border border-line-strong bg-surface text-ink hover:border-ink/40 hover:bg-paper",
   ghost: "text-ink-soft hover:text-ink hover:bg-ink/5",
-  dark: "bg-white text-ink hover:bg-ink/10",
+  dark: "bg-ink text-paper hover:bg-ink-soft",
   cyan: "bg-cyan text-[#04161c] hover:bg-[#5ad3ef]",
 };
 

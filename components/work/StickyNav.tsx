@@ -45,7 +45,7 @@ export function StickyNav({
               active === item.id
                 ? dark
                   ? "border-cyan bg-cyan text-[#04161c]"
-                  : "border-ink bg-ink text-white"
+                  : "border-accent bg-accent/10 text-accent"
                 : dark
                   ? "border-dark-line text-dark-muted hover:text-white"
                   : "border-line-strong text-muted hover:text-ink",

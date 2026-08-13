@@ -8,22 +8,22 @@ function SkeletonBar({ className, width = "w-full" }: { className?: string; widt
 
 function PhoneSketch({ title }: { title: string }) {
   return (
-    <div className="mx-auto w-full max-w-[260px] rounded-[26px] border-[3px] border-ink/15 bg-white p-2.5 shadow-[0_18px_50px_-30px_rgba(23,23,28,0.45)]">
-      <div className="overflow-hidden rounded-[19px] border border-ink/[0.06] bg-white">
+    <div className="mx-auto w-full max-w-[260px] rounded-[26px] border-[3px] border-ink/15 bg-[#0d1016] p-2.5 shadow-[0_18px_50px_-30px_rgba(23,23,28,0.45)]">
+      <div className="overflow-hidden rounded-[19px] border border-ink/[0.06] bg-[#0d1016]">
         <div className="flex items-center justify-between border-b border-ink/[0.06] px-4 py-3">
           <SkeletonBar width="w-16" className="h-2.5 bg-ink/[0.14]" />
           <div className="h-3 w-6 rounded-full bg-ink/[0.06]" />
         </div>
         <div className="space-y-3 px-4 py-5">
           <SkeletonBar className="h-3 bg-ink/[0.16]" width="w-3/4" />
-          <div className="rounded-lg border border-ink/[0.08] bg-ink/[0.03] p-3">
+          <div className="rounded-lg border border-ink/[0.08] bg-ink/[0.05] p-3">
             <SkeletonBar className="bg-ink/[0.1]" width="w-1/2" />
             <div className="mt-2.5 space-y-1.5">
               <SkeletonBar className="bg-ink/[0.07]" />
               <SkeletonBar className="bg-ink/[0.07]" width="w-4/5" />
             </div>
           </div>
-          <div className="rounded-lg border border-ink/[0.08] bg-ink/[0.03] p-3">
+          <div className="rounded-lg border border-ink/[0.08] bg-ink/[0.05] p-3">
             <SkeletonBar className="bg-ink/[0.1]" width="w-2/3" />
             <div className="mt-2.5 space-y-1.5">
               <SkeletonBar className="bg-ink/[0.07]" />
@@ -31,7 +31,7 @@ function PhoneSketch({ title }: { title: string }) {
             </div>
           </div>
           <div className="pt-1">
-            <div className="flex h-9 items-center justify-center rounded-lg bg-ink/85 text-[10px] font-semibold uppercase tracking-[0.16em] text-white">
+            <div className="flex h-9 items-center justify-center rounded-lg bg-accent text-[10px] font-semibold uppercase tracking-[0.16em] text-white">
               Primary action
             </div>
           </div>
@@ -46,7 +46,7 @@ function PhoneSketch({ title }: { title: string }) {
 
 function WebSketch({ title }: { title: string }) {
   return (
-    <div className="mx-auto w-full max-w-[520px] overflow-hidden rounded-xl border border-ink/[0.12] bg-white shadow-[0_18px_50px_-30px_rgba(23,23,28,0.45)]">
+    <div className="mx-auto w-full max-w-[520px] overflow-hidden rounded-xl border border-ink/[0.12] bg-[#0d1016] shadow-[0_18px_50px_-30px_rgba(23,23,28,0.45)]">
       <div className="flex items-center justify-between border-b border-ink/[0.08] px-4 py-2.5">
         <div className="flex items-center gap-1.5">
           <span className="h-2 w-2 rounded-full bg-ink/[0.12]" />
@@ -94,7 +94,7 @@ function FlowSketch({ title }: { title: string }) {
   const steps = title.split("—").map((s) => s.trim()).filter(Boolean);
   const nodes = steps.length >= 3 ? steps.slice(0, 5) : ["Step 1", "Step 2", "Step 3", "Step 4", "Step 5"];
   return (
-    <div className="mx-auto w-full max-w-[560px] rounded-xl border border-ink/[0.12] bg-white p-5 shadow-[0_18px_50px_-30px_rgba(23,23,28,0.45)]">
+    <div className="mx-auto w-full max-w-[560px] rounded-xl border border-ink/[0.12] bg-[#0d1016] p-5 shadow-[0_18px_50px_-30px_rgba(23,23,28,0.45)]">
       <div className="flex flex-wrap items-center gap-y-3">
         {nodes.map((n, i) => (
           <div key={i} className="flex items-center">

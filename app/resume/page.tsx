@@ -56,7 +56,7 @@ export default function ResumePage() {
           <section>
             <h2 className="mono-label text-accent">Summary</h2>
             <p className="mt-3 text-[14px] leading-[1.8] text-ink-soft">
-              Enterprise UX/UI designer with roughly three years of experience designing complex
+              Enterprise UX/UI designer with professional experience designing complex
               digital experiences — Visual IVR, conversational interfaces, financial services,
               insurance, dashboards and AI-assisted workflows. Currently expanding into frontend,
               cloud and DevOps engineering through hands-on production-style projects: AWS,
@@ -73,7 +73,7 @@ export default function ResumePage() {
                   <div className="flex flex-wrap items-baseline justify-between gap-2">
                     <p className="text-[15px] font-semibold text-ink">{e.role}</p>
                     <p className="font-mono text-[11.5px] uppercase tracking-[0.1em] text-faint">
-                      {e.period} — verify
+                      {e.period}
                     </p>
                   </div>
                   <p className="text-[13.5px] font-medium text-accent">{e.company}</p>
