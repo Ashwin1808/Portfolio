@@ -1,28 +1,28 @@
 @import "tailwindcss";
 
 @theme {
-  --color-paper: #08090b;
-  --color-surface: #0c0e12;
-  --color-ink: #f5f5f2;
-  --color-ink-soft: #cfd2d6;
-  --color-muted: #8d939e;
-  --color-faint: #585f6a;
-  --color-line: rgb(255 255 255 / 0.08);
-  --color-line-strong: rgb(255 255 255 / 0.15);
+  --color-paper: #14120f;
+  --color-surface: #1a1814;
+  --color-ink: #ece7db;
+  --color-ink-soft: #c8c1b2;
+  --color-muted: #968e7e;
+  --color-faint: #625c50;
+  --color-line: rgb(236 231 219 / 0.09);
+  --color-line-strong: rgb(236 231 219 / 0.16);
 
-  --color-accent: #4d8dff;
-  --color-accent-deep: #3a75e8;
-  --color-accent-soft: rgb(77 141 255 / 0.12);
-  --color-violet: #8b7cf6;
+  --color-accent: #cdf249;
+  --color-accent-deep: #a8c93a;
+  --color-accent-soft: rgb(205 242 73 / 0.12);
+  --color-violet: #b3a8e6;
 
-  --color-dark: #05060a;
-  --color-dark-surface: #0b0d12;
-  --color-dark-elevated: #12161d;
-  --color-dark-line: rgb(255 255 255 / 0.09);
-  --color-dark-muted: #97a0ac;
-  --color-dark-faint: #5d6672;
-  --color-cyan: #45c7e8;
-  --color-cyan-deep: #2fa3c4;
+  --color-dark: #0e0c0a;
+  --color-dark-surface: #151210;
+  --color-dark-elevated: #1d1916;
+  --color-dark-line: rgb(236 231 219 / 0.1);
+  --color-dark-muted: #a69e8e;
+  --color-dark-faint: #6b6456;
+  --color-cyan: #ff8a5c;
+  --color-cyan-deep: #e96f42;
 
   --color-ok: #2e9e6b;
   --color-warn: #d97706;
@@ -54,12 +54,12 @@
 
   ::selection {
     background: var(--color-accent);
-    color: #08090b;
+    color: #14120f;
   }
 
   .dark-band ::selection {
     background: var(--color-accent);
-    color: #08090b;
+    color: #14120f;
   }
 
   :focus-visible {
@@ -177,7 +177,7 @@
       background-image: repeating-linear-gradient(
         to right,
         transparent 0 var(--start),
-        rgb(255 255 255 / 0.04) var(--start) calc(var(--start) + 1px),
+        rgb(236 231 219 / 0.04) var(--start) calc(var(--start) + 1px),
         transparent calc(var(--start) + 1px) calc(var(--start) + var(--col-w))
       );
     }
@@ -240,6 +240,6 @@
 
   .print-page .text-accent,
   .print-page [class*="text-accent"] {
-    color: #2563eb !important;
+    color: #4d7c0f !important;
   }
 }

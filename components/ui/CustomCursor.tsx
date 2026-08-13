@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, useMotionValue, useSpring, useReducedMotion } from "framer-motion";
 
-type CursorState = "default" | "view" | "link";
+type CursorState = "default" | "view" | "explore" | "link";
 
 export function CustomCursor() {
   const reduced = useReducedMotion();
@@ -40,8 +40,9 @@ export function CustomCursor() {
     const over = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
       const view = target.closest<HTMLElement>("[data-cursor='view']");
+      const explore = target.closest<HTMLElement>("[data-cursor='explore']");
       const link = target.closest<HTMLElement>("a, button, [role='link']");
-      setState(view ? "view" : link ? "link" : "default");
+      setState(view ? "view" : explore ? "explore" : link ? "link" : "default");
     };
 
     const leave = () => setVisible(false);
@@ -72,8 +73,8 @@ export function CustomCursor() {
       >
         <motion.div
           animate={
-            state === "view"
-              ? { width: 64, height: 64, opacity: 1, x: -32, y: -32 }
+            state === "view" || state === "explore"
+              ? { width: 72, height: 72, opacity: 1, x: -36, y: -36 }
               : state === "link"
                 ? { width: 40, height: 40, opacity: 1, x: -20, y: -20 }
                 : { width: 28, height: 28, opacity: 0.35, x: -14, y: -14 }
@@ -84,6 +85,11 @@ export function CustomCursor() {
           {state === "view" && (
             <span className="flex h-full w-full items-center justify-center font-mono text-[9px] uppercase tracking-[0.18em] text-accent">
               View
+            </span>
+          )}
+          {state === "explore" && (
+            <span className="flex h-full w-full items-center justify-center font-mono text-[8.5px] uppercase tracking-[0.16em] text-accent">
+              Explore
             </span>
           )}
           {state === "link" && (
@@ -100,7 +106,7 @@ export function CustomCursor() {
       >
         <motion.div
           animate={
-            state === "view"
+            state === "view" || state === "explore"
               ? { width: 4, height: 4, x: -2, y: -2 }
               : { width: 5, height: 5, x: -2.5, y: -2.5 }
           }

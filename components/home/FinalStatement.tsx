@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { site } from "@/data/site";
 
 export function FinalStatement() {
   return (
@@ -15,25 +16,40 @@ export function FinalStatement() {
         >
           <h2 className="h-giant text-white">
             Still designing.
-            <span className="mt-2 block text-white/35">Still building.</span>
+            <em className="mt-2 block italic text-accent">Still building.</em>
           </h2>
-          <p className="mx-auto mt-10 max-w-[420px] text-[13.5px] leading-[1.9] text-white/55">
-            My background started with interfaces.
-            <br />
-            My curiosity took me into systems.
+          <p className="mt-10 flex items-center justify-center gap-5 font-mono text-[10.5px] uppercase tracking-[0.22em]">
+            <span className="text-white/75">UX / UI Designer</span>
+            <span className="text-accent" aria-hidden="true">→</span>
+            <span className="text-white/40">DevOps / Cloud Engineer</span>
           </p>
-          <p className="mt-12 flex items-center justify-center gap-5 font-mono text-[10.5px] uppercase tracking-[0.22em]">
-            <span className="text-white/75">UX / Product Design</span>
-            <span className="text-accent" aria-hidden="true">✦</span>
-            <span className="text-white/40">Engineering / DevOps</span>
-          </p>
-          <Link
-            href="/engineering"
-            className="group mt-14 inline-flex items-center gap-2 rounded-md border border-line-strong px-6 py-3 font-mono text-[11px] uppercase tracking-[0.2em] text-white transition-colors hover:border-accent hover:text-accent"
-          >
-            See the engineering side
-            <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
-          </Link>
+          <div className="mt-14 flex flex-wrap items-center justify-center gap-4">
+            <a
+              href={site.github}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group inline-flex items-center gap-2.5 rounded-md border border-line-strong px-5 py-3 font-mono text-[11px] uppercase tracking-[0.2em] text-white transition-colors hover:border-accent hover:text-accent"
+            >
+              GitHub
+              <span className="transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5">↗</span>
+            </a>
+            <Link
+              href="/resume"
+              className="group inline-flex items-center gap-2.5 rounded-md border border-accent bg-accent/10 px-5 py-3 font-mono text-[11px] uppercase tracking-[0.2em] text-accent transition-colors hover:bg-accent hover:text-dark"
+            >
+              Resume
+              <span className="transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5">↗</span>
+            </Link>
+            <a
+              href={site.linkedin}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group inline-flex items-center gap-2.5 rounded-md border border-line-strong px-5 py-3 font-mono text-[11px] uppercase tracking-[0.2em] text-white transition-colors hover:border-accent hover:text-accent"
+            >
+              LinkedIn
+              <span className="transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5">↗</span>
+            </a>
+          </div>
         </motion.div>
       </div>
     </section>

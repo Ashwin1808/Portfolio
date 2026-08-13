@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { motion, useScroll, useTransform, useReducedMotion } from "framer-motion";
-import { JourneyVisual } from "@/components/home/JourneyVisual";
+import { SystemVisual } from "@/components/home/SystemVisual";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
@@ -14,16 +14,16 @@ export function Hero() {
 
   return (
     <section className="relative overflow-hidden border-b border-line bg-paper">
-      {/* faint ambient glow — restrained */}
+      {/* faint ambient warmth — restrained */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute -right-40 top-[-10%] h-[560px] w-[560px] rounded-full opacity-[0.07] blur-[120px]"
-        style={{ background: "radial-gradient(circle, #4d8dff 0%, #8b7cf6 55%, transparent 75%)" }}
+        className="pointer-events-none absolute -right-40 top-[-10%] h-[560px] w-[560px] rounded-full opacity-[0.06] blur-[120px]"
+        style={{ background: "radial-gradient(circle, #cdf249 0%, #ff8a5c 55%, transparent 75%)" }}
       />
       <div
         aria-hidden="true"
         className="pointer-events-none absolute left-[-12%] top-[45%] h-[420px] w-[420px] rounded-full opacity-[0.05] blur-[110px]"
-        style={{ background: "radial-gradient(circle, #8b7cf6 0%, transparent 70%)" }}
+        style={{ background: "radial-gradient(circle, #b3a8e6 0%, transparent 70%)" }}
       />
 
       {/* scroll indicator — far left, vertical */}
@@ -39,7 +39,7 @@ export function Hero() {
       </div>
 
       <motion.div style={{ y: reduced ? 0 : parallax, opacity: reduced ? 1 : fade }} className="wrap relative">
-        <div className="grid min-h-[calc(100svh-3.5rem)] items-center gap-14 py-20 lg:grid-cols-[1.1fr_0.9fr] lg:gap-8 lg:py-0">
+        <div className="grid min-h-[calc(100svh-3.5rem)] items-center gap-14 py-20 lg:grid-cols-[1fr_0.9fr] lg:gap-6 lg:py-0">
           {/* LEFT — typography */}
           <motion.div
             initial={reduced ? { opacity: 1 } : { opacity: 0, y: 28 }}
@@ -56,15 +56,13 @@ export function Hero() {
               <br />
               experiences.
               <br />
-              <span className="bg-gradient-to-r from-accent via-[#6f8dff] to-violet bg-clip-text text-transparent">
-                Engineering
-              </span>
+              Building
               <br />
-              systems.
+              <em className="font-serif italic text-accent">systems.</em>
             </h1>
 
             <p className="mt-8 max-w-[420px] text-[14px] leading-[1.8] text-muted">
-              I&apos;m a UX/UI Designer at Ubona Technologies, designing complex digital
+              I&apos;m Ashwin K — a UX/UI Designer at Ubona Technologies, designing complex
               experiences across fintech, insurance, conversational interfaces and enterprise
               products. Now I&apos;m extending that thinking into frontend, cloud and DevOps
               engineering.
@@ -72,30 +70,30 @@ export function Hero() {
 
             <div className="mt-10 flex flex-wrap items-center gap-4">
               <Link
-                href="/work"
-                className="group inline-flex items-center gap-2 rounded-md border border-line-strong px-5 py-3 font-mono text-[11px] uppercase tracking-[0.2em] text-ink transition-colors hover:border-accent hover:text-accent"
+                href="/engineering"
+                className="group inline-flex items-center gap-2.5 rounded-md border border-accent bg-accent/10 px-5 py-3 font-mono text-[11px] uppercase tracking-[0.2em] text-accent transition-colors hover:bg-accent hover:text-paper"
               >
-                Explore work
-                <span className="transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5">↗</span>
+                Explore engineering
+                <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
               </Link>
               <Link
-                href="/process"
-                className="group inline-flex items-center gap-2 rounded-md border border-line px-5 py-3 font-mono text-[11px] uppercase tracking-[0.2em] text-muted transition-colors hover:border-accent/60 hover:text-ink"
+                href="/resume"
+                className="group inline-flex items-center gap-2.5 rounded-md border border-line-strong px-5 py-3 font-mono text-[11px] uppercase tracking-[0.2em] text-ink transition-colors hover:border-accent hover:text-accent"
               >
-                View journey
-                <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
+                Resume
+                <span className="transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5">↗</span>
               </Link>
             </div>
           </motion.div>
 
-          {/* RIGHT — signature journey visual */}
+          {/* RIGHT — signature system visual */}
           <motion.div
             initial={reduced ? { opacity: 1 } : { opacity: 0, x: 34 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 1, ease, delay: 0.35 }}
             className="mx-auto lg:mx-0 lg:justify-self-end"
           >
-            <JourneyVisual />
+            <SystemVisual />
           </motion.div>
         </div>
       </motion.div>

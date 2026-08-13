@@ -44,7 +44,7 @@ export function StickyNav({
               "whitespace-nowrap rounded-full border px-3 py-1.5 font-mono text-[10.5px] uppercase tracking-[0.12em] transition-colors",
               active === item.id
                 ? dark
-                  ? "border-cyan bg-cyan text-[#04161c]"
+                  ? "border-cyan bg-cyan text-[#1a1008]"
                   : "border-accent bg-accent/10 text-accent"
                 : dark
                   ? "border-dark-line text-dark-muted hover:text-white"

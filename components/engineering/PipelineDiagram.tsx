@@ -25,7 +25,7 @@ export function PipelineDiagram() {
                     className={cn(
                       "flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border font-mono text-[11px] transition-colors",
                       selected
-                        ? "border-cyan bg-cyan text-[#04161c]"
+                        ? "border-cyan bg-cyan text-[#1a1008]"
                         : "border-dark-line bg-dark-elevated text-dark-muted hover:border-cyan/40",
                     )}
                   >

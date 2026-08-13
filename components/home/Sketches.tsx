@@ -22,7 +22,7 @@ export function PhoneMock({
     <div
       className={cn(
         "w-[225px] rounded-[26px] border-2 p-2",
-        t === "dark" ? "border-white/15 bg-[#0d1016]" : "border-ink/15 bg-white",
+        t === "dark" ? "border-white/15 bg-[#1a1814]" : "border-ink/15 bg-white",
         className,
       )}
     >
@@ -74,7 +74,7 @@ export function WebMock({
     <div
       className={cn(
         "overflow-hidden rounded-xl border",
-        t === "dark" ? "border-white/12 bg-[#0d1016]" : "border-ink/15 bg-white",
+        t === "dark" ? "border-white/12 bg-[#1a1814]" : "border-ink/15 bg-white",
         className,
       )}
     >
@@ -179,9 +179,9 @@ export function StackFlow({
           <span
             className="flex-1 rounded-md border px-3.5 py-2.5 text-[12px] font-medium"
             style={{
-              borderColor: i === items.length - 1 ? "rgb(77 141 255 / 0.45)" : ink(t, 0.16),
-              background: i === items.length - 1 ? "rgb(77 141 255 / 0.08)" : a(0.03),
-              color: i === items.length - 1 ? (t === "dark" ? "#9db9ff" : "#2563eb") : a(0.75),
+              borderColor: i === items.length - 1 ? "rgb(205 242 73 / 0.45)" : ink(t, 0.16),
+              background: i === items.length - 1 ? "rgb(205 242 73 / 0.08)" : a(0.03),
+              color: i === items.length - 1 ? (t === "dark" ? "#cdf249" : "#4d7c0f") : a(0.75),
             }}
           >
             {item}

@@ -1,16 +1,14 @@
 // Technical stack line — kept compact, no logo walls.
 
-export const stackMarquee = [
+export const devopsTechLine = [
+  "LINUX",
+  "DOCKER",
+  "KUBERNETES",
+  "TERRAFORM",
   "AWS",
-  "Linux",
-  "Docker",
-  "Kubernetes",
-  "Helm",
-  "Terraform",
-  "Jenkins",
-  "GitHub Actions",
-  "Prometheus",
-  "Grafana",
+  "CI / CD",
+  "PROMETHEUS",
+  "GRAFANA",
 ];
 
-export const devopsTechLine = stackMarquee;
+export const stackMarquee = devopsTechLine;
