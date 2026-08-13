@@ -97,7 +97,7 @@ export default function EngineeringPage() {
             <Reveal>
               <p className="eyebrow flex items-center gap-2.5">
                 <span className="h-1.5 w-1.5 rounded-full bg-cyan" aria-hidden="true" />
-                DevOps / Cloud Engineering
+                Now — DevOps / Cloud Engineering
               </p>
             </Reveal>
             <Reveal delay={80}>

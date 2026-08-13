@@ -35,9 +35,9 @@ export const site = {
   tenure: "2023 — Present", // ← verify
 
   metadata: {
-    title: "Ashwin K — UX/UI Designer | Product Design | Visual IVR | DevOps",
+    title: "Ashwin K — UX/UI Designer → DevOps / Cloud Engineering",
     description:
-      "UX/UI portfolio showcasing enterprise product design, Visual IVR, fintech, insurance, dashboards, AI-assisted experiences and complex digital workflows — plus an engineering journey across AWS, Docker, Kubernetes, Terraform and CI/CD.",
+      "UX/UI designer designing complex enterprise experiences — Visual IVR, fintech, insurance, dashboards and AI workflows — now extending into frontend, cloud and DevOps engineering.",
   },
 
   footer: {

@@ -13,65 +13,54 @@ export function Footer() {
     <footer
       className={cn(
         "no-print border-t",
-        dark ? "border-dark-line bg-dark" : "border-line bg-paper",
+        dark ? "border-white/10 bg-dark" : "border-ink/10 bg-paper",
       )}
     >
-      <div
-        className={cn(
-          "wrap flex flex-col gap-6 py-12 sm:flex-row sm:items-center sm:justify-between",
-        )}
-      >
-        <div className="flex flex-col gap-1.5">
-          <p className={cn("font-mono text-[11px] uppercase tracking-[0.22em]", dark ? "text-dark-faint" : "text-faint")}>
-            {site.footer.line}
-          </p>
-          <p className={cn("text-[15px] font-medium", dark ? "text-white" : "text-ink")}>
-            {site.name} · {site.role}
-          </p>
+      <div className={cn("wrap py-14", dark ? "text-white" : "text-ink")}>
+        <div className="flex flex-col gap-10 lg:flex-row lg:items-start lg:justify-between">
+          <div>
+            <p className="font-mono text-[15px] font-semibold tracking-[0.02em]">ASHWIN K</p>
+            <p className={cn("mt-2 text-[13px]", dark ? "text-dark-muted" : "text-muted")}>
+              UX/UI Designer → DevOps / Cloud Engineering
+            </p>
+          </div>
+          <div className="flex flex-wrap gap-x-8 gap-y-4">
+            <div className="flex flex-col gap-2.5">
+              <p className={cn("font-mono text-[10.5px] uppercase tracking-[0.18em]", dark ? "text-white/35" : "text-ink/35")}>
+                Site
+              </p>
+              <Link href="/work" className={cn("text-[13px]", dark ? "text-dark-muted hover:text-white" : "text-muted hover:text-ink")}>
+                Work
+              </Link>
+              <Link href="/about" className={cn("text-[13px]", dark ? "text-dark-muted hover:text-white" : "text-muted hover:text-ink")}>
+                About
+              </Link>
+              <Link href="/engineering" className={cn("text-[13px]", dark ? "text-dark-muted hover:text-white" : "text-muted hover:text-ink")}>
+                Now — engineering
+              </Link>
+              <Link href="/resume" className={cn("text-[13px]", dark ? "text-dark-muted hover:text-white" : "text-muted hover:text-ink")}>
+                Resume
+              </Link>
+            </div>
+            <div className="flex flex-col gap-2.5">
+              <p className={cn("font-mono text-[10.5px] uppercase tracking-[0.18em]", dark ? "text-white/35" : "text-ink/35")}>
+                Elsewhere
+              </p>
+              <a href={site.github} target="_blank" rel="noopener noreferrer" className={cn("text-[13px]", dark ? "text-dark-muted hover:text-white" : "text-muted hover:text-ink")}>
+                GitHub
+              </a>
+              <a href={site.linkedin} target="_blank" rel="noopener noreferrer" className={cn("text-[13px]", dark ? "text-dark-muted hover:text-white" : "text-muted hover:text-ink")}>
+                LinkedIn
+              </a>
+              <a href={`mailto:${site.email}`} className={cn("text-[13px]", dark ? "text-dark-muted hover:text-white" : "text-muted hover:text-ink")}>
+                Email
+              </a>
+            </div>
+          </div>
         </div>
-        <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-[13.5px]">
-          <Link href="/work" className={dark ? "text-dark-muted hover:text-white" : "text-muted hover:text-ink"}>
-            Work
-          </Link>
-          <Link href="/engineering" className={dark ? "text-dark-muted hover:text-white" : "text-muted hover:text-ink"}>
-            Engineering
-          </Link>
-          <Link href="/about" className={dark ? "text-dark-muted hover:text-white" : "text-muted hover:text-ink"}>
-            About
-          </Link>
-          <Link href="/resume" className={dark ? "text-dark-muted hover:text-white" : "text-muted hover:text-ink"}>
-            Resume
-          </Link>
-          <a href={`mailto:${site.email}`} className={dark ? "text-dark-muted hover:text-white" : "text-muted hover:text-ink"}>
-            Email
-          </a>
-          <a
-            href={site.github}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={dark ? "text-dark-muted hover:text-white" : "text-muted hover:text-ink"}
-          >
-            GitHub
-          </a>
-          <a
-            href={site.linkedin}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={dark ? "text-dark-muted hover:text-white" : "text-muted hover:text-ink"}
-          >
-            LinkedIn
-          </a>
-        </div>
-      </div>
-      <div className={cn("border-t", dark ? "border-dark-line" : "border-line")}>
-        <div
-          className={cn(
-            "wrap flex flex-col gap-1 py-4 font-mono text-[11px] sm:flex-row sm:items-center sm:justify-between",
-            dark ? "text-dark-faint" : "text-faint",
-          )}
-        >
+        <div className={cn("mt-12 flex flex-col gap-2 border-t pt-6 font-mono text-[11px] uppercase tracking-[0.16em] sm:flex-row sm:items-center sm:justify-between", dark ? "border-white/10 text-white/35" : "border-ink/10 text-ink/35")}>
+          <span>Designing experiences. Engineering systems.</span>
           <span>© {new Date().getFullYear()} {site.name}</span>
-          <span>Designing experiences · Engineering systems</span>
         </div>
       </div>
     </footer>

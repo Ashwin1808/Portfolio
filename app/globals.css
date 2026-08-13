@@ -10,9 +10,9 @@
   --color-line: #e4e2db;
   --color-line-strong: #d4d1c8;
 
-  --color-accent: #4f46e5;
-  --color-accent-deep: #3832c4;
-  --color-accent-soft: #eceefd;
+  --color-accent: #2563eb;
+  --color-accent-deep: #1d4ed8;
+  --color-accent-soft: #e8f0fe;
 
   --color-dark: #0a0c11;
   --color-dark-surface: #10131a;
@@ -148,6 +148,42 @@
 
   .no-scrollbar::-webkit-scrollbar {
     display: none;
+  }
+
+  .h-hero {
+    @apply text-[3.4rem] leading-[0.98] font-semibold tracking-[-0.04em] sm:text-[5rem] lg:text-[6.25rem];
+  }
+
+  .h-giant {
+    @apply text-[2.6rem] leading-[1.02] font-semibold tracking-[-0.035em] sm:text-[3.6rem] lg:text-[4.6rem];
+  }
+
+  .h-project {
+    @apply text-[2rem] leading-[1.05] font-semibold tracking-[-0.03em] sm:text-[2.8rem] lg:text-[3.3rem];
+  }
+
+  @keyframes marquee {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+  .marquee-track {
+    animation: marquee 36s linear infinite;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .marquee-track {
+      animation: none;
+    }
+  }
+
+  .text-stroke {
+    -webkit-text-stroke: 1px currentColor;
+    color: transparent;
   }
 }
 
