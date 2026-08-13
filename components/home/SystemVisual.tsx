@@ -89,7 +89,7 @@ function SystemPlane({
   const width = 226 + (total - depth) * 14;
   const isLast = depth === total - 1;
   return (
-    <motion.div style={{ y: reduced ? 0 : drift }} className="absolute left-0">
+    <motion.div style={{ y: reduced ? 0 : drift }} className="absolute inset-0">
       <div
         className={cn(
           "absolute flex items-center justify-between gap-3 rounded-md border px-4 backdrop-blur-[2px] transition-colors duration-300 hover:border-accent/60",
