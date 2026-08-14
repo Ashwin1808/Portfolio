@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { MotionConfig } from "framer-motion";
 import { site } from "@/data/site";
 import { Hero } from "@/components/home/Hero";
-import { Experience } from "@/components/home/Experience";
+import { UXTimeline } from "@/components/home/UXTimeline";
 import { Transition } from "@/components/home/Transition";
 import { DevOpsSystem } from "@/components/home/DevOpsSystem";
 import { FinalStatement } from "@/components/home/FinalStatement";
@@ -16,7 +16,7 @@ export default function HomePage() {
   return (
     <MotionConfig reducedMotion="user">
       <Hero />
-      <Experience />
+      <UXTimeline />
       <Transition />
       <DevOpsSystem />
       <FinalStatement />

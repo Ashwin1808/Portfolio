@@ -1,17 +1,16 @@
 // ─────────────────────────────────────────────────────────────
-// LANDING — the four-part homepage: hero, experience, now, end.
+// LANDING — the four-beat homepage: hero, work, now, end.
 // ─────────────────────────────────────────────────────────────
 
 export interface Node {
   id: string;
   name: string;
   detail: string;
-  angle: number; // degrees, radial layouts
+  angle: number; // degrees, radial layout
 }
 
-// Hero signature: one connected system, USER → OBSERVABILITY.
+// Hero signature: one connected system, DESIGN → OBSERVABILITY.
 export const heroNodes: Node[] = [
-  { id: "user", name: "User", detail: "Where every journey starts", angle: 0 },
   { id: "design", name: "Design", detail: "Interfaces, flows, intent", angle: 0 },
   { id: "code", name: "Code", detail: "Translating design into logic", angle: 0 },
   { id: "container", name: "Container", detail: "Reproducible application environments", angle: 0 },
@@ -20,29 +19,38 @@ export const heroNodes: Node[] = [
   { id: "observability", name: "Observability", detail: "Knowing the system is healthy", angle: 0 },
 ];
 
-// Experience constellation — what I've designed, ten seconds.
-export const uxDomains: Node[] = [
-  { id: "visual-ivr", name: "Visual IVR", detail: "Conversational UX", angle: 0 },
-  { id: "fintech", name: "Fintech", detail: "Credit cards · UPI · Loans", angle: 60 },
-  { id: "insurance", name: "Insurance", detail: "Renewal · Claims · Policy journeys", angle: 120 },
-  { id: "enterprise", name: "Enterprise", detail: "Dashboards · Campaigns · Operations", angle: 180 },
-  { id: "ai", name: "AI", detail: "Agent Assist · GenAI · Smart Suggestions", angle: 240 },
-  { id: "ccaas", name: "CCaaS", detail: "HALO Cloud · Conversational products", angle: 300 },
+// The UX timeline — an editorial horizontal scroller.
+export interface UXItem {
+  id: string;
+  name: string;
+  sub: string;
+  line: string;
+}
+
+export const uxTimeline: UXItem[] = [
+  { id: "visual-ivr", name: "Visual IVR", sub: "Conversational UX", line: "Voice + visual journeys" },
+  { id: "banking", name: "Banking", sub: "Credit Cards", line: "UPI · Loans · Financial journeys" },
+  { id: "insurance", name: "Insurance", sub: "Policy Renewal", line: "Claims · Servicing · Vehicle / Health" },
+  { id: "fintech", name: "Fintech", sub: "Payments", line: "Collections · Offers · Onboarding" },
+  { id: "enterprise", name: "Enterprise", sub: "Dashboards", line: "Campaigns · Analytics · Operations" },
+  { id: "ai", name: "AI + GenAI", sub: "Agent Assist", line: "Smart Suggestions · AI Workflows" },
+  { id: "ccaas", name: "CCaaS", sub: "HALO Cloud", line: "Conversational · Agent Experiences" },
+  { id: "mobile", name: "Mobile Product", sub: "Flows", line: "Interactions · Prototypes · Design Systems" },
 ];
 
-// DevOps constellation — what I'm building now.
+// The DevOps system — center DEVOPS, eight orbiting nodes.
 export const stackNodes: Node[] = [
   { id: "linux", name: "Linux", detail: "The foundation — files, processes, permissions.", angle: -112 },
-  { id: "docker", name: "Docker", detail: "Reproducible application environments.", angle: -67 },
-  { id: "kubernetes", name: "Kubernetes", detail: "Container orchestration.", angle: -22 },
+  { id: "docker", name: "Docker", detail: "Containerizing applications.", angle: -67 },
+  { id: "kubernetes", name: "Kubernetes", detail: "Orchestrating workloads.", angle: -22 },
   { id: "terraform", name: "Terraform", detail: "Infrastructure as code.", angle: 22 },
-  { id: "aws", name: "AWS", detail: "Cloud: compute, network, identity.", angle: 67 },
-  { id: "ci-cd", name: "CI / CD", detail: "Automated builds and delivery.", angle: 112 },
-  { id: "prometheus", name: "Prometheus", detail: "System and application metrics.", angle: 157 },
+  { id: "aws", name: "AWS", detail: "Cloud infrastructure.", angle: 67 },
+  { id: "ci-cd", name: "CI / CD", detail: "Automating build and deployment.", angle: 112 },
+  { id: "prometheus", name: "Prometheus", detail: "Metrics and observability.", angle: 157 },
   { id: "grafana", name: "Grafana", detail: "Dashboards that make metrics visible.", angle: -157 },
 ];
 
-// RideMatch delivery pipeline — one thin line, one moving signal.
+// RideMatch pipeline — one thin line, one moving signal.
 export interface PipelineStage {
   node: string;
   tool: string;
@@ -51,16 +59,16 @@ export interface PipelineStage {
 }
 
 export const rideMatchPipeline: PipelineStage[] = [
-  { node: "Code", tool: "VS Code", detail: "Where everything starts — versioned, reviewed.", id: "code" },
-  { node: "GitHub", tool: "Version Control", detail: "The source of truth for code and config.", id: "github" },
-  { node: "CI / CD", tool: "Actions", detail: "Automated builds and tests, every change.", id: "cicd" },
-  { node: "Docker", tool: "Containerize", detail: "Reproducible application environments.", id: "docker" },
-  { node: "Kubernetes", tool: "Orchestrate", detail: "Container orchestration.", id: "kubernetes" },
-  { node: "AWS", tool: "Infrastructure", detail: "Cloud infrastructure as code.", id: "aws" },
-  { node: "Monitoring", tool: "Prom / Grafana", detail: "System and application metrics.", id: "monitoring" },
+  { node: "Code", tool: "development", detail: "Application development.", id: "code" },
+  { node: "GitHub", tool: "version control", detail: "Version control.", id: "github" },
+  { node: "CI / CD", tool: "automation", detail: "Automated build and deployment.", id: "cicd" },
+  { node: "Docker", tool: "containers", detail: "Containerization.", id: "docker" },
+  { node: "Kubernetes", tool: "orchestration", detail: "Workload orchestration.", id: "kubernetes" },
+  { node: "AWS", tool: "cloud", detail: "Cloud infrastructure.", id: "aws" },
+  { node: "Monitoring", tool: "prom / grafana", detail: "Prometheus + Grafana.", id: "monitoring" },
 ];
 
-// Transition strip — tiny, typographic.
+// Pivot strip — quiet, typographic.
 export const transitionStrip = [
   { id: "ui", label: "UI" },
   { id: "code", label: "Code" },
@@ -68,12 +76,11 @@ export const transitionStrip = [
   { id: "system", label: "System" },
 ];
 
-// The mindset — UX on the left, DevOps on the right, same shape.
+// Same mindset, different layer.
 export const mindset = [
-  { ux: "Understand the user", devops: "Understand the system" },
-  { ux: "Design the journey", devops: "Automate the workflow" },
-  { ux: "Handle edge cases", devops: "Handle failure" },
-  { ux: "Simplify complexity", devops: "Simplify operations" },
+  { ux: "Understand complexity", devops: "Understand systems" },
+  { ux: "Design for edge cases", devops: "Design for failure" },
+  { ux: "Simplify the experience", devops: "Simplify operations" },
 ];
 
 export interface JourneyStage {

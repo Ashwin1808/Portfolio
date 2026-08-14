@@ -36,7 +36,7 @@ export function HeroSystem() {
   const n = heroNodes.length;
 
   return (
-    <div className="relative" aria-label="One system: user to observability">
+    <div className="relative" aria-label="One system: design flowing to observability">
       <div ref={ref} className="relative hidden h-[560px] w-[420px] md:block">
         {/* ambient field */}
         <div
@@ -131,7 +131,7 @@ export function HeroSystem() {
         })}
 
         <p className="absolute bottom-0 left-[20px] font-mono text-[9px] uppercase tracking-[0.28em] text-faint">
-          one system · scroll to activate
+          DESIGN → OBSERVABILITY
         </p>
       </div>
 

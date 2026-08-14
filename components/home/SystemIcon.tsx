@@ -66,6 +66,43 @@ export function SystemIcon({ id, className }: { id: string; className?: string }
           <path d="M9 7h6M9 10.5h6M9 14h3" />
         </svg>
       );
+    case "mic":
+      return (
+        <svg viewBox="0 0 24 24" {...c} aria-hidden="true">
+          <rect x="9" y="3" width="6" height="11" rx="3" />
+          <path d="M5 11a7 7 0 0 0 14 0M12 18v3" />
+        </svg>
+      );
+    case "banking":
+      return (
+        <svg viewBox="0 0 24 24" {...c} aria-hidden="true">
+          <rect x="3" y="6" width="18" height="12" rx="2" />
+          <path d="M3 10h18M7 15h3" />
+        </svg>
+      );
+    case "currency":
+      return (
+        <svg viewBox="0 0 24 24" {...c} aria-hidden="true">
+          <circle cx="12" cy="12" r="8.5" />
+          <path d="M14.5 9.2c-.6-.7-1.5-1-2.5-1-1.6 0-2.8 1-2.8 2.3 0 3 5.6 1.4 5.6 4.3 0 1.3-1.3 2.4-2.8 2.4-1.1 0-2-.4-2.6-1.1M12 7.2V6m0 12.2v-1.1" />
+        </svg>
+      );
+    case "headset":
+      return (
+        <svg viewBox="0 0 24 24" {...c} aria-hidden="true">
+          <path d="M4 13a8 8 0 0 1 16 0" />
+          <rect x="3" y="13" width="4" height="7" rx="1.5" />
+          <rect x="17" y="13" width="4" height="7" rx="1.5" />
+          <path d="M20 20v1a2 2 0 0 1-2 2h-4" />
+        </svg>
+      );
+    case "mobile":
+      return (
+        <svg viewBox="0 0 24 24" {...c} aria-hidden="true">
+          <rect x="7" y="2.5" width="10" height="19" rx="2.5" />
+          <path d="M10.5 5.5h3M11 18.5h2" />
+        </svg>
+      );
     case "fintech":
       return (
         <svg viewBox="0 0 24 24" {...c} aria-hidden="true">

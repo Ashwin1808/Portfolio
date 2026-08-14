@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { motion, useScroll, useTransform, useReducedMotion } from "framer-motion";
 import { HeroSystem } from "@/components/home/HeroSystem";
-import { site } from "@/data/site";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
@@ -65,27 +64,25 @@ export function Hero() {
             <p className="mt-8 max-w-[420px] text-[14px] leading-[1.8] text-muted">
               UX/UI Designer at Ubona Technologies, designing complex digital experiences
               across fintech, insurance, Visual IVR, enterprise products and AI-assisted
-              workflows. Now extending that systems-thinking mindset into software, cloud
-              and DevOps.
+              workflows. Now I&apos;m extending that systems-thinking mindset into software,
+              cloud and DevOps.
             </p>
 
             <div className="mt-10 flex flex-wrap items-center gap-4">
               <Link
-                href="/resume"
+                href="/work"
                 className="group inline-flex items-center gap-2.5 rounded-md border border-accent bg-accent/10 px-5 py-3 font-mono text-[11px] uppercase tracking-[0.2em] text-accent transition-colors hover:bg-accent hover:text-paper"
               >
-                View resume
-                <span className="transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5">↗</span>
+                View work
+                <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
               </Link>
-              <a
-                href={site.github}
-                target="_blank"
-                rel="noopener noreferrer"
+              <Link
+                href="/resume"
                 className="group inline-flex items-center gap-2.5 rounded-md border border-line-strong px-5 py-3 font-mono text-[11px] uppercase tracking-[0.2em] text-ink transition-colors hover:border-accent hover:text-accent"
               >
-                GitHub
+                Resume
                 <span className="transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5">↗</span>
-              </a>
+              </Link>
             </div>
           </motion.div>
 
