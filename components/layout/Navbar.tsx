@@ -27,15 +27,15 @@ export function Navbar() {
     href === "/" ? pathname === "/" : pathname === href || pathname.startsWith(`${href}/`);
 
   return (
-    <header className="no-print sticky top-0 z-50 border-b border-line bg-paper/80 backdrop-blur-sm">
-      <nav aria-label="Main" className="wrap flex h-14 items-center justify-between">
+    <header className="no-print sticky top-0 z-50">
+      <nav aria-label="Main" className="wrap flex h-16 items-center justify-between">
         <Link
           href="/"
           className="group flex items-center gap-2 rounded-sm font-mono text-[13px] font-semibold tracking-[0.06em] text-ink transition-colors hover:text-accent"
         >
-          <span className="relative flex h-2 w-2" aria-hidden="true">
+          <span className="relative flex h-1.5 w-1.5" aria-hidden="true">
             <span className="absolute inline-flex h-full w-full rounded-full bg-accent/60 opacity-75" />
-            <span className="relative inline-flex h-2 w-2 rounded-full bg-accent transition-transform duration-300 group-hover:scale-125" />
+            <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-accent transition-transform duration-300 group-hover:scale-125" />
           </span>
           ASHWIN&nbsp;K
         </Link>
