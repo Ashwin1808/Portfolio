@@ -159,34 +159,37 @@ export function HeroOrbit() {
           >
             <p className="flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.3em] text-accent">
               <span className="h-1.5 w-1.5 rounded-full bg-accent" aria-hidden="true" />
-              Product Designer → Cloud / DevOps Engineer
+              UX/UI Designer → DevOps / Cloud Engineer
             </p>
-            <h1 className="mt-8 font-serif text-[clamp(4.5rem,13vw,9.5rem)] leading-[0.9] tracking-[-0.02em] text-ink">
-              ASHWIN
+            <h1 className="mt-8 font-serif text-[clamp(3rem,8.5vw,7rem)] leading-[0.95] tracking-[-0.02em] text-ink">
+              Designing
+              <br />
+              experiences.
+              <br />
+              <span className="italic text-accent">Building systems.</span>
             </h1>
-            <p className="mt-10 max-w-[420px] text-[15px] leading-[1.9] text-ink/70">
-              I design experiences.
-              <br />
-              I build systems.
-              <br />
-              <span className="text-ink">I make technology feel human.</span>
+            <p className="mt-10 max-w-[430px] text-[15px] leading-[1.9] text-ink/70">
+              UX/UI Designer at Ubona Technologies, designing complex digital
+              experiences across fintech, insurance, Visual IVR, enterprise products
+              and AI-assisted workflows. Now extending that systems-thinking mindset
+              into software, cloud and DevOps.
             </p>
 
             <div className="mt-12 flex flex-wrap items-center gap-4">
               <a
-                href="#missions"
+                href="#work"
                 data-cursor="explore"
                 className="group inline-flex items-center gap-3 border-2 border-accent bg-accent px-7 py-3.5 font-mono text-[11px] font-bold uppercase tracking-[0.22em] text-paper transition-colors hover:bg-paper hover:text-accent"
               >
-                Enter orbit
+                View work
                 <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
               </a>
               <a
-                href="#log"
+                href="/resume"
                 className="group inline-flex items-center gap-3 border-2 border-ink/25 px-7 py-3.5 font-mono text-[11px] font-bold uppercase tracking-[0.22em] text-ink transition-colors hover:border-accent hover:text-accent"
               >
-                View mission log
-                <span className="transition-transform duration-300 group-hover:translate-y-0.5">↓</span>
+                Resume
+                <span className="text-ink/60 transition-transform duration-300 group-hover:-translate-y-0.5">↗</span>
               </a>
             </div>
           </motion.div>

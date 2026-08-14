@@ -4,13 +4,10 @@ import { site } from "@/data/site";
 import { SpaceCanvas } from "@/components/home/SpaceCanvas";
 import { SectorReadout } from "@/components/home/SectorReadout";
 import { HeroOrbit } from "@/components/home/HeroOrbit";
-import { Origin } from "@/components/home/Origin";
-import { MissionControl } from "@/components/home/MissionControl";
-import { Stack } from "@/components/home/Stack";
-import { DesignLab } from "@/components/home/DesignLab";
-import { LabPlayground } from "@/components/home/LabPlayground";
-import { MissionLog } from "@/components/home/MissionLog";
-import { Transmission } from "@/components/home/Transmission";
+import { UXTimeline } from "@/components/home/UXTimeline";
+import { Transition } from "@/components/home/Transition";
+import { DevOpsSystem } from "@/components/home/DevOpsSystem";
+import { FinalStatement } from "@/components/home/FinalStatement";
 
 export const metadata: Metadata = {
   title: site.metadata.title,
@@ -25,13 +22,10 @@ export default function HomePage() {
         <SectorReadout />
         <div className="relative z-10">
           <HeroOrbit />
-          <Origin />
-          <MissionControl />
-          <Stack />
-          <DesignLab />
-          <LabPlayground />
-          <MissionLog />
-          <Transmission />
+          <UXTimeline />
+          <Transition />
+          <DevOpsSystem />
+          <FinalStatement />
         </div>
       </main>
     </MotionConfig>
