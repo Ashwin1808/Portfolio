@@ -13,23 +13,11 @@ export function Hero() {
   const fade = useTransform(scrollY, [0, 380], [1, 0.25]);
 
   return (
-    <section id="hero" className="relative overflow-hidden border-b border-line bg-paper">
-      {/* faint ambient warmth — restrained */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute -right-40 top-[-10%] h-[560px] w-[560px] rounded-full opacity-[0.06] blur-[120px]"
-        style={{ background: "radial-gradient(circle, #cdf249 0%, #ff8a5c 55%, transparent 75%)" }}
-      />
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute left-[-12%] top-[45%] h-[420px] w-[420px] rounded-full opacity-[0.05] blur-[110px]"
-        style={{ background: "radial-gradient(circle, #b3a8e6 0%, transparent 70%)" }}
-      />
-
+    <section id="hero" className="relative overflow-hidden border-b border-line">
       {/* scroll indicator — far left, vertical */}
       <div className="no-print absolute bottom-0 left-8 top-1/2 hidden -translate-y-1/2 flex-col items-center gap-4 xl:flex" aria-hidden="true">
         <span className="font-mono text-[9px] uppercase tracking-[0.3em] text-faint [writing-mode:vertical-rl]">
-          Scroll to explore
+          Scroll to travel
         </span>
         <motion.span
           className="w-px flex-1 origin-top bg-line-strong"

@@ -53,7 +53,7 @@ export function UXTimeline() {
   const introOpacity = useTransform(scrollYProgress, [0, 0.12], [1, 0]);
 
   return (
-    <section id="work" className="overflow-hidden border-b border-line bg-surface">
+    <section id="work" className="overflow-hidden border-b border-line">
       <div className="wrap pt-24 sm:pt-32">
         {/* heading — asymmetric: title far left, note low right */}
         <div className="grid gap-10 lg:grid-cols-12 lg:items-end">
@@ -109,7 +109,7 @@ export function UXTimeline() {
                       "absolute -top-[4.5px] left-0 h-[9px] w-[9px] rounded-full border transition-all duration-500",
                       isActive
                         ? "border-accent bg-accent shadow-[0_0_14px_rgba(205,242,73,0.7)]"
-                        : "border-line-strong bg-surface group-hover:border-accent/60",
+                        : "border-line-strong bg-[#100e0c] group-hover:border-accent/60",
                     )}
                   />
 

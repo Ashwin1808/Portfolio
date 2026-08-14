@@ -6,7 +6,7 @@ import { site } from "@/data/site";
 
 export function FinalStatement() {
   return (
-    <section id="contact" className="dark-band border-b border-line bg-dark">
+    <section id="contact" className="dark-band border-b border-line">
       <div className="wrap flex flex-col items-center py-28 text-center sm:py-40">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -57,6 +57,14 @@ export function FinalStatement() {
               <span className="transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5">↗</span>
             </a>
           </div>
+          <button
+            type="button"
+            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+            className="mt-16 inline-flex items-center gap-2 font-mono text-[9.5px] uppercase tracking-[0.24em] text-faint transition-colors hover:text-accent"
+          >
+            Back to top
+            <span aria-hidden="true">↑</span>
+          </button>
         </motion.div>
       </div>
     </section>

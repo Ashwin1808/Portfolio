@@ -44,7 +44,7 @@ function Pipeline() {
                   "h-[15px] w-[15px] rounded-full border transition-colors duration-300",
                   active === i
                     ? "border-accent bg-accent shadow-[0_0_12px_rgba(205,242,73,0.7)]"
-                    : "border-line-strong bg-dark-surface group-hover:border-accent/60",
+                    : "border-line-strong bg-[#100e0c] group-hover:border-accent/60",
                 )}
                 aria-hidden="true"
               />
@@ -80,7 +80,7 @@ function Pipeline() {
  */
 export function DevOpsSystem() {
   return (
-    <section id="devops" className="border-b border-line bg-paper">
+    <section id="devops" className="border-b border-line">
       <div className="wrap py-24 sm:py-32">
         <div className="grid gap-12 lg:grid-cols-12 lg:items-end">
           <div className="lg:col-span-7">
@@ -98,7 +98,7 @@ export function DevOpsSystem() {
         </div>
 
         {/* one connected system */}
-        <div className="mt-16 rounded-lg border border-line bg-paper p-6 sm:p-10">
+        <div className="mt-16 rounded-lg border border-line bg-[#0e0c0a]/70 p-6 backdrop-blur-[2px] sm:p-10">
           <div className="flex items-center justify-between">
             <p className="font-mono text-[9px] uppercase tracking-[0.24em] text-faint">The system</p>
             <p className="font-mono text-[9px] uppercase tracking-[0.24em] text-faint">hover a node</p>

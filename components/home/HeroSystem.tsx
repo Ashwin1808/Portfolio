@@ -83,7 +83,7 @@ export function HeroSystem() {
                 aria-hidden="true"
                 className={cn(
                   "absolute left-[16px] top-1/2 h-[9px] w-[9px] -translate-y-1/2 rounded-full border transition-colors duration-300",
-                  lit ? "border-accent/70 bg-accent/70" : "border-line-strong bg-paper",
+                  lit ? "border-accent/70 bg-accent/70" : "border-line-strong bg-[#100e0c]",
                 )}
               />
               <button
