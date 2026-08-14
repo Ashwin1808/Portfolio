@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, useMotionValue, useSpring, useReducedMotion } from "framer-motion";
 
-type CursorState = "default" | "view" | "explore" | "link";
+type CursorState = "default" | "view" | "explore" | "link" | "open";
 
 export function CustomCursor() {
   const reduced = useReducedMotion();
@@ -52,8 +52,9 @@ export function CustomCursor() {
       const target = e.target as HTMLElement;
       const view = target.closest<HTMLElement>("[data-cursor='view']");
       const explore = target.closest<HTMLElement>("[data-cursor='explore']");
+      const open = target.closest<HTMLElement>("[data-cursor='open']");
       const link = target.closest<HTMLElement>("a, button, [role='link']");
-      setState(view ? "view" : explore ? "explore" : link ? "link" : "default");
+      setState(view ? "view" : explore ? "explore" : open ? "open" : link ? "link" : "default");
     };
 
     const leave = () => setVisible(false);
@@ -84,7 +85,7 @@ export function CustomCursor() {
       >
         <motion.div
           animate={
-            state === "view" || state === "explore"
+            state === "view" || state === "explore" || state === "open"
               ? { width: 72, height: 72, opacity: 1, x: -36, y: -36 }
               : state === "link"
                 ? { width: 40, height: 40, opacity: 1, x: -20, y: -20 }
@@ -101,6 +102,11 @@ export function CustomCursor() {
           {state === "explore" && (
             <span className="flex h-full w-full items-center justify-center font-mono text-[8.5px] uppercase tracking-[0.16em] text-accent">
               Explore
+            </span>
+          )}
+          {state === "open" && (
+            <span className="flex h-full w-full items-center justify-center font-mono text-[8.5px] uppercase tracking-[0.16em] text-accent">
+              Open
             </span>
           )}
           {state === "link" && (

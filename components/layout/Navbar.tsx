@@ -8,9 +8,10 @@ import { site } from "@/data/site";
 import { cn } from "@/lib/utils";
 
 const navLinks = [
-  { label: "Work", href: "/work" },
-  { label: "About", href: "/about" },
-  { label: "Resume", href: "/resume" },
+  { label: "Work", href: "#missions" },
+  { label: "Lab", href: "#lab" },
+  { label: "About", href: "#origin" },
+  { label: "Contact", href: "#transmission" },
 ];
 
 function NavLink({
@@ -72,9 +73,9 @@ export function Navbar() {
     };
   }, [open]);
 
-  useEffect(() => {
+useEffect(() => {
     if (pathname !== "/") return;
-    const ids = ["work", "transition", "devops", "contact"];
+    const ids = ["origin", "missions", "stack", "designlab", "lab", "log", "transmission"];
     const observer = new IntersectionObserver(
       (entries) => {
         for (const entry of entries) {
@@ -90,12 +91,12 @@ export function Navbar() {
     return () => observer.disconnect();
   }, [pathname]);
 
-  const pageActive = (href: string) =>
-    pathname === href || pathname.startsWith(`${href}/`);
-
-  const workActive = pageActive("/work") || (pathname === "/" && section === "work");
-  const aboutActive = pageActive("/about");
-  const resumeActive = pageActive("/resume");
+  const target = section?.replace("#", "") ?? "";
+  const workActive =
+    pathname === "/work" || target === "missions" || target === "stack" || target === "designlab";
+  const labActive = target === "lab" || target === "log";
+  const aboutActive = pathname === "/about" || target === "origin";
+  const contactActive = pathname === "/contact" || target === "transmission";
 
   return (
     <header className="no-print sticky top-0 z-50">
@@ -143,7 +144,13 @@ export function Navbar() {
               href={l.href}
               label={l.label}
               active={
-                l.href === "/work" ? workActive : l.href === "/about" ? aboutActive : resumeActive
+                l.href === "#missions"
+                  ? workActive
+                  : l.href === "#lab"
+                    ? labActive
+                    : l.href === "#origin"
+                      ? aboutActive
+                      : contactActive
               }
             />
           ))}
@@ -185,7 +192,13 @@ export function Navbar() {
           <div className="wrap flex flex-col pb-8 pt-2">
             {navLinks.map((l, i) => {
               const active =
-                l.href === "/work" ? workActive : l.href === "/about" ? aboutActive : resumeActive;
+                l.href === "#missions"
+                  ? workActive
+                  : l.href === "#lab"
+                    ? labActive
+                    : l.href === "#origin"
+                      ? aboutActive
+                      : contactActive;
               return (
                 <Link
                   key={l.href}

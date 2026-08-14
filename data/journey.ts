@@ -100,3 +100,78 @@ export const journeyStages: JourneyStage[] = [
   { index: "06", label: "Cloud", sub: "AWS infrastructure as code", id: "cloud" },
   { index: "07", label: "Observability", sub: "Knowing it is healthy", id: "observability" },
 ];
+
+// V10 — ASHWIN // ORBIT. The journey between two orbits.
+export const trajectory = [
+  { id: "ux", label: "UX / UI" },
+  { id: "systems", label: "Systems thinking" },
+  { id: "linux", label: "Linux" },
+  { id: "aws", label: "AWS" },
+  { id: "docker", label: "Docker" },
+  { id: "kubernetes", label: "Kubernetes" },
+  { id: "cicd", label: "CI / CD" },
+  { id: "cloud", label: "Cloud engineering" },
+];
+
+export interface Mission {
+  id: string;
+  num: string;
+  name: string;
+  status: string;
+  statusColor: string;
+  desc: string;
+  tech: string[];
+  href: string;
+}
+
+export const missions: Mission[] = [
+  {
+    id: "ridematch",
+    num: "01",
+    name: "RideMatch AI",
+    status: "In flight",
+    statusColor: "text-accent",
+    desc: "AI-powered automotive recommendation platform — built to go from design to infrastructure.",
+    tech: ["React", "Node.js", "PostgreSQL", "Docker", "Kubernetes", "AWS", "Terraform", "GitHub Actions", "Prometheus", "Grafana"],
+    href: "/engineering/ridematch",
+  },
+  {
+    id: "cloud",
+    num: "02",
+    name: "Cloud Infrastructure",
+    status: "Active",
+    statusColor: "text-cyan",
+    desc: "Infrastructure automation and deployment systems — Linux, containers, orchestration, CI/CD, observability.",
+    tech: ["Linux", "Docker", "Kubernetes", "Terraform", "AWS", "CI / CD", "Prometheus", "Grafana"],
+    href: "/engineering",
+  },
+  {
+    id: "product",
+    num: "03",
+    name: "Product Design",
+    status: "Archived",
+    statusColor: "text-violet",
+    desc: "Enterprise UX — Visual IVR, fintech, insurance, dashboards and AI-assisted workflows.",
+    tech: ["UX Research", "Figma", "Design Systems", "Prototyping", "Conversational UX"],
+    href: "/work",
+  },
+];
+
+// The infrastructure flow — data travelling through the system.
+export const infraFlow = [
+  { node: "User", sub: "request in" },
+  { node: "CloudFront / Load balancer", sub: "edge · routing" },
+  { node: "Kubernetes", sub: "pods · services" },
+  { node: "Services", sub: "api · workers" },
+  { node: "PostgreSQL", sub: "data at rest" },
+  { node: "Prometheus + Grafana", sub: "reality check" },
+];
+
+export const labItems = [
+  { id: "ui", name: "UI experiments", sub: "Typography · layouts · motion", num: "A" },
+  { id: "creative", name: "Creative coding", sub: "Generative interfaces", num: "B" },
+  { id: "devops", name: "DevOps experiments", sub: "Linux · containers · orchestration", num: "C" },
+  { id: "infra", name: "Infrastructure experiments", sub: "IaC · networking · provisioning", num: "D" },
+  { id: "ai", name: "AI experiments", sub: "Agentic workflows · assistants", num: "E" },
+  { id: "interaction", name: "Interaction experiments", sub: "Haptics · states · feedback", num: "F" },
+];

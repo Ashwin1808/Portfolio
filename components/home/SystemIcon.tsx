@@ -192,6 +192,13 @@ export function SystemIcon({ id, className }: { id: string; className?: string }
           <path d="M9 18.5c-3 1-3-2-4.5-2.5m13.5 4v-3.2c0-1-.3-1.7-.8-2.3 2.8-.3 5.8-1.4 5.8-6.3a4.9 4.9 0 0 0-1.3-3.4 4.6 4.6 0 0 0-.1-3.4s-1.1-.3-3.5 1.3a12 12 0 0 0-6.4 0C7.3 2.6 6.2 2.9 6.2 2.9a4.6 4.6 0 0 0-.1 3.4A4.9 4.9 0 0 0 4.8 9.7c0 4.9 3 6 5.8 6.3-.3.3-.6.8-.7 1.5-.6.3-2.1.7-3-.8" />
         </svg>
       );
+    case "database":
+      return (
+        <svg viewBox="0 0 24 24" {...c} aria-hidden="true">
+          <ellipse cx="12" cy="5.5" rx="7.5" ry="3" />
+          <path d="M4.5 5.5v13c0 1.7 3.4 3 7.5 3s7.5-1.3 7.5-3v-13M4.5 12c0 1.7 3.4 3 7.5 3s7.5-1.3 7.5-3" />
+        </svg>
+      );
     case "monitoring":
       return (
         <svg viewBox="0 0 24 24" {...c} aria-hidden="true">
