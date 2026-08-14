@@ -43,14 +43,14 @@ export function Transition() {
 
       <div className="wrap relative py-28 sm:py-36">
         <div className="grid gap-12 lg:grid-cols-12 lg:items-end">
-          <h2 className="h-giant text-ink lg:col-span-7">
-            Now I&apos;m building
+          <h2 className="h-giant text-ink lg:col-span-8">
+            From interfaces
             <br />
-            what sits <em className="italic text-accent">underneath.</em>
+            to <em className="italic text-accent">infrastructure.</em>
           </h2>
-          <p className="max-w-[380px] text-[13.5px] leading-[1.85] text-muted lg:col-span-4 lg:col-start-9 lg:justify-self-end">
-            My design work taught me to understand systems from the user&apos;s perspective.
-            I&apos;m now learning to understand them from the engineering side.
+          <p className="max-w-[360px] text-[13.5px] leading-[1.85] text-muted lg:col-span-3 lg:col-start-10 lg:justify-self-end">
+            Now I&apos;m building what sits underneath — the same care for the
+            whole, moved to the engineering side.
           </p>
         </div>
 

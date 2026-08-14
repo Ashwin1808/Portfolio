@@ -66,8 +66,8 @@ export function UXTimeline() {
             style={{ opacity: reduced ? 1 : introOpacity }}
             className="max-w-[360px] text-[13.5px] leading-[1.8] text-muted lg:col-span-4 lg:col-start-9 lg:justify-self-end"
           >
-            Complex enterprise experiences, where users, business logic and technology meet —
-            designed across services, screens and conversations.
+            Before building systems, I spent years designing the experiences
+            people interact with.
             <span className="mt-3 hidden font-mono text-[9.5px] uppercase tracking-[0.24em] text-faint lg:block">
               Scroll — 01 → 08
             </span>
@@ -98,18 +98,19 @@ export function UXTimeline() {
                   aria-current={isActive ? "true" : undefined}
                   className={cn(
                     "group relative w-[68vw] snap-start sm:w-[38vw] lg:w-[26vw]",
-                    "flex flex-col justify-between border-t pt-6 transition-opacity duration-500",
-                    isActive ? "opacity-100" : "opacity-35 hover:opacity-70",
+                    "flex flex-col justify-between border-t border-line pt-6",
+                    "transition-[opacity,transform] duration-500 ease-out",
+                    isActive ? "scale-[1.05] opacity-100" : "scale-[0.98] opacity-35 hover:opacity-75",
                   )}
                 >
-                  {/* node on the line */}
+                  {/* node on the line — lavender: the UX layer */}
                   <span
                     aria-hidden="true"
                     className={cn(
                       "absolute -top-[4.5px] left-0 h-[9px] w-[9px] rounded-full border transition-all duration-500",
                       isActive
-                        ? "border-accent bg-accent shadow-[0_0_14px_rgba(205,242,73,0.7)]"
-                        : "border-line-strong bg-[#100e0c] group-hover:border-accent/60",
+                        ? "border-violet bg-violet shadow-[0_0_14px_rgba(179,168,230,0.7)]"
+                        : "border-line-strong bg-[#100e0c] group-hover:border-violet/60",
                     )}
                   />
 
@@ -117,13 +118,22 @@ export function UXTimeline() {
                     <div className="flex items-baseline justify-between">
                       <span
                         className={cn(
-                          "font-serif text-[2.6rem] leading-none tracking-[-0.01em] sm:text-[3.2rem]",
-                          isActive ? "text-ink" : "text-faint",
+                          "font-serif text-[2.6rem] leading-none tracking-[-0.01em] transition-all duration-500 sm:text-[3.2rem]",
+                          isActive
+                            ? "scale-105 translate-x-0.5 text-ink"
+                            : "text-faint group-hover:translate-x-1",
                         )}
                       >
                         {String(i + 1).padStart(2, "0")}
                       </span>
-                      <span className={cn("transition-colors duration-300", isActive ? "text-accent" : "text-faint")}>
+                      <span
+                        className={cn(
+                          "transition-all duration-300",
+                          isActive
+                            ? "-translate-y-1 text-violet"
+                            : "text-faint group-hover:-translate-y-0.5",
+                        )}
+                      >
                         <SystemIcon id={iconFor[item.id] ?? item.id} className="h-[22px] w-[22px]" />
                       </span>
                     </div>
@@ -139,7 +149,14 @@ export function UXTimeline() {
                       {item.sub}
                     </p>
                   </div>
-                  <p className="mt-10 text-[12.5px] leading-[1.7] text-muted">{item.line}</p>
+                  <p
+                    className={cn(
+                      "mt-10 text-[12.5px] leading-[1.7] transition-colors duration-300",
+                      isActive ? "text-ink/80" : "text-muted",
+                    )}
+                  >
+                    {item.line}
+                  </p>
                 </article>
               );
             })}

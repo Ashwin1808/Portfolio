@@ -70,17 +70,18 @@ export const rideMatchPipeline: PipelineStage[] = [
 
 // Pivot strip — quiet, typographic.
 export const transitionStrip = [
-  { id: "ui", label: "UI" },
+  { id: "components", label: "Components" },
   { id: "code", label: "Code" },
   { id: "container", label: "Container" },
-  { id: "system", label: "System" },
+  { id: "service", label: "Service" },
+  { id: "infrastructure", label: "Infrastructure" },
 ];
 
 // Same mindset, different layer.
 export const mindset = [
-  { ux: "Understand complexity", devops: "Understand systems" },
-  { ux: "Design for edge cases", devops: "Design for failure" },
-  { ux: "Simplify the experience", devops: "Simplify operations" },
+  { ux: "Understand people", devops: "Understand systems" },
+  { ux: "Design journeys", devops: "Design for failure" },
+  { ux: "Handle edge cases", devops: "Handle recovery" },
 ];
 
 export interface JourneyStage {

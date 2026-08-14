@@ -1,75 +1,178 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { motion, useReducedMotion } from "framer-motion";
+import {
+  animate,
+  motion,
+  useReducedMotion,
+  useScroll,
+  useTransform,
+} from "framer-motion";
 import { stackNodes, rideMatchPipeline, mindset } from "@/data/journey";
 import { Orbit } from "@/components/home/Orbit";
 import { cn } from "@/lib/utils";
 
+// color signal per pipeline stage — lavender: delivery, lime: containers,
+// orange: cloud + observability
+const stageColor: Record<string, { text: string; dot: string }> = {
+  code: { text: "text-violet", dot: "border-violet bg-violet" },
+  github: { text: "text-violet", dot: "border-violet bg-violet" },
+  cicd: { text: "text-violet", dot: "border-violet bg-violet" },
+  docker: { text: "text-accent", dot: "border-accent bg-accent" },
+  kubernetes: { text: "text-accent", dot: "border-accent bg-accent" },
+  aws: { text: "text-cyan", dot: "border-cyan bg-cyan" },
+  monitoring: { text: "text-cyan", dot: "border-cyan bg-cyan" },
+};
+
 function Pipeline() {
   const reduced = useReducedMotion();
-  const [active, setActive] = useState(0);
+  const [pos, setPos] = useState(0);
+  const [hover, setHover] = useState<number | null>(null);
+
+  useEffect(() => {
+    if (reduced) return;
+    const controls = animate(0, 1, {
+      duration: 14,
+      ease: "linear",
+      repeat: Infinity,
+      onUpdate: (v) => setPos(v),
+    });
+    return () => controls.stop();
+  }, [reduced]);
+
+  const seq = Math.round(pos * (rideMatchPipeline.length - 1));
+  const active = hover ?? seq;
 
   return (
     <div className="relative">
-      <div aria-hidden="true" className="absolute left-[5%] right-[5%] top-[7px] hidden border-t border-dashed border-accent/25 md:block" />
+      <div aria-hidden="true" className="absolute left-[5%] right-[5%] top-[7px] hidden border-t border-dashed border-line-strong md:block" />
       {!reduced && (
         <motion.span
           aria-hidden="true"
-          className="absolute top-[3px] hidden h-[9px] w-[9px] rounded-full bg-accent shadow-[0_0_14px_rgba(205,242,73,0.8)] md:block"
+          className="absolute top-[3px] hidden h-[9px] w-[9px] rounded-full bg-ink shadow-[0_0_14px_rgba(236,231,219,0.6)] md:block"
           style={{ left: "5%" }}
           animate={{ left: ["5%", "95%", "5%"] }}
-          transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
+          transition={{ duration: 14, repeat: Infinity, ease: "linear" }}
         />
       )}
 
       <div className="no-scrollbar overflow-x-auto pb-2 md:pb-0">
         <div className="flex min-w-max items-start gap-6 md:min-w-0 md:justify-between md:gap-0">
-          {rideMatchPipeline.map((p, i) => (
-            <button
-              key={p.node}
-              type="button"
-              onClick={() => setActive(i)}
-              onMouseEnter={() => setActive(i)}
-              aria-pressed={active === i}
-              aria-label={`${p.node} — ${p.detail}`}
-              data-cursor="explore"
-              className="group flex flex-col items-center gap-3"
-            >
-              <motion.span
-                animate={active === i ? { scale: 1.35 } : { scale: 1 }}
-                transition={{ type: "spring", stiffness: 320, damping: 18 }}
-                className={cn(
-                  "h-[15px] w-[15px] rounded-full border transition-colors duration-300",
-                  active === i
-                    ? "border-accent bg-accent shadow-[0_0_12px_rgba(205,242,73,0.7)]"
-                    : "border-line-strong bg-[#100e0c] group-hover:border-accent/60",
-                )}
-                aria-hidden="true"
-              />
-              <span className="flex flex-col items-center text-center">
-                <span
+          {rideMatchPipeline.map((p, i) => {
+            const on = active === i;
+            const passed = i < seq;
+            const c = stageColor[p.id] ?? stageColor.code;
+            return (
+              <button
+                key={p.node}
+                type="button"
+                onClick={() => setHover(hover === i ? null : i)}
+                onMouseEnter={() => setHover(i)}
+                onMouseLeave={() => setHover(null)}
+                aria-pressed={on}
+                aria-label={`${p.node} — ${p.detail}`}
+                data-cursor="explore"
+                className="group flex flex-col items-center gap-3"
+              >
+                <motion.span
+                  animate={on ? { scale: 1.35 } : { scale: 1 }}
+                  transition={{ type: "spring", stiffness: 320, damping: 18 }}
                   className={cn(
-                    "font-mono text-[10px] uppercase tracking-[0.18em] transition-colors duration-300",
-                    active === i ? "text-accent" : "text-white/70",
+                    "h-[15px] w-[15px] rounded-full border transition-colors duration-300",
+                    on
+                      ? c.dot + " shadow-[0_0_12px_rgba(255,255,255,0.25)]"
+                      : "border-line-strong bg-[#100e0c] group-hover:border-ink",
                   )}
-                >
-                  {p.node}
+                  aria-hidden="true"
+                />
+                <span className="flex flex-col items-center text-center">
+                  <span
+                    className={cn(
+                      "font-mono text-[10px] uppercase tracking-[0.18em] transition-colors duration-300",
+                      on ? c.text : passed ? "text-muted" : "text-white/70 group-hover:text-ink",
+                    )}
+                  >
+                    {p.node}
+                  </span>
+                  <span className="mt-1 font-mono text-[8.5px] uppercase tracking-[0.14em] text-faint">
+                    {p.tool}
+                  </span>
                 </span>
-                <span className="mt-1 font-mono text-[8.5px] uppercase tracking-[0.14em] text-dark-faint">
-                  {p.tool}
-                </span>
-              </span>
-            </button>
-          ))}
+              </button>
+            );
+          })}
         </div>
       </div>
 
-      <div className="mt-6 flex min-h-[40px] items-baseline gap-3 border-t border-dark-line pt-5" aria-live="polite">
-        <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-accent">{rideMatchPipeline[active].node}</span>
-        <span className="text-[12.5px] text-dark-muted">{rideMatchPipeline[active].detail}</span>
+      <div className="mt-6 flex min-h-[40px] items-baseline gap-3 border-t border-line pt-5" aria-live="polite">
+        <span className={cn("font-mono text-[10px] uppercase tracking-[0.2em]", stageColor[rideMatchPipeline[active].id]?.text ?? "text-accent")}>
+          {rideMatchPipeline[active].node}
+        </span>
+        <span className="text-[12.5px] text-muted">{rideMatchPipeline[active].detail}</span>
       </div>
+    </div>
+  );
+}
+
+/**
+ * The dive — the app floating above, and the camera travelling
+ * underneath it: application → container → orchestration → cloud → observability.
+ */
+function DescentLayer({
+  scrollYProgress,
+  layer,
+  reduced,
+}: {
+  scrollYProgress: ReturnType<typeof useScroll>["scrollYProgress"];
+  layer: { label: string; sub: string; tint: string; y: number };
+  reduced: boolean;
+}) {
+  const drift = useTransform(scrollYProgress, [0, 1], [layer.y * 16, layer.y * -16]);
+  return (
+    <motion.div
+      style={{ y: reduced ? 0 : drift }}
+      className="relative flex items-center gap-5 pl-9"
+    >
+      <span
+        aria-hidden="true"
+        className={cn("absolute left-0 h-[5px] w-[5px] rounded-full", layer.tint.replace("text-", "bg-"))}
+      />
+      <span className="flex flex-col gap-0.5 sm:flex-row sm:items-baseline sm:gap-4">
+        <span className={cn("font-mono text-[11px] uppercase tracking-[0.2em]", layer.tint)}>
+          {layer.label}
+        </span>
+        <span className="font-mono text-[9px] uppercase tracking-[0.16em] text-faint">
+          {layer.sub}
+        </span>
+      </span>
+    </motion.div>
+  );
+}
+
+/**
+ * The dive — the app floating above, and the camera travelling
+ * underneath it: application → container → orchestration → cloud → observability.
+ */
+function DescentStack() {
+  const reduced = useReducedMotion();
+  const ref = useRef<HTMLDivElement | null>(null);
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
+  const layers = [
+    { label: "Application", sub: "ridematch · api", tint: "text-violet", y: 0 },
+    { label: "Container", sub: "docker image", tint: "text-accent", y: 1 },
+    { label: "Orchestration", sub: "kubernetes · pods", tint: "text-accent", y: 2 },
+    { label: "Cloud", sub: "aws · vpc", tint: "text-cyan", y: 3 },
+    { label: "Observability", sub: "prometheus · grafana", tint: "text-cyan", y: 4 },
+  ];
+
+  return (
+    <div ref={ref} className="relative flex min-h-[380px] flex-col justify-between py-2">
+      {/* the hairline the layers travel along */}
+      <div aria-hidden="true" className="absolute bottom-[8%] left-[9px] top-[8%] w-px bg-line-strong" />
+      {layers.map((l) => (
+        <DescentLayer key={l.label} scrollYProgress={scrollYProgress} layer={l} reduced={reduced === true} />
+      ))}
     </div>
   );
 }
@@ -92,13 +195,13 @@ export function DevOpsSystem() {
             </h2>
           </div>
           <p className="max-w-[380px] text-[13.5px] leading-[1.8] text-muted lg:col-span-5 lg:justify-self-end">
-            I&apos;m currently building hands-on projects with Linux, Docker, Kubernetes,
-            Terraform, AWS, CI/CD and observability.
+            I&apos;m currently building hands-on projects with Linux, Docker,
+            Kubernetes, Terraform, AWS, CI/CD and observability.
           </p>
         </div>
 
-        {/* one connected system */}
-        <div className="mt-16 rounded-lg border border-line bg-[#0e0c0a]/70 p-6 backdrop-blur-[2px] sm:p-10">
+        {/* one connected system — floating in the environment, no plate */}
+        <div className="mt-10">
           <div className="flex items-center justify-between">
             <p className="font-mono text-[9px] uppercase tracking-[0.24em] text-faint">The system</p>
             <p className="font-mono text-[9px] uppercase tracking-[0.24em] text-faint">hover a node</p>
@@ -121,8 +224,8 @@ export function DevOpsSystem() {
                 RideMatch
               </h3>
               <p className="mt-4 max-w-[440px] text-[13.5px] leading-[1.8] text-muted">
-                A production-style automotive platform I&apos;m using to deepen my engineering
-                and DevOps skills.
+                A production-style automotive platform I&apos;m building to deepen
+                my engineering and DevOps skills.
               </p>
             </div>
             <Link
@@ -134,8 +237,20 @@ export function DevOpsSystem() {
             </Link>
           </div>
 
-          <div className="mt-12">
-            <Pipeline />
+          {/* the application above — the camera travels underneath it */}
+          <div className="mt-14 grid gap-14 lg:grid-cols-12 lg:gap-10">
+            <div className="lg:col-span-5">
+              <p className="mb-6 font-mono text-[9px] uppercase tracking-[0.24em] text-faint">
+                Travelling underneath — the deployment path
+              </p>
+              <DescentStack />
+            </div>
+            <div className="lg:col-span-7">
+              <p className="mb-6 font-mono text-[9px] uppercase tracking-[0.24em] text-faint">
+                The pipeline — a signal moving through infrastructure
+              </p>
+              <Pipeline />
+            </div>
           </div>
         </div>
 

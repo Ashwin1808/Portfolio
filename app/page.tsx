@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { MotionConfig } from "framer-motion";
 import { site } from "@/data/site";
-import { SpaceCanvas } from "@/components/home/SpaceCanvas";
+import { EnvironmentCanvas } from "@/components/home/EnvironmentCanvas";
 import { SectorReadout } from "@/components/home/SectorReadout";
 import { Hero } from "@/components/home/Hero";
 import { UXTimeline } from "@/components/home/UXTimeline";
@@ -18,7 +18,7 @@ export default function HomePage() {
   return (
     <MotionConfig reducedMotion="user">
       <main className="relative">
-        <SpaceCanvas />
+        <EnvironmentCanvas />
         <SectorReadout />
         <div className="relative z-10">
           <Hero />
