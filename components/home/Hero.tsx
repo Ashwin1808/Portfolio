@@ -13,7 +13,7 @@ export function Hero() {
   const fade = useTransform(scrollY, [0, 380], [1, 0.25]);
 
   return (
-    <section className="relative overflow-hidden border-b border-line bg-paper">
+    <section id="hero" className="relative overflow-hidden border-b border-line bg-paper">
       {/* faint ambient warmth — restrained */}
       <div
         aria-hidden="true"

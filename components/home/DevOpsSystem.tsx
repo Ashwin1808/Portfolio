@@ -80,7 +80,7 @@ function Pipeline() {
  */
 export function DevOpsSystem() {
   return (
-    <section className="border-b border-line bg-paper">
+    <section id="devops" className="border-b border-line bg-paper">
       <div className="wrap py-24 sm:py-32">
         <div className="grid gap-12 lg:grid-cols-12 lg:items-end">
           <div className="lg:col-span-7">

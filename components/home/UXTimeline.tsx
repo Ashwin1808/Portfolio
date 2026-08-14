@@ -53,7 +53,7 @@ export function UXTimeline() {
   const introOpacity = useTransform(scrollYProgress, [0, 0.12], [1, 0]);
 
   return (
-    <section className="overflow-hidden border-b border-line bg-surface">
+    <section id="work" className="overflow-hidden border-b border-line bg-surface">
       <div className="wrap pt-24 sm:pt-32">
         {/* heading — asymmetric: title far left, note low right */}
         <div className="grid gap-10 lg:grid-cols-12 lg:items-end">

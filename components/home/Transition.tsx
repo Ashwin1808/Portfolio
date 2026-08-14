@@ -7,7 +7,7 @@ import { transitionStrip } from "@/data/journey";
  */
 export function Transition() {
   return (
-    <section className="dark-band relative overflow-hidden border-b border-line bg-dark">
+    <section id="transition" className="dark-band relative overflow-hidden border-b border-line bg-dark">
       <div
         aria-hidden="true"
         className="pointer-events-none absolute left-1/2 top-0 h-[320px] w-[600px] -translate-x-1/2 opacity-[0.05] blur-[110px]"

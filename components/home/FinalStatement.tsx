@@ -6,7 +6,7 @@ import { site } from "@/data/site";
 
 export function FinalStatement() {
   return (
-    <section className="dark-band border-b border-line bg-dark">
+    <section id="contact" className="dark-band border-b border-line bg-dark">
       <div className="wrap flex flex-col items-center py-28 text-center sm:py-40">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
