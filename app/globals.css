@@ -1,28 +1,28 @@
 @import "tailwindcss";
 
 @theme {
-  --color-paper: #14120f;
-  --color-surface: #1a1814;
+  --color-paper: #0d0d0c;
+  --color-surface: #131211;
   --color-ink: #ece7db;
-  --color-ink-soft: #c8c1b2;
-  --color-muted: #968e7e;
-  --color-faint: #625c50;
+  --color-ink-soft: #c9c2b2;
+  --color-muted: #978f7e;
+  --color-faint: #625c4f;
   --color-line: rgb(236 231 219 / 0.09);
   --color-line-strong: rgb(236 231 219 / 0.16);
 
   --color-accent: #cdf249;
   --color-accent-deep: #a8c93a;
   --color-accent-soft: rgb(205 242 73 / 0.12);
-  --color-violet: #b3a8e6;
+  --color-violet: #b6abe0;
 
-  --color-dark: #0e0c0a;
-  --color-dark-surface: #151210;
-  --color-dark-elevated: #1d1916;
+  --color-dark: #0a0a09;
+  --color-dark-surface: #121110;
+  --color-dark-elevated: #1a1816;
   --color-dark-line: rgb(236 231 219 / 0.1);
   --color-dark-muted: #a69e8e;
   --color-dark-faint: #6b6456;
-  --color-cyan: #ff8a5c;
-  --color-cyan-deep: #e96f42;
+  --color-cyan: #d9a444;
+  --color-cyan-deep: #b58436;
 
   --color-ok: #2e9e6b;
   --color-warn: #d97706;
@@ -54,12 +54,12 @@
 
   ::selection {
     background: var(--color-accent);
-    color: #14120f;
+    color: #0d0d0c;
   }
 
   .dark-band ::selection {
     background: var(--color-accent);
-    color: #14120f;
+    color: #0d0d0c;
   }
 
   :focus-visible {
@@ -199,6 +199,29 @@
   @media (prefers-reduced-motion: reduce) {
     .marquee-track {
       animation: none;
+    }
+  }
+
+  @keyframes signal-travel {
+    from {
+      left: 0%;
+      opacity: 0;
+    }
+    8% {
+      opacity: 1;
+    }
+    92% {
+      opacity: 1;
+    }
+    to {
+      left: 100%;
+      opacity: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .signal-dot {
+      animation: none !important;
     }
   }
 

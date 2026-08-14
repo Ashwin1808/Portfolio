@@ -79,7 +79,7 @@ export default function RootLayout({
         <div className="grid-guide no-print" aria-hidden="true" />
         <CustomCursor />
         <Navbar />
-        <main id="main" className="flex-1">
+        <main id="main" className="flex-1 pt-16 lg:pt-[72px]">
           {children}
         </main>
         <Footer />

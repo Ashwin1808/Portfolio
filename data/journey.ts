@@ -60,11 +60,24 @@ export const rideMatchPipeline: PipelineStage[] = [
 
 // Pivot strip — quiet, typographic.
 export const transitionStrip = [
-  { id: "components", label: "Components" },
+  { id: "frame", label: "Frame" },
+  { id: "component", label: "Component" },
   { id: "code", label: "Code" },
   { id: "container", label: "Container" },
   { id: "service", label: "Service" },
   { id: "infrastructure", label: "Infrastructure" },
+];
+
+// V12 — CLOUDLINE. Layers of a digital system, from human to observability.
+export const systemLayers = [
+  { name: "HUMAN", tint: "text-ink/80", depth: 220 },
+  { name: "EXPERIENCE", tint: "text-violet/90", depth: -60 },
+  { name: "APPLICATION", tint: "text-ink/60", depth: -340 },
+  { name: "SERVICES", tint: "text-ink/60", depth: -620 },
+  { name: "CONTAINER", tint: "text-ink/70", depth: -900 },
+  { name: "ORCHESTRATION", tint: "text-ink/60", depth: -1180 },
+  { name: "CLOUD", tint: "text-cyan/90", depth: -1460 },
+  { name: "OBSERVABILITY", tint: "text-accent/90", depth: -1740 },
 ];
 
 // Same mindset, different layer.
