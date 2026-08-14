@@ -1,10 +1,9 @@
 import type { Metadata } from "next";
 import { MotionConfig } from "framer-motion";
 import { site } from "@/data/site";
-import { EnvironmentCanvas } from "@/components/home/EnvironmentCanvas";
-import { SectorReadout } from "@/components/home/SectorReadout";
 import { Hero } from "@/components/home/Hero";
-import { UXTimeline } from "@/components/home/UXTimeline";
+import { ContentsIndex } from "@/components/home/ContentsIndex";
+import { UXWorkRows } from "@/components/home/UXWorkRows";
 import { Transition } from "@/components/home/Transition";
 import { DevOpsSystem } from "@/components/home/DevOpsSystem";
 import { FinalStatement } from "@/components/home/FinalStatement";
@@ -17,16 +16,13 @@ export const metadata: Metadata = {
 export default function HomePage() {
   return (
     <MotionConfig reducedMotion="user">
-      <main className="relative">
-        <EnvironmentCanvas />
-        <SectorReadout />
-        <div className="relative z-10">
-          <Hero />
-          <UXTimeline />
-          <Transition />
-          <DevOpsSystem />
-          <FinalStatement />
-        </div>
+      <main>
+        <Hero />
+        <ContentsIndex />
+        <UXWorkRows />
+        <Transition />
+        <DevOpsSystem />
+        <FinalStatement />
       </main>
     </MotionConfig>
   );

@@ -10,7 +10,7 @@ import {
   useTransform,
 } from "framer-motion";
 import { stackNodes, rideMatchPipeline, mindset } from "@/data/journey";
-import { Orbit } from "@/components/home/Orbit";
+import { SystemIcon } from "@/components/home/SystemIcon";
 import { cn } from "@/lib/utils";
 
 // color signal per pipeline stage — lavender: delivery, lime: containers,
@@ -82,7 +82,7 @@ function Pipeline() {
                     "h-[15px] w-[15px] rounded-full border transition-colors duration-300",
                     on
                       ? c.dot + " shadow-[0_0_12px_rgba(255,255,255,0.25)]"
-                      : "border-line-strong bg-[#100e0c] group-hover:border-ink",
+                      : "border-line-strong bg-paper group-hover:border-ink",
                   )}
                   aria-hidden="true"
                 />
@@ -90,7 +90,7 @@ function Pipeline() {
                   <span
                     className={cn(
                       "font-mono text-[10px] uppercase tracking-[0.18em] transition-colors duration-300",
-                      on ? c.text : passed ? "text-muted" : "text-white/70 group-hover:text-ink",
+                      on ? c.text : passed ? "text-muted" : "text-ink/70 group-hover:text-ink",
                     )}
                   >
                     {p.node}
@@ -115,10 +115,6 @@ function Pipeline() {
   );
 }
 
-/**
- * The dive — the app floating above, and the camera travelling
- * underneath it: application → container → orchestration → cloud → observability.
- */
 function DescentLayer({
   scrollYProgress,
   layer,
@@ -128,18 +124,18 @@ function DescentLayer({
   layer: { label: string; sub: string; tint: string; y: number };
   reduced: boolean;
 }) {
-  const drift = useTransform(scrollYProgress, [0, 1], [layer.y * 16, layer.y * -16]);
+  const drift = useTransform(scrollYProgress, [0, 1], [layer.y * 12, layer.y * -12]);
   return (
     <motion.div
       style={{ y: reduced ? 0 : drift }}
-      className="relative flex items-center gap-5 pl-9"
+      className="relative flex items-center gap-5 py-3.5 pl-9"
     >
       <span
         aria-hidden="true"
-        className={cn("absolute left-0 h-[5px] w-[5px] rounded-full", layer.tint.replace("text-", "bg-"))}
+        className={cn("absolute left-0 h-[7px] w-[7px] rounded-full", layer.tint.replace("text-", "bg-"))}
       />
       <span className="flex flex-col gap-0.5 sm:flex-row sm:items-baseline sm:gap-4">
-        <span className={cn("font-mono text-[11px] uppercase tracking-[0.2em]", layer.tint)}>
+        <span className={cn("font-mono text-[12px] uppercase tracking-[0.2em]", layer.tint)}>
           {layer.label}
         </span>
         <span className="font-mono text-[9px] uppercase tracking-[0.16em] text-faint">
@@ -167,31 +163,35 @@ function DescentStack() {
   ];
 
   return (
-    <div ref={ref} className="relative flex min-h-[380px] flex-col justify-between py-2">
+    <div ref={ref} className="relative border-t-2 border-ink/15">
       {/* the hairline the layers travel along */}
-      <div aria-hidden="true" className="absolute bottom-[8%] left-[9px] top-[8%] w-px bg-line-strong" />
+      <div aria-hidden="true" className="absolute bottom-4 left-[3px] top-4 w-px bg-line-strong" />
       {layers.map((l) => (
         <DescentLayer key={l.label} scrollYProgress={scrollYProgress} layer={l} reduced={reduced === true} />
       ))}
+      <div className="border-b-2 border-ink/15" />
     </div>
   );
 }
 
 /**
- * Part 03 — Now. Currently building: the DevOps system,
- * the RideMatch proof, and why the shift is natural.
+ * Part 03 — Now. Currently building: the DevOps system — a ledger of
+ * tools, the RideMatch proof, and why the shift is natural.
  */
 export function DevOpsSystem() {
   return (
-    <section id="devops" className="border-b border-line">
-      <div className="wrap py-24 sm:py-32">
-        <div className="relative grid gap-12 lg:grid-cols-12 lg:items-end">
-          <div
-            aria-hidden="true"
-            className="pointer-events-none absolute -left-[10%] -top-[30%] h-[380px] w-[520px] rounded-full opacity-[0.04] blur-[120px]"
-            style={{ background: "radial-gradient(circle, #cdf249 0%, transparent 70%)" }}
-          />
-          <div className="relative lg:col-span-7">
+    <section id="devops" className="relative overflow-hidden border-b border-line bg-paper">
+      {/* ghost index */}
+      <span
+        aria-hidden="true"
+        className="pointer-events-none absolute -top-10 right-4 select-none font-serif text-[16rem] leading-none text-ink/[0.04] sm:text-[24rem] lg:right-12"
+      >
+        04
+      </span>
+
+      <div className="wrap relative py-24 sm:py-32">
+        <div className="grid gap-12 lg:grid-cols-12 lg:items-end">
+          <div className="lg:col-span-7">
             <p className="font-mono text-[10.5px] uppercase tracking-[0.24em] text-faint">Currently building</p>
             <h2 className="h-giant mt-6 text-ink">
               DevOps /
@@ -205,23 +205,34 @@ export function DevOpsSystem() {
           </p>
         </div>
 
-        {/* one connected system — floating in the environment, no plate */}
-        <div className="mt-10">
-          <div className="flex items-center justify-between">
-            <p className="font-mono text-[9px] uppercase tracking-[0.24em] text-faint">The system</p>
-            <p className="font-mono text-[9px] uppercase tracking-[0.24em] text-faint">hover a node</p>
+        {/* the system — a ledger, not a sphere */}
+        <div className="mt-14">
+          <p className="pb-3 font-mono text-[9px] uppercase tracking-[0.24em] text-faint">
+            The system — hover a node
+          </p>
+          <div className="grid gap-x-10 sm:grid-cols-2">
+            {stackNodes.map((n) => (
+              <div
+                key={n.id}
+                data-cursor="explore"
+                className="group flex items-baseline justify-between gap-4 border-t border-line-strong py-4 transition-colors duration-300 hover:border-accent"
+              >
+                <span className="flex items-center gap-3.5">
+                  <span className="text-faint transition-all duration-300 group-hover:-translate-y-0.5 group-hover:text-accent">
+                    <SystemIcon id={n.id} className="h-[17px] w-[17px]" />
+                  </span>
+                  <span className="font-mono text-[12px] font-bold uppercase tracking-[0.2em] text-ink transition-colors duration-300 group-hover:text-accent">
+                    {n.name}
+                  </span>
+                </span>
+                <span className="hidden text-[12px] text-muted sm:block">{n.detail}</span>
+              </div>
+            ))}
           </div>
-          <Orbit
-            center="DEVOPS"
-            nodes={stackNodes}
-            accent="text-accent"
-            glyphSize="h-[17px] w-[17px]"
-            className="mt-2"
-          />
         </div>
 
         {/* RideMatch — the proof */}
-        <div className="mt-20 border-t border-line pt-12">
+        <div id="ridematch" className="mt-20 border-t-2 border-ink/15 pt-12">
           <div className="flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-end">
             <div>
               <p className="font-mono text-[9.5px] uppercase tracking-[0.22em] text-faint">Current project</p>
@@ -235,18 +246,17 @@ export function DevOpsSystem() {
             </div>
             <Link
               href="/engineering/ridematch"
-              className="group inline-flex items-center gap-2 font-mono text-[10.5px] uppercase tracking-[0.2em] text-accent transition-colors hover:text-ink"
+              className="group inline-flex items-center gap-2 border-b-2 border-accent pb-1 font-mono text-[10.5px] uppercase tracking-[0.2em] text-accent transition-colors hover:border-ink hover:text-ink"
             >
               Case study
               <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
             </Link>
           </div>
 
-          {/* the application above — the camera travels underneath it */}
-          <div className="mt-14 grid gap-14 lg:grid-cols-12 lg:gap-10">
+          <div className="mt-12 grid gap-14 lg:grid-cols-12 lg:gap-10">
             <div className="lg:col-span-5">
               <p className="mb-6 font-mono text-[9px] uppercase tracking-[0.24em] text-faint">
-                Travelling underneath — the deployment path
+                Travelling underneath
               </p>
               <DescentStack />
             </div>
@@ -260,7 +270,7 @@ export function DevOpsSystem() {
         </div>
 
         {/* same mindset, different layer */}
-        <div className="mt-20 border-t border-line pt-12">
+        <div className="mt-20 border-t-2 border-ink/15 pt-12">
           <div className="grid gap-12 lg:grid-cols-12 lg:items-end">
             <h2 className="h-giant text-ink lg:col-span-6">
               Same mindset.
@@ -277,7 +287,7 @@ export function DevOpsSystem() {
             <div className="space-y-0">
               <p className="pb-3 font-mono text-[9px] uppercase tracking-[0.24em] text-violet">UX</p>
               {mindset.map((m) => (
-                <p key={m.ux} className="border-t border-line py-4 font-mono text-[11px] uppercase tracking-[0.18em] text-ink/85">
+                <p key={m.ux} className="border-t-2 border-ink/15 py-4 font-mono text-[12px] font-bold uppercase tracking-[0.18em] text-ink/85 transition-colors hover:text-violet">
                   {m.ux}
                 </p>
               ))}
@@ -288,7 +298,7 @@ export function DevOpsSystem() {
             <div className="space-y-0">
               <p className="pb-3 font-mono text-[9px] uppercase tracking-[0.24em] text-accent">DevOps</p>
               {mindset.map((m) => (
-                <p key={m.devops} className="border-t border-line py-4 font-mono text-[11px] uppercase tracking-[0.18em] text-ink/85">
+                <p key={m.devops} className="border-t-2 border-ink/15 py-4 font-mono text-[12px] font-bold uppercase tracking-[0.18em] text-ink/85 transition-colors hover:text-accent">
                   {m.devops}
                 </p>
               ))}
