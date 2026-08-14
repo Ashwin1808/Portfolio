@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import { uxTimeline } from "@/data/journey";
 import { SystemIcon } from "@/components/home/SystemIcon";
@@ -26,18 +26,27 @@ export function UXTimeline() {
   const reduced = useReducedMotion();
   const trackRef = useRef<HTMLDivElement | null>(null);
   const [active, setActive] = useState(0);
+  const stepRef = useRef(0);
+
+  useEffect(() => {
+    const measure = () => {
+      const track = trackRef.current;
+      if (!track) return;
+      const first = track.querySelector<HTMLElement>("[data-step]");
+      if (!first) return;
+      const gap = parseFloat(getComputedStyle(track).gap || "0");
+      stepRef.current = first.offsetWidth + gap;
+    };
+    measure();
+    window.addEventListener("resize", measure);
+    return () => window.removeEventListener("resize", measure);
+  }, []);
 
   const onScroll = useCallback(() => {
     const track = trackRef.current;
-    if (!track) return;
-    const items = track.querySelectorAll<HTMLElement>("[data-step]");
-    if (!items.length) return;
-    let idx = 0;
-    for (let i = 0; i < items.length; i++) {
-      const mid = items[i].offsetLeft + items[i].offsetWidth / 2 - track.scrollLeft;
-      if (mid < track.clientWidth / 2) idx = i;
-    }
-    setActive(Math.min(uxTimeline.length - 1, idx));
+    if (!track || !stepRef.current) return;
+    const idx = Math.round(track.scrollLeft / stepRef.current);
+    setActive(Math.max(0, Math.min(uxTimeline.length - 1, idx)));
   }, []);
 
   const { scrollYProgress } = useScroll({ target: trackRef, offset: ["start 0.9", "end 0.1"] });

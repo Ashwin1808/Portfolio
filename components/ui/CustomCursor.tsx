@@ -7,10 +7,7 @@ type CursorState = "default" | "view" | "explore" | "link";
 
 export function CustomCursor() {
   const reduced = useReducedMotion();
-  const [enabled] = useState(() => {
-    if (typeof window === "undefined") return false;
-    return window.matchMedia("(pointer: fine)").matches;
-  });
+  const [enabled, setEnabled] = useState(false);
   const [state, setState] = useState<CursorState>("default");
   const [visible, setVisible] = useState(false);
   const x = useMotionValue(-100);
@@ -23,7 +20,21 @@ export function CustomCursor() {
   const shownRef = useRef(false);
 
   useEffect(() => {
-    if (reduced || !enabled) return;
+    if (reduced || typeof window === "undefined") return;
+    const evaluate = () => {
+      // only replace the native cursor where the custom one actually renders
+      setEnabled(window.matchMedia("(pointer: fine)").matches && window.innerWidth >= 1024);
+    };
+    evaluate();
+    window.addEventListener("resize", evaluate);
+    return () => window.removeEventListener("resize", evaluate);
+  }, [reduced]);
+
+  useEffect(() => {
+    if (!enabled) {
+      document.body.classList.remove("custom-cursor");
+      return;
+    }
     document.body.classList.add("custom-cursor");
 
     const move = (e: MouseEvent) => {
@@ -63,7 +74,7 @@ export function CustomCursor() {
   return (
     <motion.div
       aria-hidden="true"
-      className="no-print pointer-events-none fixed left-0 top-0 z-[90] hidden lg:block"
+      className="no-print pointer-events-none fixed left-0 top-0 z-[90]"
       style={{ opacity: visible ? 1 : 0 }}
     >
       {/* trailing ring — expands on links, becomes a VIEW badge on projects */}
