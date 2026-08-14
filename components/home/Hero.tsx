@@ -13,6 +13,13 @@ export function Hero() {
 
   return (
     <section id="hero" className="relative overflow-hidden border-b border-line">
+      {/* soft light behind the type — content is the subject */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute left-[-8%] top-[18%] h-[420px] w-[520px] rounded-full opacity-[0.05] blur-[120px]"
+        style={{ background: "radial-gradient(circle, #cdf249 0%, transparent 70%)" }}
+      />
+
       {/* scroll indicator — far left, vertical */}
       <div className="no-print absolute bottom-0 left-8 top-1/2 hidden -translate-y-1/2 flex-col items-center gap-4 xl:flex" aria-hidden="true">
         <span className="font-mono text-[9px] uppercase tracking-[0.3em] text-faint [writing-mode:vertical-rl]">

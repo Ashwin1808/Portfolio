@@ -185,8 +185,13 @@ export function DevOpsSystem() {
   return (
     <section id="devops" className="border-b border-line">
       <div className="wrap py-24 sm:py-32">
-        <div className="grid gap-12 lg:grid-cols-12 lg:items-end">
-          <div className="lg:col-span-7">
+        <div className="relative grid gap-12 lg:grid-cols-12 lg:items-end">
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute -left-[10%] -top-[30%] h-[380px] w-[520px] rounded-full opacity-[0.04] blur-[120px]"
+            style={{ background: "radial-gradient(circle, #cdf249 0%, transparent 70%)" }}
+          />
+          <div className="relative lg:col-span-7">
             <p className="font-mono text-[10.5px] uppercase tracking-[0.24em] text-faint">Currently building</p>
             <h2 className="h-giant mt-6 text-ink">
               DevOps /

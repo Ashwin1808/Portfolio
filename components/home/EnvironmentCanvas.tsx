@@ -26,14 +26,13 @@ const TINTS: Record<Tint, [number, number, number]> = {
   orange: [255, 138, 92],
 };
 
-const TRAVEL = 12; // world units the camera moves across the page
+const TRAVEL = 18; // world units — slower, calmer passage
 
 /**
- * A continuous architectural environment, not a starfield.
- * Thin-line structures — UI fragments, containers, rings, topology
- * fragments, cloud arcs, metric traces — float at different depths.
- * Scrolling moves the camera forward through them; objects approach,
- * grow, pass the viewer and loop back. Warm palette only.
+ * A quiet architectural backdrop. A handful of faint structures float
+ * at different depths; scrolling moves the camera forward through them.
+ * Deliberately sparse and low-contrast — the content is the subject,
+ * the environment is the depth behind it.
  */
 export function EnvironmentCanvas() {
   const reduced = useReducedMotion();
@@ -51,52 +50,52 @@ export function EnvironmentCanvas() {
     let objects: Obj[] = [];
     let mobile = false;
 
-    const pick = (kinds: Kind[], s: [number, number], label?: string) => {
+    const tintFor = () => {
       const r = Math.random();
-      const tint: Tint = r > 0.86 ? "lavender" : r > 0.72 ? "lime" : r > 0.62 ? "orange" : "ivory";
-      return {
-        kind: kinds[Math.floor(Math.random() * kinds.length)],
-        x: 0.04 + Math.random() * 0.92,
-        y: 0.08 + Math.random() * 0.84,
-        z: Math.random() * TRAVEL,
-        s: s[0] + Math.random() * (s[1] - s[0]),
-        drift: Math.random() * Math.PI * 2,
-        tint,
-        label,
-        pts: undefined as [number, number][] | undefined,
-      };
+      if (r > 0.88) return "lavender" as Tint;
+      if (r > 0.76) return "lime" as Tint;
+      if (r > 0.68) return "orange" as Tint;
+      return "ivory" as Tint;
     };
 
     const seed = () => {
       objects = [];
-      for (let i = 0; i < 9; i++) objects.push(pick(["panel"], [90, 190], "ui fragment"));
-      for (let i = 0; i < 7; i++) objects.push(pick(["box"], [44, 84], "container"));
-      for (let i = 0; i < 5; i++) objects.push(pick(["ring"], [60, 120]));
-      for (let i = 0; i < 7; i++) objects.push(pick(["net"], [70, 130], "topology"));
-      for (let i = 0; i < 4; i++) objects.push(pick(["arc"], [110, 200], "region"));
-      for (let i = 0; i < 5; i++) objects.push(pick(["spark"], [70, 110], "metric"));
+      const make = (kinds: Kind[], s: [number, number]) => ({
+        kind: kinds[Math.floor(Math.random() * kinds.length)],
+        x: 0.04 + Math.random() * 0.92,
+        y: 0.1 + Math.random() * 0.8,
+        z: Math.random() * TRAVEL,
+        s: s[0] + Math.random() * (s[1] - s[0]),
+        drift: Math.random() * Math.PI * 2,
+        tint: tintFor(),
+        label: undefined as string | undefined,
+        pts: undefined as [number, number][] | undefined,
+      });
+      for (let i = 0; i < 5; i++) objects.push(make(["panel"], [90, 150]));
+      for (let i = 0; i < 4; i++) objects.push(make(["box"], [42, 68]));
+      for (let i = 0; i < 3; i++) objects.push(make(["ring"], [60, 110]));
+      for (let i = 0; i < 3; i++) objects.push(make(["net"], [70, 120]));
+      for (let i = 0; i < 2; i++) objects.push(make(["arc"], [110, 180]));
+      for (let i = 0; i < 2; i++) objects.push(make(["spark"], [70, 100]));
 
       const labels = [
-        "login", "journey", "onboarding", "payments", "renewal",
-        "pod", "worker", "etcd", "ingress", "registry",
-        "peer 01", "api · db", "cache", "queue",
-        "vpc", "region a", "az-2", "slo", "p99", "traces",
-        "deploy", "release", "scaling",
+        "registration", "journey", "onboarding", "payments",
+        "pod", "etcd", "ingress", "registry",
+        "peer 01", "api · db",
+        "vpc", "region a",
+        "slo", "p99",
       ];
       let li = 0;
       for (const o of objects) {
         if (li < labels.length) {
           o.label = labels[li];
           li++;
-        } else {
-          o.label = labels[Math.floor(Math.random() * labels.length)];
         }
       }
 
-      // sparks need points; nets need points
       for (const o of objects) {
         if (o.kind === "spark") {
-          const n = 5 + Math.floor(Math.random() * 4);
+          const n = 5 + Math.floor(Math.random() * 3);
           o.pts = Array.from({ length: n }, (_, i) => [
             (i / (n - 1)) * 1.6 - 0.3,
             0.15 + Math.random() * 0.7,
@@ -110,7 +109,7 @@ export function EnvironmentCanvas() {
         }
       }
 
-      if (mobile) objects = objects.slice(0, Math.floor(objects.length * 0.55));
+      if (mobile) objects = objects.slice(0, 8);
     };
 
     const resize = () => {
@@ -136,52 +135,55 @@ export function EnvironmentCanvas() {
       ctx.fillStyle = `rgba(${r},${g},${b},${alpha})`;
     };
 
+    const scrollProgress = () => {
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      if (max <= 0) return 0;
+      return window.scrollY / max;
+    };
+
     const drawObj = (o: Obj, t: number) => {
-      // travelling camera — objects approach and pass the viewer
-      const camZ = mobile ? scrollProgress() * TRAVEL * 0.7 : scrollProgress() * TRAVEL;
+      const camZ = scrollProgress() * TRAVEL;
       const rel = ((o.z - camZ) % TRAVEL + TRAVEL) % TRAVEL;
       const k = 1 - rel / TRAVEL;
-      if (k <= 0.03 || k >= 0.995) return;
+      if (k <= 0.05 || k >= 0.995) return;
       const k2 = k * k;
-      const scale = 0.3 + k2 * 1.15;
-      const alpha = 0.04 + k * 0.5;
-      const cx = ((o.x + (1 - k) * 0.05) * w + Math.sin(t * 0.00025 + o.drift) * 4);
-      const cy = o.y * h - (1 - k) * h * 0.02;
+      const scale = 0.34 + k2 * 0.7;
+      const alpha = 0.028 + k * 0.26;
+      const cx = (o.x + (1 - k) * 0.03) * w + Math.sin(t * 0.0002 + o.drift) * 3;
+      const cy = o.y * h - (1 - k) * h * 0.015;
 
       ctx.save();
       ctx.translate(cx, cy);
       ctx.scale(scale, scale);
-      ctx.globalAlpha = Math.min(1, alpha);
+      ctx.globalAlpha = Math.min(0.5, alpha);
       ctx.lineWidth = 1;
 
-      const s = o.s * Math.min(1.4, w / 1100 + 0.55);
+      const s = o.s * Math.min(1.25, w / 1100 + 0.55);
 
       if (o.kind === "panel") {
-        stroke(o.tint, 0.75, 1);
+        stroke(o.tint, 0.75);
         const pw = s * 1.25;
         const ph = s * 0.62;
         ctx.beginPath();
         ctx.roundRect(-pw / 2, -ph / 2, pw, ph, 5);
         ctx.stroke();
-        fill(o.tint, 0.025);
+        fill(o.tint, 0.03);
         ctx.fill();
-        const lines = 3 + Math.floor(Math.random() * 2);
         stroke(o.tint, 0.35);
-        for (let i = 0; i < lines; i++) {
-          const ly = -ph / 2 + 10 + i * 9;
+        for (let i = 0; i < 3; i++) {
+          const ly = -ph / 2 + 11 + i * 9;
           const lw = pw * 0.55 - i * 5;
           ctx.beginPath();
-          ctx.moveTo(-pw / 2 + 9 + (i % 2) * 4, ly);
-          ctx.lineTo(-pw / 2 + 9 + lw, ly);
+          ctx.moveTo(-pw / 2 + 10 + (i % 2) * 4, ly);
+          ctx.lineTo(-pw / 2 + 10 + lw, ly);
           ctx.stroke();
         }
-        stroke(o.tint, 0.28);
-
+        stroke(o.tint, 0.3);
         ctx.beginPath();
-        ctx.arc(pw / 2 - 8, -ph / 2 + 10, 2.5, 0, Math.PI * 2);
+        ctx.arc(pw / 2 - 9, -ph / 2 + 11, 2.2, 0, Math.PI * 2);
         ctx.stroke();
       } else if (o.kind === "box") {
-        stroke(o.tint, 0.7, 1);
+        stroke(o.tint, 0.7);
         const b = s;
         const off = b * 0.32;
         ctx.beginPath();
@@ -194,20 +196,20 @@ export function EnvironmentCanvas() {
         ctx.lineTo(-b / 2 + off, b / 2 - off);
         ctx.lineTo(b / 2 + off, b / 2 - off);
         ctx.stroke();
-        stroke(o.tint, 0.4);
+        stroke(o.tint, 0.35);
         ctx.beginPath();
         ctx.arc(0, 0, b * 0.14, 0, Math.PI * 2);
         ctx.stroke();
       } else if (o.kind === "ring") {
-        stroke(o.tint, 0.6, 1);
+        stroke(o.tint, 0.6);
         ctx.beginPath();
         ctx.arc(0, 0, s / 2, 0, Math.PI * 2);
         ctx.stroke();
-        stroke(o.tint, 0.35);
+        stroke(o.tint, 0.32);
         ctx.beginPath();
         ctx.arc(0, 0, s / 3.1, 0, Math.PI * 2);
         ctx.stroke();
-        stroke(o.tint, 0.22);
+        ctx.beginPath();
         ctx.moveTo(-s / 2, 0);
         ctx.lineTo(s / 2, 0);
         ctx.moveTo(0, -s / 2);
@@ -228,11 +230,11 @@ export function EnvironmentCanvas() {
         fill(o.tint, 0.9);
         for (const [px, py] of pts) {
           ctx.beginPath();
-          ctx.arc(px, py, 2, 0, Math.PI * 2);
+          ctx.arc(px, py, 1.8, 0, Math.PI * 2);
           ctx.fill();
         }
       } else if (o.kind === "arc") {
-        stroke(o.tint, 0.55, 1);
+        stroke(o.tint, 0.5);
         for (let i = 0; i < 3; i++) {
           ctx.beginPath();
           ctx.arc(0, 0, s * (0.32 + i * 0.16), 0.12 * Math.PI, 0.88 * Math.PI);
@@ -240,18 +242,18 @@ export function EnvironmentCanvas() {
         }
         fill(o.tint, 0.8);
         ctx.beginPath();
-        ctx.arc(Math.cos(0.5 * Math.PI) * s * 0.8, Math.sin(0.5 * Math.PI) * s * 0.8, 2, 0, Math.PI * 2);
+        ctx.arc(Math.cos(0.5 * Math.PI) * s * 0.8, Math.sin(0.5 * Math.PI) * s * 0.8, 1.8, 0, Math.PI * 2);
         ctx.fill();
       } else if (o.kind === "spark") {
         const pts = o.pts ?? [];
-        stroke(o.tint, 0.5, 1);
-        ctx.beginPath();
+        stroke(o.tint, 0.45);
         const bw = s * 1.5;
         const bh = s * 0.42;
+        ctx.beginPath();
         ctx.moveTo(-bw / 2, 0);
         ctx.lineTo(bw / 2, 0);
         ctx.stroke();
-        stroke(o.tint, 0.8, 1.1);
+        stroke(o.tint, 0.7, 1.1);
         ctx.beginPath();
         pts.forEach(([px], i) => {
           const x = -bw / 2 + ((i + 0.5) / pts.length) * bw;
@@ -260,27 +262,17 @@ export function EnvironmentCanvas() {
           else ctx.lineTo(x, y);
         });
         ctx.stroke();
-        fill(o.tint, 1);
-        const last = pts[pts.length - 1];
-        ctx.beginPath();
-        ctx.arc(-bw / 2 + ((pts.length - 0.5) / pts.length) * bw, -bh * (last[1] as number) + bh * 0.4, 2, 0, Math.PI * 2);
-        ctx.fill();
       }
 
-      if (o.label && scale > 0.72) {
-        stroke(o.tint, 0.55, 1);
+      // labels appear only for the closest few structures, faint
+      if (o.label && scale > 0.92) {
+        stroke(o.tint, 0.5);
         ctx.font = "500 8px 'JetBrains Mono', monospace";
         ctx.textBaseline = "top";
         ctx.fillText(o.label, s * 0.62 + 6, -s * 0.3);
       }
 
       ctx.restore();
-    };
-
-    const scrollProgress = () => {
-      const max = document.documentElement.scrollHeight - window.innerHeight;
-      if (max <= 0) return 0;
-      return window.scrollY / max;
     };
 
     const draw = (t: number) => {
@@ -312,26 +304,32 @@ export function EnvironmentCanvas() {
     >
       <canvas ref={canvasRef} className="absolute inset-0" />
 
-      {/* warm nebula washes — no blue */}
+      {/* warm nebula washes — barely there */}
       <div
-        className="absolute -top-[25%] right-[-12%] h-[75vh] w-[55vw] rounded-full blur-[130px]"
-        style={{ background: "radial-gradient(circle, rgba(179,168,230,0.13) 0%, transparent 70%)" }}
+        className="absolute -top-[25%] right-[-12%] h-[75vh] w-[55vw] rounded-full blur-[140px]"
+        style={{ background: "radial-gradient(circle, rgba(179,168,230,0.09) 0%, transparent 70%)" }}
       />
       <div
-        className="absolute bottom-[-30%] left-[-16%] h-[65vh] w-[50vw] rounded-full blur-[120px]"
-        style={{ background: "radial-gradient(circle, rgba(255,138,92,0.09) 0%, transparent 70%)" }}
-      />
-      <div
-        className="absolute left-[35%] top-[42%] h-[40vh] w-[34vw] rounded-full blur-[110px]"
-        style={{ background: "radial-gradient(circle, rgba(205,242,73,0.04) 0%, transparent 70%)" }}
+        className="absolute bottom-[-30%] left-[-16%] h-[65vh] w-[50vw] rounded-full blur-[130px]"
+        style={{ background: "radial-gradient(circle, rgba(255,138,92,0.07) 0%, transparent 70%)" }}
       />
 
-      {/* vignette — the environment darkens at the edges */}
+      {/* dark bands at top and bottom — content zones stay readable */}
+      <div
+        className="absolute inset-x-0 top-0 h-40"
+        style={{ background: "linear-gradient(to bottom, rgba(10,9,8,0.85), transparent)" }}
+      />
+      <div
+        className="absolute inset-x-0 bottom-0 h-40"
+        style={{ background: "linear-gradient(to top, rgba(10,9,8,0.85), transparent)" }}
+      />
+
+      {/* vignette */}
       <div
         className="absolute inset-0"
         style={{
           background:
-            "radial-gradient(ellipse 120% 90% at 50% 40%, transparent 45%, rgba(10,9,8,0.5) 100%)",
+            "radial-gradient(ellipse 120% 90% at 50% 40%, transparent 55%, rgba(10,9,8,0.5) 100%)",
         }}
       />
     </div>

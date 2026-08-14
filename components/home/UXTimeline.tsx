@@ -54,10 +54,15 @@ export function UXTimeline() {
 
   return (
     <section id="work" className="overflow-hidden border-b border-line">
-      <div className="wrap pt-24 sm:pt-32">
+      <div className="wrap relative pt-24 sm:pt-32">
         {/* heading — asymmetric: title far left, note low right */}
-        <div className="grid gap-10 lg:grid-cols-12 lg:items-end">
-          <h2 className="h-giant text-ink lg:col-span-7">
+        <div className="relative grid gap-10 lg:grid-cols-12 lg:items-end">
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute -left-[10%] -top-[30%] h-[380px] w-[520px] rounded-full opacity-[0.05] blur-[120px]"
+            style={{ background: "radial-gradient(circle, #b3a8e6 0%, transparent 70%)" }}
+          />
+          <h2 className="h-giant relative text-ink lg:col-span-7">
             What I&apos;ve
             <br />
             <em className="italic text-violet">designed.</em>
