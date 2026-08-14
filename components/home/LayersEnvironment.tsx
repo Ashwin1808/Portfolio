@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   motion,
   useMotionValue,
@@ -17,11 +17,54 @@ const FOG_RANGE = 980; // a plane is visible when the camera is within this rang
 
 const camZAt = (p: number) => CAM_START - CAM_TRAVEL * p;
 
+// ── the deep-space field ────────────────────────────────────────
+// Deterministic (seeded) starfield so server and client render identically.
+function mulberry32(seed: number) {
+  return () => {
+    seed |= 0;
+    seed = (seed + 0x6d2b79f5) | 0;
+    let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
+interface Star {
+  left: number;
+  top: number;
+  size: number;
+  op: number;
+  twinkle?: boolean;
+  dur: number;
+  delay: number;
+}
+
+function makeStars(count: number, seed: number, bright: number): Star[] {
+  const rnd = mulberry32(seed);
+  return Array.from({ length: count }, (_, i) => {
+    const twinkle = i < bright;
+    return {
+      left: rnd() * 100,
+      top: rnd() * 100,
+      size: twinkle ? 1.5 + rnd() : 1 + rnd(),
+      op: twinkle ? 0.35 + rnd() * 0.4 : 0.12 + rnd() * 0.3,
+      twinkle,
+      dur: 4 + rnd() * 7,
+      delay: rnd() * 6,
+    };
+  });
+}
+
+const NEAR_STARS = makeStars(150, 1337, 12);
+const FAR_STARS = makeStars(70, 7331, 0);
+
 /**
  * CLOUDLINE — the fixed environment behind the page. A stack of thin
  * translucent planes at different depths: HUMAN at the top, OBSERVABILITY
  * at the bottom. The camera descends through them as the visitor scrolls.
- * Cursor movement tilts the camera, very subtly.
+ * Cursor movement tilts the camera, very subtly. The whole system floats
+ * in deep space: a fine starfield with parallax, drifting nebula glows
+ * and a heavy fog horizon.
  */
 export function LayersEnvironment() {
   const reduced = useReducedMotion();
@@ -63,12 +106,93 @@ export function LayersEnvironment() {
 
   const stop = reduced || paused;
 
+  // star parallax — far field drifts less than the near field
+  const starsNearY = useTransform(progress, (p) => (reduced ? 0 : p * 90));
+  const starsFarY = useTransform(progress, (p) => (reduced ? 0 : p * 32));
+
   return (
     <div
       aria-hidden="true"
-      className="pointer-events-none fixed inset-0 z-0 overflow-hidden"
+      className={`pointer-events-none fixed inset-0 z-0 overflow-hidden${stop ? " env-paused" : ""}`}
       style={{ perspective: 1400 }}
     >
+      {/* ── deep space: nebula glows ── */}
+      <div className="absolute inset-0">
+        <div
+          className="absolute left-[55%] top-[-18%] h-[62vh] w-[62vh] rounded-full blur-[110px]"
+          style={{
+            background: "radial-gradient(circle, rgba(182,171,224,0.10) 0%, transparent 65%)",
+            animation: "drift-a 46s ease-in-out infinite alternate",
+          }}
+        />
+        <div
+          className="absolute left-[-14%] top-[46%] h-[58vh] w-[58vh] rounded-full blur-[120px]"
+          style={{
+            background: "radial-gradient(circle, rgba(217,164,68,0.07) 0%, transparent 65%)",
+            animation: "drift-b 58s ease-in-out infinite alternate",
+          }}
+        />
+        <div
+          className="absolute left-[30%] top-[78%] h-[50vh] w-[50vh] rounded-full blur-[130px]"
+          style={{
+            background: "radial-gradient(circle, rgba(205,242,73,0.05) 0%, transparent 65%)",
+            animation: "drift-a 64s ease-in-out infinite alternate-reverse",
+          }}
+        />
+      </div>
+
+      {/* ── deep space: the starfield ── */}
+      <motion.div
+        className="absolute inset-0"
+        style={{
+          y: starsFarY,
+          maskImage: "linear-gradient(to bottom, black 0%, rgba(0,0,0,0.6) 60%, transparent 100%)",
+          WebkitMaskImage:
+            "linear-gradient(to bottom, black 0%, rgba(0,0,0,0.6) 60%, transparent 100%)",
+        }}
+      >
+        {FAR_STARS.map((s, i) => (
+          <span
+            key={i}
+            className="absolute rounded-full bg-white"
+            style={{
+              left: `${s.left}%`,
+              top: `${s.top}%`,
+              width: s.size,
+              height: s.size,
+              opacity: s.op,
+            }}
+          />
+        ))}
+      </motion.div>
+      <motion.div
+        className="absolute inset-0"
+        style={{
+          y: starsNearY,
+          x: reduced ? 0 : mx,
+          maskImage: "linear-gradient(to bottom, black 0%, rgba(0,0,0,0.55) 62%, transparent 100%)",
+          WebkitMaskImage:
+            "linear-gradient(to bottom, black 0%, rgba(0,0,0,0.55) 62%, transparent 100%)",
+        }}
+      >
+        {NEAR_STARS.map((s, i) => (
+          <span
+            key={i}
+            className="absolute rounded-full bg-white"
+            style={{
+              left: `${s.left}%`,
+              top: `${s.top}%`,
+              width: s.size,
+              height: s.size,
+              opacity: s.op,
+              boxShadow: s.twinkle ? "0 0 4px rgba(255,255,255,0.7)" : undefined,
+              animation: s.twinkle ? `star-twinkle ${s.dur}s ease-in-out ${s.delay}s infinite` : undefined,
+            }}
+          />
+        ))}
+      </motion.div>
+
+      {/* ── the layered system, descending ── */}
       <motion.div
         className="absolute left-0 top-0 h-full w-full"
         style={{
@@ -86,22 +210,23 @@ export function LayersEnvironment() {
             label={layer.name}
             tint={layer.tint}
             index={i}
-            stop={stop}
             progress={progress}
             reduced={reduced === true}
           />
         ))}
       </motion.div>
 
-      {/* cloud fog at the bottom of the stack */}
+      {/* the fog horizon — the deep-space fog line where the system fades */}
       <div
         className="absolute inset-x-0 bottom-0 h-[45vh]"
-        style={{ background: "linear-gradient(to top, rgba(13,13,12,0.95) 8%, rgba(13,13,12,0.5) 45%, transparent 100%)" }}
+        style={{
+          background:
+            "linear-gradient(to top, rgba(13,13,12,0.97) 6%, rgba(13,13,12,0.55) 42%, rgba(13,13,12,0.08) 75%, transparent 100%)",
+        }}
       />
-      {/* gentle top haze */}
       <div
-        className="absolute inset-x-0 top-0 h-[20vh]"
-        style={{ background: "linear-gradient(to bottom, rgba(13,13,12,0.7) 0%, transparent 100%)" }}
+        className="absolute inset-x-0 top-0 h-[18vh]"
+        style={{ background: "linear-gradient(to bottom, rgba(13,13,12,0.75) 0%, transparent 100%)" }}
       />
       {/* the system fades at the end */}
       <motion.div
@@ -120,24 +245,15 @@ function LayerPlane({
   label,
   tint,
   index,
-  stop,
   progress,
   reduced,
 }: {
   label: string;
   tint: string;
   index: number;
-  stop: boolean;
   progress: ReturnType<typeof useScroll>["scrollYProgress"];
   reduced: boolean;
 }) {
-  const dotRef = useRef<HTMLSpanElement | null>(null);
-  useEffect(() => {
-    if (dotRef.current) {
-      dotRef.current.style.animationPlayState = stop ? "paused" : "running";
-    }
-  }, [stop]);
-
   const depth = systemLayers[index].depth;
   const opacity = useTransform(progress, (p) => {
     if (reduced) return 0.9;
@@ -184,13 +300,11 @@ function LayerPlane({
       {/* data line with travelling signal */}
       <div className="absolute inset-x-8 bottom-[26%] h-px bg-white/[0.08]">
         <span
-          ref={dotRef}
           className="absolute -top-[2px] h-[3px] w-[3px] rounded-full bg-white/40"
           style={{
             left: "2%",
             animation: "signal-travel 7s linear infinite",
             animationDelay: `${index * 0.7}s`,
-            animationPlayState: stop ? "paused" : "running",
           }}
         />
       </div>

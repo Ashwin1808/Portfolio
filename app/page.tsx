@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { MotionConfig } from "framer-motion";
 import { site } from "@/data/site";
 import { LayersEnvironment } from "@/components/home/LayersEnvironment";
+import { DepthReadout } from "@/components/home/DepthReadout";
 import { Hero } from "@/components/home/Hero";
 import { DesignRail } from "@/components/home/DesignRail";
 import { TransitionSection } from "@/components/home/TransitionSection";
@@ -19,6 +20,7 @@ export default function HomePage() {
     <MotionConfig reducedMotion="user">
       <main className="relative">
         <LayersEnvironment />
+        <DepthReadout />
         <div className="relative z-10">
           <Hero />
           <DesignRail />

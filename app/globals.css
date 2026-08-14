@@ -219,6 +219,39 @@
     }
   }
 
+  @keyframes star-twinkle {
+    0%,
+    100% {
+      opacity: 0.15;
+    }
+    50% {
+      opacity: 0.85;
+    }
+  }
+
+  @keyframes drift-a {
+    from {
+      transform: translate3d(-4%, -3%, 0) scale(1);
+    }
+    to {
+      transform: translate3d(5%, 4%, 0) scale(1.12);
+    }
+  }
+
+  @keyframes drift-b {
+    from {
+      transform: translate3d(3%, 2%, 0) scale(1.08);
+    }
+    to {
+      transform: translate3d(-4%, -4%, 0) scale(1);
+    }
+  }
+
+  /* pause every animation inside the environment (tab hidden / reduced motion) */
+  .env-paused * {
+    animation-play-state: paused !important;
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .signal-dot {
       animation: none !important;

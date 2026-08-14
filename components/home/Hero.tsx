@@ -1,22 +1,23 @@
 "use client";
 
 import { motion, useReducedMotion } from "framer-motion";
+import { HeroCrossSection } from "@/components/home/HeroCrossSection";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
 const rise = {
-  hidden: { opacity: 0, y: 26 },
-  show: { opacity: 1, y: 0 },
+  hidden: { opacity: 0, y: 26, filter: "blur(8px)" },
+  show: { opacity: 1, y: 0, filter: "blur(0px)" },
 };
 
 export function Hero() {
   const reduced = useReducedMotion();
   return (
-    <section id="hero" className="relative flex min-h-[88svh] items-center overflow-hidden">
-      <div className="wrap w-full pb-16">
-        <div className="grid gap-12 lg:grid-cols-12">
+    <section id="hero" className="relative flex min-h-[92svh] items-center overflow-hidden">
+      <div className="wrap w-full pb-16 pt-10">
+        <div className="grid items-center gap-14 lg:grid-cols-12">
           <motion.div
-            className="relative lg:col-span-8"
+            className="relative lg:col-span-6 xl:col-span-6"
             initial={reduced ? "show" : "hidden"}
             animate="show"
             transition={{ staggerChildren: 0.09, delayChildren: 0.15 }}
@@ -83,15 +84,10 @@ export function Hero() {
             </motion.div>
           </motion.div>
 
-          <motion.p
-            initial={reduced ? { opacity: 1 } : { opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1.1, duration: 1 }}
-            className="hidden self-end pb-2 font-mono text-[9px] uppercase tracking-[0.3em] text-ink/30 lg:col-span-4 lg:block lg:text-right"
-            aria-hidden="true"
-          >
-            Scroll to descend through the system
-          </motion.p>
+          {/* the cross-section — the hero object */}
+          <div className="lg:col-span-6">
+            <HeroCrossSection />
+          </div>
         </div>
       </div>
 
@@ -99,7 +95,7 @@ export function Hero() {
       <motion.div
         initial={reduced ? { opacity: 1 } : { opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 1.4, duration: 1 }}
+        transition={{ delay: 1.3, duration: 1 }}
         className="absolute bottom-6 left-0 right-0 flex justify-center"
         aria-hidden="true"
       >
