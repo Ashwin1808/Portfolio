@@ -49,6 +49,13 @@ export function FinalStatement() {
               LinkedIn
               <span className="transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5">↗</span>
             </a>
+            <a
+              href={`mailto:${site.email}`}
+              className="group inline-flex items-center gap-2.5 rounded-md border border-line-strong px-5 py-3 font-mono text-[11px] uppercase tracking-[0.2em] text-white transition-colors hover:border-accent hover:text-accent"
+            >
+              Email
+              <span className="transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5">↗</span>
+            </a>
           </div>
         </motion.div>
       </div>

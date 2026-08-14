@@ -1,6 +1,80 @@
 // ─────────────────────────────────────────────────────────────
-// JOURNEY — hero signature visual: UX → DevOps, stage by stage.
+// LANDING — the four-part homepage: hero, experience, now, end.
 // ─────────────────────────────────────────────────────────────
+
+export interface Node {
+  id: string;
+  name: string;
+  detail: string;
+  angle: number; // degrees, radial layouts
+}
+
+// Hero signature: one connected system, USER → OBSERVABILITY.
+export const heroNodes: Node[] = [
+  { id: "user", name: "User", detail: "Where every journey starts", angle: 0 },
+  { id: "design", name: "Design", detail: "Interfaces, flows, intent", angle: 0 },
+  { id: "code", name: "Code", detail: "Translating design into logic", angle: 0 },
+  { id: "container", name: "Container", detail: "Reproducible application environments", angle: 0 },
+  { id: "kubernetes", name: "Kubernetes", detail: "Orchestrating application workloads", angle: 0 },
+  { id: "cloud", name: "Cloud", detail: "Infrastructure as code on AWS", angle: 0 },
+  { id: "observability", name: "Observability", detail: "Knowing the system is healthy", angle: 0 },
+];
+
+// Experience constellation — what I've designed, ten seconds.
+export const uxDomains: Node[] = [
+  { id: "visual-ivr", name: "Visual IVR", detail: "Conversational UX", angle: 0 },
+  { id: "fintech", name: "Fintech", detail: "Credit cards · UPI · Loans", angle: 60 },
+  { id: "insurance", name: "Insurance", detail: "Renewal · Claims · Policy journeys", angle: 120 },
+  { id: "enterprise", name: "Enterprise", detail: "Dashboards · Campaigns · Operations", angle: 180 },
+  { id: "ai", name: "AI", detail: "Agent Assist · GenAI · Smart Suggestions", angle: 240 },
+  { id: "ccaas", name: "CCaaS", detail: "HALO Cloud · Conversational products", angle: 300 },
+];
+
+// DevOps constellation — what I'm building now.
+export const stackNodes: Node[] = [
+  { id: "linux", name: "Linux", detail: "The foundation — files, processes, permissions.", angle: -112 },
+  { id: "docker", name: "Docker", detail: "Reproducible application environments.", angle: -67 },
+  { id: "kubernetes", name: "Kubernetes", detail: "Container orchestration.", angle: -22 },
+  { id: "terraform", name: "Terraform", detail: "Infrastructure as code.", angle: 22 },
+  { id: "aws", name: "AWS", detail: "Cloud: compute, network, identity.", angle: 67 },
+  { id: "ci-cd", name: "CI / CD", detail: "Automated builds and delivery.", angle: 112 },
+  { id: "prometheus", name: "Prometheus", detail: "System and application metrics.", angle: 157 },
+  { id: "grafana", name: "Grafana", detail: "Dashboards that make metrics visible.", angle: -157 },
+];
+
+// RideMatch delivery pipeline — one thin line, one moving signal.
+export interface PipelineStage {
+  node: string;
+  tool: string;
+  detail: string;
+  id: "code" | "github" | "cicd" | "docker" | "kubernetes" | "aws" | "monitoring";
+}
+
+export const rideMatchPipeline: PipelineStage[] = [
+  { node: "Code", tool: "VS Code", detail: "Where everything starts — versioned, reviewed.", id: "code" },
+  { node: "GitHub", tool: "Version Control", detail: "The source of truth for code and config.", id: "github" },
+  { node: "CI / CD", tool: "Actions", detail: "Automated builds and tests, every change.", id: "cicd" },
+  { node: "Docker", tool: "Containerize", detail: "Reproducible application environments.", id: "docker" },
+  { node: "Kubernetes", tool: "Orchestrate", detail: "Container orchestration.", id: "kubernetes" },
+  { node: "AWS", tool: "Infrastructure", detail: "Cloud infrastructure as code.", id: "aws" },
+  { node: "Monitoring", tool: "Prom / Grafana", detail: "System and application metrics.", id: "monitoring" },
+];
+
+// Transition strip — tiny, typographic.
+export const transitionStrip = [
+  { id: "ui", label: "UI" },
+  { id: "code", label: "Code" },
+  { id: "container", label: "Container" },
+  { id: "system", label: "System" },
+];
+
+// The mindset — UX on the left, DevOps on the right, same shape.
+export const mindset = [
+  { ux: "Understand the user", devops: "Understand the system" },
+  { ux: "Design the journey", devops: "Automate the workflow" },
+  { ux: "Handle edge cases", devops: "Handle failure" },
+  { ux: "Simplify complexity", devops: "Simplify operations" },
+];
 
 export interface JourneyStage {
   index: string;
@@ -17,133 +91,4 @@ export const journeyStages: JourneyStage[] = [
   { index: "05", label: "Kubernetes", sub: "Managing scale and failure", id: "kubernetes" },
   { index: "06", label: "Cloud", sub: "AWS infrastructure as code", id: "cloud" },
   { index: "07", label: "Observability", sub: "Knowing it is healthy", id: "observability" },
-];
-
-// ─────────────────────────────────────────────────────────────
-// TRANSITION — scroll 02: interfaces → infrastructure.
-// The same object transforms DESIGN → CODE → CONTAINER →
-// ORCHESTRATION → CLOUD → OBSERVABILITY as you scroll.
-// ─────────────────────────────────────────────────────────────
-
-export interface TransitionStage {
-  id: string;
-  label: string;
-  note: string;
-  side: "ux" | "devops";
-}
-
-export const transitionStages: TransitionStage[] = [
-  { id: "design", label: "Design", note: "Interfaces, flows, intent", side: "ux" },
-  { id: "code", label: "Code", note: "Translating design to logic", side: "devops" },
-  { id: "container", label: "Container", note: "Packaging what runs", side: "devops" },
-  { id: "orchestration", label: "Orchestration", note: "Scale, scheduling, resilience", side: "devops" },
-  { id: "cloud", label: "Cloud", note: "Infrastructure as code", side: "devops" },
-  { id: "observability", label: "Observability", note: "Knowing it is healthy", side: "devops" },
-];
-
-// ─────────────────────────────────────────────────────────────
-// STACK — scroll 05: the engineering stack as a system.
-// ─────────────────────────────────────────────────────────────
-
-export interface StackNode {
-  id: string;
-  name: string;
-  detail: string;
-  angle: number; // degrees on the radial layout
-}
-
-export const stackNodes: StackNode[] = [
-  { id: "linux", name: "Linux", detail: "The foundation — files, processes, permissions.", angle: -112 },
-  { id: "docker", name: "Docker", detail: "Reproducible environments for every service.", angle: -67 },
-  { id: "kubernetes", name: "Kubernetes", detail: "Orchestration: scale, scheduling, self-healing.", angle: -22 },
-  { id: "terraform", name: "Terraform", detail: "Infrastructure as code — declarative, reviewable.", angle: 22 },
-  { id: "aws", name: "AWS", detail: "Cloud: compute, network, identity, storage.", angle: 67 },
-  { id: "ci-cd", name: "CI / CD", detail: "Automated builds and delivery, every change.", angle: 112 },
-  { id: "prometheus", name: "Prometheus", detail: "Metrics that tell you what is happening.", angle: 157 },
-  { id: "grafana", name: "Grafana", detail: "Dashboards that make metrics visible.", angle: -157 },
-];
-
-// ─────────────────────────────────────────────────────────────
-// RIDEMATCH — scroll 06: architecture + delivery pipeline.
-// ─────────────────────────────────────────────────────────────
-
-export interface ArchNode {
-  id: string;
-  label: string;
-  detail: string;
-}
-
-export const rideMatchArchitecture: ArchNode[] = [
-  { id: "user", label: "User", detail: "The rider and the driver — where the journey starts." },
-  { id: "frontend", label: "Frontend", detail: "Interface — the thing I used to design." },
-  { id: "api", label: "API", detail: "Business logic — rides, matching, pricing." },
-  { id: "database", label: "Database", detail: "The system of record for every request." },
-  { id: "docker", label: "Docker", detail: "Each service packaged as a container." },
-  { id: "kubernetes", label: "Kubernetes", detail: "Runs the cluster — scaling and recovery." },
-  { id: "aws", label: "AWS", detail: "Cloud: compute, network, identity." },
-  { id: "monitoring", label: "Monitoring", detail: "Prometheus + Grafana — health, metrics, alerts." },
-];
-
-export interface PipelineStage {
-  node: string;
-  tool: string;
-  detail: string;
-  id: "code" | "github" | "cicd" | "docker" | "registry" | "kubernetes" | "aws" | "prometheus" | "grafana";
-}
-
-export const rideMatchPipeline: PipelineStage[] = [
-  { node: "Code", tool: "VS Code", detail: "Where everything starts — versioned, reviewed, reproducible.", id: "code" },
-  { node: "GitHub", tool: "Version Control", detail: "The source of truth for code and configuration.", id: "github" },
-  { node: "CI / CD", tool: "GitHub Actions", detail: "Automated builds, tests and delivery — no laptop dependency.", id: "cicd" },
-  { node: "Docker", tool: "Containerize", detail: "Packaging the application into reproducible containers.", id: "docker" },
-  { node: "Registry", tool: "Image Registry", detail: "Where built images are stored and versioned.", id: "registry" },
-  { node: "Kubernetes", tool: "Orchestrate", detail: "Orchestrating workloads and managing deployments.", id: "kubernetes" },
-  { node: "AWS", tool: "Infrastructure", detail: "Cloud infrastructure — network, compute and identity.", id: "aws" },
-  { node: "Prometheus", tool: "Metrics", detail: "Collecting metrics from the running system.", id: "prometheus" },
-  { node: "Grafana", tool: "Visualize", detail: "Dashboards, alerts and insight after deploy.", id: "grafana" },
-];
-
-// ─────────────────────────────────────────────────────────────
-// LEARNING — scroll 07: short statements, no cards.
-// ─────────────────────────────────────────────────────────────
-
-export interface LearningItem {
-  id: string;
-  term: string;
-  line: string;
-}
-
-export const learningItems: LearningItem[] = [
-  { id: "linux", term: "Linux", line: "Mastering the shell, systemd, permissions and process management — the operating system as the first interface." },
-  { id: "docker", term: "Docker", line: "Packaging applications so they run identically on a laptop and in a cluster." },
-  { id: "kubernetes", term: "Kubernetes", line: "Orchestration at scale — deployments, services, probes, self-healing." },
-  { id: "terraform", term: "Terraform", line: "Describing infrastructure as reviewable, versioned code." },
-  { id: "cicd", term: "CI / CD", line: "Automating the path from commit to running container." },
-  { id: "monitoring", term: "Monitoring", line: "Prometheus and Grafana — making system health visible." },
-];
-
-// ─────────────────────────────────────────────────────────────
-// FAILURE — scroll 08: what UX taught me about systems.
-// ─────────────────────────────────────────────────────────────
-
-export interface FailureState {
-  id: string;
-  label: string;
-}
-
-export const uxFailureStates: FailureState[] = [
-  { id: "loading", label: "Loading" },
-  { id: "empty", label: "Empty" },
-  { id: "error", label: "Error" },
-  { id: "retry", label: "Retry" },
-  { id: "success", label: "Success" },
-];
-
-export const devopsFailureStates: FailureState[] = [
-  { id: "failure", label: "Failure" },
-  { id: "health", label: "Health" },
-  { id: "logs", label: "Logs" },
-  { id: "alerts", label: "Alerts" },
-  { id: "recovery", label: "Recovery" },
-  { id: "rollback", label: "Rollback" },
 ];

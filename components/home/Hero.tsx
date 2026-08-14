@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import { motion, useScroll, useTransform, useReducedMotion } from "framer-motion";
-import { SystemVisual } from "@/components/home/SystemVisual";
+import { HeroSystem } from "@/components/home/HeroSystem";
+import { site } from "@/data/site";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
@@ -62,38 +63,40 @@ export function Hero() {
             </h1>
 
             <p className="mt-8 max-w-[420px] text-[14px] leading-[1.8] text-muted">
-              I&apos;m Ashwin K — a UX/UI Designer at Ubona Technologies, designing complex
-              experiences across fintech, insurance, conversational interfaces and enterprise
-              products. Now I&apos;m extending that thinking into frontend, cloud and DevOps
-              engineering.
+              UX/UI Designer at Ubona Technologies, designing complex digital experiences
+              across fintech, insurance, Visual IVR, enterprise products and AI-assisted
+              workflows. Now extending that systems-thinking mindset into software, cloud
+              and DevOps.
             </p>
 
             <div className="mt-10 flex flex-wrap items-center gap-4">
               <Link
-                href="/engineering"
+                href="/resume"
                 className="group inline-flex items-center gap-2.5 rounded-md border border-accent bg-accent/10 px-5 py-3 font-mono text-[11px] uppercase tracking-[0.2em] text-accent transition-colors hover:bg-accent hover:text-paper"
               >
-                Explore engineering
-                <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
-              </Link>
-              <Link
-                href="/resume"
-                className="group inline-flex items-center gap-2.5 rounded-md border border-line-strong px-5 py-3 font-mono text-[11px] uppercase tracking-[0.2em] text-ink transition-colors hover:border-accent hover:text-accent"
-              >
-                Resume
+                View resume
                 <span className="transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5">↗</span>
               </Link>
+              <a
+                href={site.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group inline-flex items-center gap-2.5 rounded-md border border-line-strong px-5 py-3 font-mono text-[11px] uppercase tracking-[0.2em] text-ink transition-colors hover:border-accent hover:text-accent"
+              >
+                GitHub
+                <span className="transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5">↗</span>
+              </a>
             </div>
           </motion.div>
 
-          {/* RIGHT — signature system visual */}
+          {/* RIGHT — signature system */}
           <motion.div
             initial={reduced ? { opacity: 1 } : { opacity: 0, x: 34 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 1, ease, delay: 0.35 }}
             className="mx-auto lg:mx-0 lg:justify-self-end"
           >
-            <SystemVisual />
+            <HeroSystem />
           </motion.div>
         </div>
       </motion.div>
