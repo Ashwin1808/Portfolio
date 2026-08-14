@@ -19,9 +19,9 @@ export const site = {
 
   // ── Links (REPLACE these) ──────────────────────────────────
   email: "hello@your-email.com", // ← replace
-  github: "https://github.com/your-github-username", // ← replace
-  githubUsername: "your-github-username", // ← replace
-  linkedin: "https://www.linkedin.com/in/your-linkedin-handle", // ← replace
+  github: "https://github.com/Ashwin1808", // confirmed via git remote
+  githubUsername: "Ashwin1808", // confirmed via git remote
+  linkedin: "https://www.linkedin.com/in/ashwin-k-5b1600212/", // confirmed
   metadataBase: "https://your-domain.dev", // ← replace (no trailing slash)
 
   // Resume: drop a PDF at public/ashwin-resume.pdf and set the path
