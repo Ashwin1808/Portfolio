@@ -3,12 +3,12 @@ import { site } from "@/data/site";
 
 export function Footer() {
   return (
-    <footer className="no-print border-t-2 border-ink/15 bg-paper">
+    <footer className="no-print border-t border-line">
       <div className="wrap py-14">
         <div className="flex flex-col gap-10 lg:flex-row lg:items-start lg:justify-between">
           <div>
-            <p className="flex items-center gap-2 font-mono text-[14px] font-bold tracking-[0.06em] text-ink">
-              <span className="h-2 w-2 rounded-full bg-accent" aria-hidden="true" />
+            <p className="flex items-center gap-2 font-mono text-[14px] font-semibold tracking-[0.06em] text-ink">
+              <span className="h-1.5 w-1.5 rounded-full bg-accent" aria-hidden="true" />
               ASHWIN K
             </p>
             <p className="mt-2 text-[13px] text-muted">

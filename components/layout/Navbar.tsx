@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { motion, useScroll, useSpring } from "framer-motion";
+import { motion, useMotionValueEvent, useScroll, useSpring } from "framer-motion";
 import { site } from "@/data/site";
 import { cn } from "@/lib/utils";
 
@@ -31,11 +31,11 @@ function NavLink({
   const content = (
     <>
       {label}
-      {external && <sup className="text-[8px] text-accent">↗</sup>}
+      {external && <sup className="text-[9px] text-accent">↗</sup>}
       <span
         aria-hidden="true"
         className={cn(
-          "absolute -bottom-[5px] left-0 h-[2px] w-full bg-accent transition-transform duration-300 ease-out",
+          "absolute -bottom-[3px] left-0 h-px w-full origin-left bg-accent transition-transform duration-300 ease-out",
           active ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100",
         )}
       />
@@ -58,10 +58,12 @@ function NavLink({
 export function Navbar() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const [section, setSection] = useState<string | null>(null);
 
   const { scrollYProgress } = useScroll();
   const progress = useSpring(scrollYProgress, { stiffness: 140, damping: 30, mass: 0.4 });
+  useMotionValueEvent(scrollYProgress, "change", (v) => setScrolled(v > 0.02));
 
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
@@ -88,30 +90,53 @@ export function Navbar() {
     return () => observer.disconnect();
   }, [pathname]);
 
-  const pageActive = (href: string) => pathname === href || pathname.startsWith(`${href}/`);
+  const pageActive = (href: string) =>
+    pathname === href || pathname.startsWith(`${href}/`);
+
   const workActive = pageActive("/work") || (pathname === "/" && section === "work");
   const aboutActive = pageActive("/about");
   const resumeActive = pageActive("/resume");
 
   return (
-    <header className="no-print sticky top-0 z-50 border-b-2 border-ink/15 bg-paper">
-      {/* reading progress — the frame's signal line */}
+    <header className="no-print sticky top-0 z-50">
+      {/* scroll progress hairline */}
       <motion.div
         aria-hidden="true"
         style={{ scaleX: progress }}
-        className="absolute inset-x-0 top-0 h-[3px] origin-left bg-accent"
+        className="absolute inset-x-0 top-0 z-10 h-[2px] origin-left bg-accent"
       />
 
-      <nav aria-label="Main" className="wrap relative flex h-16 items-center justify-between">
+      {/* soft scrim — appears only after you scroll */}
+      <div
+        aria-hidden="true"
+        className={cn(
+          "pointer-events-none absolute inset-0 transition-opacity duration-500",
+          scrolled ? "opacity-100" : "opacity-0",
+        )}
+        style={{
+          background: "linear-gradient(to bottom, rgba(20,18,15,0.92) 0%, rgba(20,18,15,0.5) 55%, transparent 100%)",
+        }}
+      />
+
+      <nav
+        aria-label="Main"
+        className={cn(
+          "wrap relative flex h-16 items-center justify-between transition-all duration-500 lg:h-[72px]",
+          scrolled && "border-b border-line/60",
+        )}
+      >
         <Link
           href="/"
-          className="group flex items-center gap-2 rounded-sm font-mono text-[14px] font-bold tracking-[0.08em] text-ink transition-colors hover:text-accent"
+          className="group flex items-center gap-2 rounded-sm font-mono text-[13px] font-semibold tracking-[0.06em] text-ink transition-colors hover:text-accent"
         >
-          <span className="h-2 w-2 rounded-full bg-accent transition-transform duration-300 group-hover:scale-125" aria-hidden="true" />
+          <span className="relative flex h-1.5 w-1.5" aria-hidden="true">
+            <span className="absolute inline-flex h-full w-full rounded-full bg-accent/60 opacity-75" />
+            <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-accent transition-transform duration-300 group-hover:scale-125" />
+          </span>
           ASHWIN&nbsp;K
         </Link>
 
-        <div className="hidden items-center gap-8 lg:flex">
+        <div className="hidden items-center gap-7 lg:flex">
           {navLinks.map((l) => (
             <NavLink
               key={l.href}
@@ -122,10 +147,10 @@ export function Navbar() {
               }
             />
           ))}
-          <span className="h-4 w-px bg-ink/20" aria-hidden="true" />
+          <span className="h-3.5 w-px bg-line-strong" aria-hidden="true" />
           <NavLink href={site.github} label="GitHub" external />
           <NavLink href={site.linkedin} label="LinkedIn" external />
-          <span className="h-4 w-px bg-ink/20" aria-hidden="true" />
+          <span className="h-3.5 w-px bg-line-strong" aria-hidden="true" />
           <div className="flex items-center gap-2" title="Open to work">
             <span className="relative flex h-1.5 w-1.5" aria-hidden="true">
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent/60" />
@@ -147,9 +172,9 @@ export function Navbar() {
         >
           <svg viewBox="0 0 24 24" className="h-[18px] w-[18px]" fill="none" aria-hidden="true">
             {open ? (
-              <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" strokeWidth="1.6" strokeLinecap="square" />
+              <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
             ) : (
-              <path d="M4 8h16M4 16h16" stroke="currentColor" strokeWidth="1.6" strokeLinecap="square" />
+              <path d="M4 8h16M4 16h16" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
             )}
           </svg>
         </button>
