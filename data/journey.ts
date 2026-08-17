@@ -1,6 +1,6 @@
 // ─────────────────────────────────────────────────────────────
-// THE TWO-SIDED SHEET — the front of the page (design) and the
-// back of the page (system). Same document, two sides.
+// THE CONTENT — the work (UX experience), the build (DevOps),
+// the pipeline, and the same mindset on both sides.
 // ─────────────────────────────────────────────────────────────
 
 export interface Node {
@@ -35,33 +35,33 @@ export const stackNodes: Node[] = [
   { id: "kubernetes", name: "Kubernetes", detail: "Orchestrating workloads." },
   { id: "terraform", name: "Terraform", detail: "Infrastructure as code." },
   { id: "aws", name: "AWS", detail: "Cloud infrastructure." },
-  { id: "ci-cd", name: "CI / CD", detail: "Automated build and deployment." },
+  { id: "ci-cd", name: "CI / CD", detail: "Automated delivery." },
   { id: "prometheus", name: "Prometheus", detail: "Metrics and observability." },
   { id: "grafana", name: "Grafana", detail: "Dashboards that make metrics visible." },
 ];
 
-// RideMatch architecture — the fold-out on the back of the sheet.
+// RideMatch architecture — the pipeline, application to monitoring.
 export interface PipelineStage {
   node: string;
   tool: string;
-  id: "application" | "services" | "database" | "containers" | "kubernetes" | "cloud" | "monitoring";
+  id: "code" | "github" | "cicd" | "docker" | "kubernetes" | "aws" | "monitoring";
 }
 
 export const rideMatchPipeline: PipelineStage[] = [
-  { node: "Application", tool: "react · next.js", id: "application" },
-  { node: "Services", tool: "api · workers", id: "services" },
-  { node: "Database", tool: "postgresql", id: "database" },
-  { node: "Containers", tool: "docker", id: "containers" },
+  { node: "Code", tool: "react · next.js", id: "code" },
+  { node: "GitHub", tool: "version control", id: "github" },
+  { node: "CI/CD", tool: "automated delivery", id: "cicd" },
+  { node: "Docker", tool: "containers", id: "docker" },
   { node: "Kubernetes", tool: "orchestration", id: "kubernetes" },
-  { node: "Cloud", tool: "aws · terraform", id: "cloud" },
+  { node: "AWS", tool: "cloud infrastructure", id: "aws" },
   { node: "Monitoring", tool: "prometheus · grafana", id: "monitoring" },
 ];
 
 // The same row, seen from the front of the sheet (design)
 // and the back of the sheet (system).
 export const mindset = [
-  { ux: "Understand people", devops: "Understand systems" },
-  { ux: "Design journeys", devops: "Design workflows" },
-  { ux: "Handle edge cases", devops: "Handle failure" },
-  { ux: "Simplify complexity", devops: "Simplify operations" },
+  { ux: "Understand people", devops: "Understand systems", uxNote: "research · empathy · context", opsNote: "uptime · health · observability" },
+  { ux: "Design journeys", devops: "Design workflows", uxNote: "flows · states · delight", opsNote: "pipelines · stages · retries" },
+  { ux: "Handle edge cases", devops: "Handle failure", uxNote: "empty states · errors · 404s", opsNote: "chaos drills · rollbacks · fallbacks" },
+  { ux: "Simplify complexity", devops: "Simplify operations", uxNote: "cut clutter · one clear path", opsNote: "reduce toil · automate" },
 ];

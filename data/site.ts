@@ -11,7 +11,7 @@ export const site = {
   // Identity copy
   designTagline: "Designing complex systems to feel simple.",
   designSupport:
-    "I'm a UX/UI Designer at Ubona Technologies, designing enterprise digital experiences across banking, insurance, fintech, conversational interfaces, dashboards and AI-assisted workflows.",
+    "UX/UI Designer at Ubona Technologies, designing complex digital experiences across fintech, insurance, Visual IVR, enterprise products and AI-assisted workflows.",
   engineeringTagline:
     "From designing digital experiences to engineering the infrastructure behind them.",
   engineeringSupport:

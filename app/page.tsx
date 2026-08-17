@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import { MotionConfig } from "framer-motion";
 import { site } from "@/data/site";
+import { Atmosphere } from "@/components/home/Atmosphere";
 import { HomeHero } from "@/components/home/HomeHero";
-import { FrontIndex } from "@/components/home/FrontIndex";
-import { SheetFlip } from "@/components/home/SheetFlip";
+import { WorkScroller } from "@/components/home/WorkScroller";
+import { TransitionSection } from "@/components/home/TransitionSection";
 import { BuildSection } from "@/components/home/BuildSection";
 import { EndSection } from "@/components/home/EndSection";
 
@@ -13,21 +14,21 @@ export const metadata: Metadata = {
 };
 
 /**
- * THE TWO-SIDED SHEET.
- * One homepage, one object: the front of the page is the designed
- * surface (cream paper, ink serif, vermilion); scrolling turns the
- * sheet over and the back of the page is the system (ink, chartreuse,
- * ruled grid). The flip is the story.
+ * ASHWIN K — UX/UI Designer → DevOps / Cloud Engineering.
+ * One quiet page: the work, the transition, the build, the close.
  */
 export default function HomePage() {
   return (
     <MotionConfig reducedMotion="user">
       <main className="relative">
-        <HomeHero />
-        <FrontIndex />
-        <SheetFlip />
-        <BuildSection />
-        <EndSection />
+        <Atmosphere />
+        <div className="relative z-10">
+          <HomeHero />
+          <WorkScroller />
+          <TransitionSection />
+          <BuildSection />
+          <EndSection />
+        </div>
       </main>
     </MotionConfig>
   );

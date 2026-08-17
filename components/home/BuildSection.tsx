@@ -14,86 +14,109 @@ import { cn } from "@/lib/utils";
 const ease = [0.22, 1, 0.36, 1] as const;
 
 /**
- * 04 — The back of the sheet. Currently building, the ledger of the
- * stack, the RideMatch fold-out, and the same mindset seen from the
- * front and the back of the same sheet.
+ * 04 — The build. Currently building DevOps / Cloud Engineering:
+ * one connected technical system, the RideMatch pipeline, and the
+ * same mindset written twice.
  */
 
-/** The engineering ledger — eight rows, like the ledger lines on the back of fine paper. */
-function Ledger() {
-  const [active, setActive] = useState<string | null>(null);
+/** The technical system — eight nodes on one thin line. */
+function StackSystem() {
+  const [active, setActive] = useState<number | null>(null);
   return (
-    <div className="mt-14 border-t border-cream/15">
-      {stackNodes.map((n, i) => {
-        const lit = active === n.id;
-        return (
-          <div
-            key={n.id}
-            onMouseEnter={() => setActive(n.id)}
-            onMouseLeave={() => setActive((cur) => (cur === n.id ? null : cur))}
-            className={cn(
-              "group relative border-b border-cream/15 transition-colors duration-300",
-              lit && "bg-accent/[0.04]",
-            )}
-          >
-            <div className="flex items-baseline gap-5 py-5 sm:gap-8 sm:py-6">
+    <div className="relative mt-16">
+      {/* the line the stack sits on */}
+      <div className="relative hidden items-center sm:flex">
+        {stackNodes.map((n, i) => (
+          <div key={n.id} className="contents">
+            <button
+              type="button"
+              onMouseEnter={() => setActive(i)}
+              onMouseLeave={() => setActive((cur) => (cur === i ? null : cur))}
+              onFocus={() => setActive(i)}
+              onBlur={() => setActive((cur) => (cur === i ? null : cur))}
+              className="group flex shrink-0 flex-col items-center gap-2.5"
+            >
               <span
                 className={cn(
-                  "w-8 shrink-0 font-mono text-[10px] tracking-[0.2em] transition-colors duration-300",
-                  lit ? "text-accent" : "text-cream/30",
+                  "h-[9px] w-[9px] rounded-full border transition-all duration-300",
+                  active === i
+                    ? "border-accent bg-accent shadow-[0_0_12px_rgba(205,242,73,0.8)]"
+                    : "border-cream/30 bg-transparent group-hover:border-cream/60",
                 )}
-              >
-                {String(i + 1).padStart(2, "0")}
-              </span>
+                aria-hidden="true"
+              />
               <span
                 className={cn(
-                  "font-mono text-[13px] uppercase tracking-[0.22em] transition-all duration-300 sm:text-[15px]",
-                  lit ? "translate-x-1.5 text-accent" : "text-cream/85",
+                  "font-mono text-[8.5px] uppercase tracking-[0.16em] transition-colors duration-300",
+                  active === i ? "text-cream" : "text-cream/45 group-hover:text-cream/70",
                 )}
               >
                 {n.name}
               </span>
-              <div className="hidden flex-1 items-center gap-6 sm:flex">
-                <span className="h-px flex-1 transition-colors duration-300" aria-hidden="true">
-                  <span
-                    className={cn("block h-px w-full bg-cream/15 transition-colors duration-500", lit && "bg-accent/50")}
-                  />
-                </span>
-                <motion.span
-                  initial={false}
-                  animate={{ opacity: lit ? 1 : 0.4, x: lit ? 0 : 8 }}
-                  transition={{ duration: 0.4, ease }}
-                  className="font-mono text-[9.5px] uppercase tracking-[0.16em] text-cream/45"
-                >
-                  {n.detail}
-                </motion.span>
-              </div>
-              <span
-                className={cn(
-                  "ml-auto block h-[5px] w-[5px] shrink-0 rounded-full border transition-all duration-300 sm:ml-0",
-                  lit ? "border-accent bg-accent shadow-[0_0_8px_rgba(205,242,73,0.6)]" : "border-cream/25 bg-transparent",
-                )}
-                aria-hidden="true"
-              />
-            </div>
-            {/* mobile detail */}
-            <div
-              className={cn(
-                "overflow-hidden pl-[52px] transition-all duration-500 sm:hidden",
-                lit ? "max-h-16 pb-4" : "max-h-0",
-              )}
-            >
-              <p className="font-mono text-[9.5px] uppercase tracking-[0.16em] text-cream/45">{n.detail}</p>
-            </div>
+            </button>
+            {i < stackNodes.length - 1 && (
+              <span className="relative mx-2 h-px flex-1 bg-cream/12" aria-hidden="true">
+                <span
+                  className="absolute -top-[2.5px] h-[6px] w-[6px] rounded-full bg-lacquer shadow-[0_0_8px_rgba(194,64,47,0.8)]"
+                  style={{ animation: "signal-x 14s linear infinite", animationDelay: `${-14 * (i / stackNodes.length)}s` }}
+                />
+              </span>
+            )}
           </div>
-        );
-      })}
+        ))}
+      </div>
+
+      {/* mobile — a simple grid */}
+      <div className="grid grid-cols-2 gap-x-6 gap-y-4 sm:hidden">
+        {stackNodes.map((n, i) => (
+          <button
+            key={n.id}
+            type="button"
+            onClick={() => setActive((cur) => (cur === i ? null : i))}
+            className="flex items-center gap-2.5 text-left"
+          >
+            <span
+              className={cn(
+                "h-[7px] w-[7px] shrink-0 rounded-full border transition-all duration-300",
+                active === i
+                  ? "border-accent bg-accent shadow-[0_0_10px_rgba(205,242,73,0.7)]"
+                  : "border-cream/30",
+              )}
+              aria-hidden="true"
+            />
+            <span className={cn("font-mono text-[9px] uppercase tracking-[0.16em]", active === i ? "text-cream" : "text-cream/50")}>
+              {n.name}
+            </span>
+          </button>
+        ))}
+      </div>
+
+      {/* the one line, per node */}
+      <div className="mt-10 h-6" aria-live="polite">
+        {active === null ? (
+          <p className="font-mono text-[9.5px] uppercase tracking-[0.22em] text-cream/35">
+            hover a node
+          </p>
+        ) : (
+          <motion.p
+            key={active}
+            initial={{ opacity: 0, y: 6 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3, ease }}
+            className="flex items-center gap-4 font-mono text-[9.5px] uppercase tracking-[0.22em]"
+          >
+            <span className="text-accent">{stackNodes[active].name}</span>
+            <span className="h-px w-8 bg-cream/20" aria-hidden="true" />
+            <span className="text-cream/60">{stackNodes[active].detail}</span>
+          </motion.p>
+        )}
+      </div>
     </div>
   );
 }
 
-/** The RideMatch fold-out — the architecture as a printed spine with a travelling signal. */
-function RideMatchFold() {
+/** The RideMatch pipeline — one signal, seven stages. */
+function Pipeline() {
   const reduced = useReducedMotion();
   const progress = useMotionValue(0);
   const [stage, setStage] = useState(-1);
@@ -101,7 +124,7 @@ function RideMatchFold() {
   useEffect(() => {
     if (reduced) return;
     const controls = animate(progress, 1, {
-      duration: 18,
+      duration: 9,
       ease: "linear",
       repeat: Infinity,
       onUpdate: (v) => setStage(Math.floor(v * rideMatchPipeline.length)),
@@ -109,168 +132,190 @@ function RideMatchFold() {
     return () => controls.stop();
   }, [progress, reduced]);
 
-  const signalTop = useTransform(progress, [0, 1], ["6%", "94%"]);
+  const dotLeft = useTransform(progress, (v) => `${v * 100}%`);
+
+  const lit = reduced ? rideMatchPipeline.length : stage;
 
   return (
-    <div className="relative mt-14 grid gap-12 lg:grid-cols-12 lg:gap-8">
-      <div className="lg:col-span-5">
-        <p className="font-mono text-[9.5px] uppercase tracking-[0.26em] text-accent">
-          Current project
-        </p>
-        <h3 className="mt-5 font-serif text-[clamp(2.4rem,5.5vw,4rem)] leading-[1.02] tracking-[-0.015em] text-cream">
-          RideMatch
-        </h3>
-        <p className="mt-5 max-w-[400px] text-[14px] leading-[1.85] text-cream/55">
-          A production-style automotive platform I&apos;m building to deepen my
-          engineering and DevOps skills.
-        </p>
-        <p className="mt-8 font-mono text-[9.5px] uppercase tracking-[0.2em] text-cream/40">
-          Building with:{" "}
-          <span className="text-accent">AWS · Docker · Kubernetes · Terraform · CI/CD · Prometheus · Grafana</span>
-        </p>
+    <div className="relative mt-16">
+      {/* the rail */}
+      <div className="relative hidden items-center sm:flex">
+        {rideMatchPipeline.map((p, i) => (
+          <div key={p.id} className="contents">
+            <div className="flex shrink-0 flex-col items-center gap-2.5">
+              <span
+                className={cn(
+                  "h-[9px] w-[9px] rounded-full border transition-all duration-300",
+                  lit >= i
+                    ? "border-accent bg-accent shadow-[0_0_12px_rgba(205,242,73,0.8)]"
+                    : "border-cream/25",
+                )}
+                aria-hidden="true"
+              />
+              <span
+                className={cn(
+                  "font-mono text-[8.5px] uppercase tracking-[0.16em] transition-colors duration-300",
+                  lit >= i ? "text-cream" : "text-cream/40",
+                )}
+              >
+                {p.node}
+              </span>
+            </div>
+            {i < rideMatchPipeline.length - 1 && (
+              <span className="mx-2 h-px flex-1 bg-cream/12" aria-hidden="true" />
+            )}
+          </div>
+        ))}
+
+        {/* the signal */}
+        {!reduced && (
+          <motion.span
+            className="absolute top-[4px] h-[7px] w-[7px] -translate-x-1/2 rounded-full bg-lacquer shadow-[0_0_12px_rgba(194,64,47,0.9)]"
+            style={{ left: dotLeft }}
+            aria-hidden="true"
+          />
+        )}
       </div>
 
-      <div className="lg:col-span-7">
-        <p className="font-mono text-[9px] uppercase tracking-[0.26em] text-cream/30">
-          The fold-out — application to monitoring
-        </p>
-        <div className="relative mt-6 max-w-[560px]">
-          <div className="absolute left-[5px] top-0 h-full w-px bg-cream/15" aria-hidden="true" />
-          {!reduced && (
-            <motion.span
+      {/* mobile — a simple rail */}
+      <div className="relative h-10 sm:hidden">
+        <div className="absolute inset-x-0 top-[3px] h-px bg-cream/12" aria-hidden="true" />
+        <div className="absolute inset-x-0 top-0 flex items-start justify-between">
+          {rideMatchPipeline.map((p, i) => (
+            <span
+              key={p.id}
+              className={cn(
+                "h-[7px] w-[7px] rounded-full border transition-all duration-300",
+                lit >= i ? "border-accent bg-accent" : "border-cream/25",
+              )}
               aria-hidden="true"
-              className="absolute left-[1px] z-10 h-[9px] w-[9px] rounded-full bg-accent shadow-[0_0_10px_rgba(205,242,73,0.8)]"
-              style={{ top: signalTop, translateX: "-50%", translateY: "-50%" }}
             />
-          )}
-          <div>
-            {rideMatchPipeline.map((p, i) => {
-              const lit = staged(stage, i, reduced === true);
-              return (
-                <div key={p.id} className="relative flex items-center gap-6 py-[21px]">
-                  <span
-                    aria-hidden="true"
-                    className={cn(
-                      "relative z-[1] h-[6px] w-[6px] rounded-full border transition-colors duration-500",
-                      lit ? "border-accent bg-accent/25" : "border-cream/25 bg-transparent",
-                    )}
-                  />
-                  <span
-                    className={cn(
-                      "font-mono text-[12px] uppercase tracking-[0.24em] transition-colors duration-500",
-                      lit ? "text-cream" : "text-cream/35",
-                    )}
-                  >
-                    {p.node}
-                  </span>
-                  <span className="ml-auto font-mono text-[9px] uppercase tracking-[0.14em] text-cream/30">
-                    {p.tool}
-                  </span>
-                </div>
-              );
-            })}
-          </div>
+          ))}
         </div>
+      </div>
+
+      {/* the passing stage */}
+      <div className="mt-8 h-6" aria-live="polite">
+        <p className="flex items-center gap-4 font-mono text-[9.5px] uppercase tracking-[0.22em]">
+          <span className="text-accent">{rideMatchPipeline[Math.max(0, Math.min(lit, rideMatchPipeline.length - 1))].node}</span>
+          <span className="h-px w-8 bg-cream/20" aria-hidden="true" />
+          <span className="text-cream/60">
+            {rideMatchPipeline[Math.max(0, Math.min(lit, rideMatchPipeline.length - 1))].tool}
+          </span>
+        </p>
       </div>
     </div>
   );
 }
 
-/** A node lights when the signal has passed it (or always, with reduced motion). */
-function staged(stage: number, i: number, reduced: boolean) {
-  return reduced || stage >= i;
+/** Same mindset, different layer — the same rows, both sides. */
+function MindsetBlock() {
+  return (
+    <div className="grid gap-12 md:grid-cols-[1fr_auto_1fr] md:items-start">
+      <div>
+        <p className="flex items-center gap-3 font-mono text-[9.5px] uppercase tracking-[0.26em] text-lacquer">
+          <span className="h-px w-6 bg-lacquer/60" aria-hidden="true" />
+          UX
+        </p>
+        <ul className="mt-6 space-y-4">
+          {mindset.map((m, i) => (
+            <li key={m.ux} className="flex items-baseline gap-4">
+              <span className="w-6 font-mono text-[9px] tracking-[0.2em] text-lacquer/70">
+                {String(i + 1).padStart(2, "0")}
+              </span>
+              <span className="text-[15px] text-cream/85">{m.ux}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div className="flex justify-center md:pt-8" aria-hidden="true">
+        <span className="font-mono text-[15px] text-cream/40">↓</span>
+      </div>
+
+      <div>
+        <p className="flex items-center gap-3 font-mono text-[9.5px] uppercase tracking-[0.26em] text-accent">
+          <span className="h-px w-6 bg-accent/60" aria-hidden="true" />
+          DevOps
+        </p>
+        <ul className="mt-6 space-y-4">
+          {mindset.map((m, i) => (
+            <li key={m.devops} className="flex items-baseline gap-4">
+              <span className="w-6 font-mono text-[9px] tracking-[0.2em] text-accent/70">
+                {String(i + 1).padStart(2, "0")}
+              </span>
+              <span className="text-[15px] text-cream/85">{m.devops}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  );
 }
 
 export function BuildSection() {
   return (
-    <section id="building" className="sheet-grid relative overflow-hidden bg-sheet text-cream">
+    <section
+      id="building"
+      className="grain relative overflow-hidden text-cream"
+      style={{ background: "rgba(10,8,6,0.45)" }}
+    >
       <div className="wrap relative py-24 sm:py-32">
-        <div className="grid gap-10 lg:grid-cols-12 lg:items-end">
-          <div className="lg:col-span-8">
-            <p className="font-mono text-[10px] uppercase tracking-[0.28em] text-accent">
-              Currently building
-            </p>
-            <h2 className="mt-6 font-serif text-[clamp(2.4rem,6vw,4.6rem)] leading-[1.02] tracking-[-0.015em]">
-              The back of
-              <br />
-              the sheet — <em className="italic text-accent">DevOps / Cloud Engineering.</em>
-            </h2>
-          </div>
-          <p className="max-w-[400px] text-[14px] leading-[1.85] text-cream/55 lg:col-span-4 lg:justify-self-end">
-            I&apos;m building hands-on projects with Linux, AWS, Docker, Kubernetes,
-            Terraform, CI/CD and observability.
+        {/* ── currently building ── */}
+        <div className="max-w-[860px]">
+          <p className="font-mono text-[10px] uppercase tracking-[0.28em] text-accent">
+            Currently building
+          </p>
+          <h2 className="mt-6 font-serif text-[clamp(2.6rem,6.5vw,5rem)] leading-[1.0] tracking-[-0.02em]">
+            DevOps / Cloud
+            <br />
+            <em className="bg-gradient-to-r from-accent via-cyan to-violet bg-clip-text italic text-transparent">
+              Engineering.
+            </em>
+          </h2>
+          <p className="mt-8 max-w-[520px] text-[14px] leading-[1.85] text-cream/55">
+            I&apos;m currently building hands-on projects with Linux, Docker,
+            Kubernetes, Terraform, AWS, CI/CD and observability. Learning the
+            layer underneath the interface — one system at a time.
           </p>
         </div>
 
-        <Ledger />
+        <StackSystem />
 
-        {/* RideMatch — the flagship on the back of the sheet */}
-        <div className="mt-24 border-t border-cream/15 pt-16 sm:pt-20">
-          <RideMatchFold />
+        {/* ── ride match ── */}
+        <div className="mt-28 border-t border-cream/10 pt-16 sm:pt-20">
+          <div className="grid gap-12 lg:grid-cols-12 lg:items-end">
+            <div className="lg:col-span-5">
+              <p className="font-mono text-[9.5px] uppercase tracking-[0.26em] text-accent">
+                Current project
+              </p>
+              <h3 className="mt-5 font-serif text-[clamp(2.6rem,6vw,4.4rem)] leading-[1.0] tracking-[-0.015em]">
+                RideMatch
+              </h3>
+              <p className="mt-6 max-w-[420px] text-[14px] leading-[1.85] text-cream/55">
+                A production-style automotive platform I&apos;m building to
+                deepen my engineering and DevOps skills. From the first commit
+                to monitoring — the signal below never stops.
+              </p>
+            </div>
+            <div className="lg:col-span-7">
+              <Pipeline />
+            </div>
+          </div>
         </div>
 
-        {/* same mindset, different layer — one row, two sides */}
-        <div className="mt-24 border-t border-cream/15 pt-16 sm:mt-32 sm:pt-20">
-          <h2 className="font-serif text-[clamp(2.4rem,6vw,4.4rem)] leading-[1.03] tracking-[-0.015em]">
+        {/* ── same mindset ── */}
+        <div className="mt-28 border-t border-cream/10 pt-16 sm:mt-32 sm:pt-20">
+          <h2 className="font-serif text-[clamp(2.4rem,6vw,4.4rem)] leading-[1.02] tracking-[-0.015em]">
             Same mindset.
             <br />
             <em className="italic text-accent">Different layer.</em>
           </h2>
-
-          <div className="mt-14 grid max-w-[880px] gap-6">
-            {/* the front side of the row */}
-            <div className="grain relative overflow-hidden bg-cream px-7 py-8 text-carbon sm:px-10">
-              <div className="flex items-center justify-between">
-                <p className="font-mono text-[9.5px] uppercase tracking-[0.26em] text-lacquer">
-                  The front — UX
-                </p>
-                <span className="font-mono text-[8.5px] uppercase tracking-[0.24em] text-carbon/35">
-                  what people feel
-                </span>
-              </div>
-              <ul className="mt-6 space-y-3">
-                {mindset.map((m) => (
-                  <li key={m.ux} className="flex items-baseline gap-4 text-[15px]">
-                    <span className="h-1 w-1 rounded-full bg-lacquer" aria-hidden="true" />
-                    {m.ux}
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* the crease between the two sides */}
-            <div className="flex items-center gap-4 px-2" aria-hidden="true">
-              <span className="h-px flex-1 bg-cream/15" />
-              <span className="font-mono text-[8.5px] uppercase tracking-[0.3em] text-cream/30">
-                the same row, turned over
-              </span>
-              <span className="h-px flex-1 bg-cream/15" />
-            </div>
-
-            {/* the back side of the row */}
-            <div className="relative overflow-hidden border border-accent/25 bg-sheet-soft px-7 py-8 text-cream sm:px-10">
-              <div className="flex items-center justify-between">
-                <p className="font-mono text-[9.5px] uppercase tracking-[0.26em] text-accent">
-                  The back — DevOps
-                </p>
-                <span className="font-mono text-[8.5px] uppercase tracking-[0.24em] text-cream/35">
-                  what runs underneath
-                </span>
-              </div>
-              <ul className="mt-6 space-y-3">
-                {mindset.map((m) => (
-                  <li key={m.devops} className="flex items-baseline gap-4 text-[15px]">
-                    <span className="h-1 w-1 rounded-full bg-accent" aria-hidden="true" />
-                    {m.devops}
-                  </li>
-                ))}
-              </ul>
-            </div>
+          <div className="mt-12">
+            <MindsetBlock />
           </div>
-
-          <p className="mt-12 max-w-[520px] text-[14px] leading-[1.85] text-cream/50">
-            A designer who understands systems — becoming an engineer who
-            understands people. Same instinct: simplify the complexity.
+          <p className="mt-14 max-w-[520px] text-[14px] leading-[1.85] text-cream/50">
+            Different layer. Same instinct to simplify complexity.
           </p>
         </div>
       </div>

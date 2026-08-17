@@ -195,52 +195,6 @@
     }
   }
 
-  @keyframes marquee {
-    from {
-      transform: translateX(0);
-    }
-    to {
-      transform: translateX(-50%);
-    }
-  }
-
-  .marquee-track {
-    animation: marquee 36s linear infinite;
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .marquee-track {
-      animation: none;
-    }
-  }
-
-  @keyframes signal-travel {
-    from {
-      left: 0%;
-      opacity: 0;
-    }
-    8% {
-      opacity: 1;
-    }
-    92% {
-      opacity: 1;
-    }
-    to {
-      left: 100%;
-      opacity: 0;
-    }
-  }
-
-  @keyframes star-twinkle {
-    0%,
-    100% {
-      opacity: 0.15;
-    }
-    50% {
-      opacity: 0.85;
-    }
-  }
-
   @keyframes drift-a {
     from {
       transform: translate3d(-4%, -3%, 0) scale(1);
@@ -259,12 +213,7 @@
     }
   }
 
-  /* pause every animation inside the environment (tab hidden / reduced motion) */
-  .env-paused * {
-    animation-play-state: paused !important;
-  }
-
-  /* Print texture for the front of the sheet — faint paper grain */
+  /* Print texture — faint paper grain */
   .grain::before {
     content: "";
     position: absolute;
@@ -275,7 +224,7 @@
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
   }
 
-  /* Engineering grid for the back of the sheet — ruled lines */
+  /* Engineering grid — ruled lines */
   .sheet-grid {
     background-image:
       linear-gradient(rgba(236, 230, 218, 0.045) 1px, transparent 1px),
@@ -289,26 +238,9 @@
       linear-gradient(90deg, rgba(236, 230, 218, 0.03) 1px, transparent 1px);
     background-size: 22px 22px;
   }
-
-  @media (prefers-reduced-motion: reduce) {
-    .signal-dot {
-      animation: none !important;
-    }
-  }
-
-  .text-stroke {
-    -webkit-text-stroke: 1px currentColor;
-    color: transparent;
-  }
 }
 
-/* Custom cursor — fine pointers only, native cursor hidden */
-@media (pointer: fine) {
-  body.custom-cursor,
-  body.custom-cursor * {
-    cursor: none !important;
-  }
-}
+/* The custom cursor is a follower — the native pointer is never hidden */
 
 @media print {
   .no-print {
@@ -335,5 +267,52 @@
   .print-page .text-accent,
   .print-page [class*="text-accent"] {
     color: #4d7c0f !important;
+  }
+}
+/* hero shimmer — the gradient travels along the accent line */
+@keyframes shimmer {
+  to {
+    background-position: 200% center;
+  }
+}
+
+.text-shimmer {
+  background-size: 200% auto;
+  animation: shimmer 7s linear infinite;
+}
+
+/* the system object — a signal passing down the stack */
+@keyframes signal-y {
+  0% {
+    top: 0%;
+    opacity: 0;
+  }
+  8% {
+    opacity: 1;
+  }
+  92% {
+    opacity: 1;
+  }
+  100% {
+    top: 100%;
+    opacity: 0;
+  }
+}
+
+/* the technical system — a signal crossing the line */
+@keyframes signal-x {
+  0% {
+    left: 0%;
+    opacity: 0;
+  }
+  8% {
+    opacity: 1;
+  }
+  92% {
+    opacity: 1;
+  }
+  100% {
+    left: 100%;
+    opacity: 0;
   }
 }

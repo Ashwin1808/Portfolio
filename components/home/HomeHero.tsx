@@ -1,128 +1,141 @@
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
+import { useRef } from "react";
+import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import { site } from "@/data/site";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
+const LAYERS = [
+  { label: "design", top: "14%" },
+  { label: "code", top: "38%" },
+  { label: "system", top: "62%" },
+  { label: "cloud", top: "86%" },
+];
+
 /**
- * 01 — The front of the sheet. Warm paper, ink serif, one vermilion
- * mark. The human side of the work: who Ashwin is.
+ * The system object — four layers of a stack, joined by one thin
+ * spine, a signal passing down through them. Small and quiet; the
+ * typography stays the first thing the eye sees.
+ */
+function SystemObject() {
+  return (
+    <div className="relative h-[170px] w-[150px]" aria-hidden="true">
+      {/* the spine */}
+      <div className="absolute right-0 top-0 h-full w-px bg-cream/15" />
+      {/* the layers */}
+      {LAYERS.map((l) => (
+        <div key={l.label} className="absolute right-0" style={{ top: l.top }}>
+          <div className="flex items-center">
+            <span className="pr-3 font-mono text-[8px] uppercase tracking-[0.26em] text-cream/45">
+              {l.label}
+            </span>
+            <span className="h-px w-14 bg-cream/25" />
+            <span className="ml-[-1px] h-[7px] w-[7px] rounded-full border border-cream/50 bg-[#0d0b09]" />
+          </div>
+        </div>
+      ))}
+      {/* the signal — passes down the stack */}
+      <span
+        className="absolute right-0 h-1.5 w-1.5 -translate-x-[2px] rounded-full bg-lacquer shadow-[0_0_10px_rgba(194,64,47,0.9)]"
+        style={{ animation: "signal-y 7s linear infinite" }}
+      />
+    </div>
+  );
+}
+
+/**
+ * 01 — The opening. A role, a line, a short story, two doors.
+ * Nothing else competing with the words.
  */
 export function HomeHero() {
   const reduced = useReducedMotion();
+  const ref = useRef<HTMLElement | null>(null);
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
+  const contentY = useTransform(scrollYProgress, [0, 1], [0, -60]);
 
   const rise = {
-    hidden: { opacity: 0, y: 24 },
+    hidden: { opacity: 0, y: 18 },
     show: { opacity: 1, y: 0 },
   };
 
   return (
-    <section id="hero" className="grain relative flex min-h-[100svh] items-center overflow-hidden bg-cream text-carbon">
-      {/* ruled paper */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 top-0 h-px bg-carbon/10"
-      />
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0"
-        style={{
-          backgroundImage: "repeating-linear-gradient(to bottom, rgba(33,28,22,0.035) 0 1px, transparent 1px 88px)",
-        }}
-      />
-
-      {/* the back of the sheet peeking through — bottom-right */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute bottom-0 right-0 hidden w-[320px] border-l border-t border-cream/10 bg-sheet px-6 py-5 lg:block"
-      >
-        <div className="flex items-center justify-between">
-          <span className="font-mono text-[8.5px] uppercase tracking-[0.3em] text-cream/40">
-            The other side
-          </span>
-          <span className="h-1 w-1 rounded-full bg-accent" />
-        </div>
-        <p className="mt-3 font-mono text-[9px] uppercase tracking-[0.18em] text-accent">
-          Linux · AWS · Docker · K8s · Terraform · CI/CD · Prometheus
-        </p>
+    <section
+      ref={ref}
+      id="hero"
+      className="grain relative flex min-h-[100svh] items-center overflow-hidden text-cream"
+      style={{ background: "rgba(10,8,6,0.5)" }}
+    >
+      {/* the quiet system object — design → code → system → cloud */}
+      <div className="pointer-events-none absolute right-[9%] top-1/2 hidden -translate-y-1/2 xl:block">
+        <SystemObject />
       </div>
 
-      <div className="wrap relative w-full pb-24 pt-32 sm:pt-40">
-        <div className="max-w-[900px]">
+      <div className="wrap relative w-full pb-24 pt-32 sm:pt-36">
+        <motion.div
+          style={{ y: reduced ? 0 : contentY }}
+          className="mx-auto flex max-w-[860px] flex-col items-center text-center"
+        >
           <motion.div
             initial={reduced ? "show" : "hidden"}
             animate="show"
-            transition={{ staggerChildren: 0.1, delayChildren: 0.1 }}
+            transition={{ staggerChildren: 0.07, delayChildren: 0.02 }}
           >
             <motion.p
               variants={rise}
-              transition={{ duration: 0.7, ease }}
-              className="flex flex-wrap items-center gap-x-3 gap-y-2 font-mono text-[10px] uppercase tracking-[0.26em]"
+              transition={{ duration: 0.5, ease }}
+              className="flex flex-wrap items-center justify-center gap-x-3 gap-y-2 font-mono text-[10px] uppercase tracking-[0.26em]"
             >
               <span className="text-lacquer">UX/UI Designer</span>
-              <span aria-hidden="true" className="text-carbon/40">→</span>
-              <span className="text-carbon/70">DevOps / Cloud Engineer</span>
+              <span aria-hidden="true" className="text-cream/40">→</span>
+              <span className="text-cream/70">DevOps / Cloud Engineer</span>
             </motion.p>
 
             <motion.h1
               variants={rise}
-              transition={{ duration: 0.9, ease }}
-              className="mt-12 font-serif text-[clamp(3.2rem,9vw,7.2rem)] leading-[0.95] tracking-[-0.02em]"
+              transition={{ duration: 0.65, ease }}
+              className="mt-8 font-serif text-[clamp(2.6rem,6.5vw,5.25rem)] leading-[0.95] tracking-[-0.02em]"
+              style={{ textShadow: "0 0 90px rgba(205,242,73,0.12), 0 0 90px rgba(194,64,47,0.10)" }}
             >
-              Designing
+              Designing experiences.
               <br />
-              experiences.
-              <br />
-              <em className="italic text-lacquer">Building systems.</em>
+              <em className="text-shimmer bg-gradient-to-r from-lacquer via-cyan to-accent bg-clip-text italic text-transparent">
+                Building systems.
+              </em>
             </motion.h1>
+
+            <motion.p
+              variants={rise}
+              transition={{ duration: 0.55, ease }}
+              className="mx-auto mt-9 max-w-[600px] text-[15px] leading-[1.9] text-cream/60"
+            >
+              {site.designSupport} Now extending that systems-thinking mindset
+              into software, cloud and DevOps.
+            </motion.p>
 
             <motion.div
               variants={rise}
-              transition={{ duration: 0.8, ease }}
-              className="mt-12 flex flex-wrap items-end gap-x-14 gap-y-8"
+              transition={{ duration: 0.55, ease }}
+              className="mt-10 flex flex-wrap items-center justify-center gap-4"
             >
-              <p className="max-w-[420px] text-[15px] leading-[1.85] text-carbon-soft">
-                I&apos;m Ashwin — a UX/UI Designer at {site.company}. I design the
-                part people touch. I&apos;m learning to build what runs underneath.
-              </p>
-              <div className="flex flex-wrap items-center gap-4">
-                <a
-                  href="#work"
-                  data-cursor="explore"
-                  className="group inline-flex items-center gap-3 border-2 border-carbon bg-carbon px-6 py-3 font-mono text-[10.5px] font-bold uppercase tracking-[0.2em] text-cream transition-colors duration-300 hover:border-lacquer hover:bg-lacquer"
-                >
-                  View work
-                  <span className="transition-transform duration-300 group-hover:translate-x-1">↓</span>
-                </a>
-                <a
-                  href="/resume"
-                  data-cursor="link"
-                  className="group inline-flex items-center gap-3 border-2 border-carbon/20 px-6 py-3 font-mono text-[10.5px] font-bold uppercase tracking-[0.2em] text-carbon transition-colors duration-300 hover:border-carbon"
-                >
-                  Resume
-                  <span className="transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5">↗</span>
-                </a>
-              </div>
+              <a
+                href="#work"
+                data-cursor="explore"
+                className="group inline-flex items-center gap-3 border-2 border-lacquer bg-lacquer px-6 py-3 font-mono text-[10.5px] font-bold uppercase tracking-[0.2em] text-[#16110c] transition-colors duration-300 hover:bg-transparent hover:text-lacquer"
+              >
+                View work
+                <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
+              </a>
+              <a
+                href="/resume"
+                data-cursor="link"
+                className="group inline-flex items-center gap-3 border-2 border-cream/25 px-6 py-3 font-mono text-[10.5px] font-bold uppercase tracking-[0.2em] text-cream transition-colors duration-300 hover:border-cream"
+              >
+                Resume
+                <span className="transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5">↗</span>
+              </a>
             </motion.div>
           </motion.div>
-        </div>
-
-        {/* the sheet's edge — this page has two sides */}
-        <motion.div
-          initial={reduced ? { opacity: 1 } : { opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.2, duration: 1 }}
-          className="mt-24 flex items-center gap-4 border-t border-carbon/10 pt-5"
-          aria-hidden="true"
-        >
-          <span className="font-mono text-[8.5px] uppercase tracking-[0.3em] text-carbon/40">
-            One sheet
-          </span>
-          <span className="h-px flex-1 bg-carbon/10" />
-          <span className="font-mono text-[8.5px] uppercase tracking-[0.3em] text-carbon/40">
-            Two sides — scroll to turn it
-          </span>
         </motion.div>
       </div>
     </section>
