@@ -7,6 +7,7 @@ import { WorkScroller } from "@/components/home/WorkScroller";
 import { TransitionSection } from "@/components/home/TransitionSection";
 import { BuildSection } from "@/components/home/BuildSection";
 import { EndSection } from "@/components/home/EndSection";
+import { BottomTicker } from "@/components/home/BottomTicker";
 
 export const metadata: Metadata = {
   title: site.metadata.title,
@@ -28,6 +29,7 @@ export default function HomePage() {
           <TransitionSection />
           <BuildSection />
           <EndSection />
+          <BottomTicker />
         </div>
       </main>
     </MotionConfig>

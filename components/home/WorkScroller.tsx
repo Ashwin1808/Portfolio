@@ -108,6 +108,17 @@ export function WorkScroller() {
                 key={item.id}
                 className="relative flex h-full w-[84vw] shrink-0 flex-col justify-center px-6 sm:w-[52vw] sm:px-12 lg:w-[36vw]"
               >
+                {/* the index — 01, 02, 03, the count of the line */}
+                <span
+                  aria-hidden="true"
+                  className={cn(
+                    "text-stroke pointer-events-none absolute -top-1 right-4 select-none font-serif text-[clamp(6.5rem,16vw,12.5rem)] leading-none tracking-[-0.02em] transition-opacity duration-500",
+                    lit ? "text-cream/[0.10]" : "text-cream/[0.05]",
+                  )}
+                >
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+
                 <motion.div
                   animate={
                     lit
@@ -115,7 +126,7 @@ export function WorkScroller() {
                       : { opacity: 0.3, scale: 0.94, y: 10 }
                   }
                   transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-                  className="relative"
+                  className="relative z-10"
                 >
                   <p className="flex items-center justify-between font-mono text-[9.5px] uppercase tracking-[0.26em]">
                     <span className={lit ? "text-lacquer" : "text-cream/40"}>

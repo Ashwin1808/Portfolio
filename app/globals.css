@@ -316,3 +316,47 @@
     opacity: 0;
   }
 }
+
+/* outlined type — the ghost name in the hero, the work numerals */
+.text-stroke {
+  -webkit-text-stroke: 1.5px currentColor;
+  color: transparent;
+}
+
+/* the devops ∞ — tools flowing around the figure-eight */
+@keyframes chip-flow {
+  from {
+    offset-distance: 0%;
+  }
+  to {
+    offset-distance: 100%;
+  }
+}
+
+/* the news tape — one strip, moving like a feed */
+@keyframes marquee-x {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* the screen scan — a beam sweeping down the final strip */
+@keyframes scan-sweep {
+  0% {
+    top: -12%;
+    opacity: 0;
+  }
+  8% {
+    opacity: 1;
+  }
+  92% {
+    opacity: 1;
+  }
+  100% {
+    top: 112%;
+    opacity: 0;
+  }
+}
