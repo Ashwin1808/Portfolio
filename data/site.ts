@@ -19,6 +19,8 @@ export const site = {
 
   // ── Links (REPLACE these) ──────────────────────────────────
   email: "hello@your-email.com", // ← replace
+  whatsapp: "91XXXXXXXXXX", // ← replace with your WhatsApp number (country code + number, digits only, e.g. "919876543210")
+  toEmail: "hello@your-email.com", // ← replace with YOUR inbox — connect requests land here
   github: "https://github.com/Ashwin1808", // confirmed via git remote
   githubUsername: "Ashwin1808", // confirmed via git remote
   linkedin: "https://www.linkedin.com/in/ashwin-k-5b1600212/", // confirmed
