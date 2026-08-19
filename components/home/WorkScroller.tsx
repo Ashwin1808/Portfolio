@@ -81,7 +81,7 @@ export function WorkScroller() {
           {/* the title — the line the work hangs from */}
           <div className="relative flex h-full w-[86vw] shrink-0 flex-col justify-center px-6 sm:w-[58vw] sm:px-12 lg:w-[38vw]">
             <p className="font-mono text-[10px] uppercase tracking-[0.28em] text-lacquer">
-              What I&apos;ve designed
+              02 — What I&apos;ve designed
             </p>
             <h2 className="mt-6 font-serif text-[clamp(2.6rem,6vw,4.8rem)] leading-[0.98] tracking-[-0.02em]">
               Eight domains,

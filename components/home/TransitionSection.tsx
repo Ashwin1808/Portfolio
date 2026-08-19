@@ -38,7 +38,7 @@ export function TransitionSection() {
     >
       <div className="sticky top-0 flex h-screen flex-col items-center justify-center overflow-hidden px-6 text-center">
         <p className="font-mono text-[10px] uppercase tracking-[0.28em] text-cream/40">
-          The same instinct, moving down the stack
+          04 — From interfaces to infrastructure
         </p>
 
         <h2 className="mt-8 font-serif text-[clamp(2.8rem,7.5vw,6.2rem)] leading-[1.0] tracking-[-0.02em]">

@@ -1,13 +1,39 @@
 "use client";
 
+/** Stars — deterministic, so the server and the client draw the same sky. */
+const STARS = Array.from({ length: 110 }, (_, i) => ({
+  left: (i * 37.7) % 100,
+  top: (i * 53.3) % 100,
+  size: 1 + (i % 3),
+  dur: 4 + ((i * 7) % 5),
+  delay: ((i * 11) % 10) / 10,
+}));
+
 /**
- * The atmosphere — what sits behind everything. Dark, quiet, and
- * built from the page itself: a fine engineering grid, three faint
- * color glows, soft vignettes. No stars, no orbits, no telemetry.
+ * The atmosphere — what sits behind everything. Space: a field of
+ * stars breathing quietly, three faint nebula glows, the page's own
+ * grid, soft vignettes. Dark and calm; the work stays in front.
  */
 export function Atmosphere() {
   return (
     <div aria-hidden="true" className="pointer-events-none fixed inset-0 z-0 overflow-hidden">
+      {/* the sky — stars, twinkling slowly */}
+      {STARS.map((s, i) => (
+        <span
+          key={i}
+          className="absolute rounded-full bg-cream"
+          style={{
+            left: `${s.left}%`,
+            top: `${s.top}%`,
+            width: s.size,
+            height: s.size,
+            opacity: 0.1,
+            boxShadow: "0 0 6px rgba(236,230,218,0.35)",
+            animation: `star-twinkle ${s.dur}s ease-in-out ${s.delay}s infinite`,
+          }}
+        />
+      ))}
+
       {/* fine grid — the page's own structure */}
       <div
         className="absolute inset-0"
@@ -17,7 +43,7 @@ export function Atmosphere() {
         }}
       />
 
-      {/* faint glows — the three accents, drifting slowly */}
+      {/* faint nebula glows — the three accents, drifting slowly */}
       <div
         className="absolute -left-[15%] top-[20%] h-[60vh] w-[60vh] rounded-full blur-[120px]"
         style={{

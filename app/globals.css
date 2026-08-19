@@ -360,3 +360,14 @@
     opacity: 0;
   }
 }
+
+/* the space behind the site — stars, breathing quietly */
+@keyframes star-twinkle {
+  0%,
+  100% {
+    opacity: 0.08;
+  }
+  50% {
+    opacity: 0.65;
+  }
+}

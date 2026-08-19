@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   animate,
   motion,
@@ -8,374 +8,8 @@ import {
   useReducedMotion,
   useTransform,
 } from "framer-motion";
-import { mindset, rideMatchPipeline, stackNodes } from "@/data/journey";
+import { mindset, rideMatchPipeline } from "@/data/journey";
 import { cn } from "@/lib/utils";
-
-const ease = [0.22, 1, 0.36, 1] as const;
-
-/** The RideMatch stack, split around the ring — one slice per tool. */
-const RING_TECHS = ["aws", "docker", "k8s", "terraform", "ci/cd", "prometheus", "grafana"];
-
-function polar(cx: number, cy: number, r: number, deg: number) {
-  const a = ((deg - 90) * Math.PI) / 180;
-  return { x: cx + r * Math.cos(a), y: cy + r * Math.sin(a) };
-}
-
-function arcPath(cx: number, cy: number, rOut: number, rIn: number, start: number, end: number) {
-  const large = end - start > 180 ? 1 : 0;
-  const sO = polar(cx, cy, rOut, start);
-  const eO = polar(cx, cy, rOut, end);
-  const sI = polar(cx, cy, rIn, end);
-  const eI = polar(cx, cy, rIn, start);
-  return `M ${sO.x.toFixed(2)} ${sO.y.toFixed(2)} A ${rOut} ${rOut} 0 ${large} 1 ${eO.x.toFixed(2)} ${eO.y.toFixed(2)} L ${sI.x.toFixed(2)} ${sI.y.toFixed(2)} A ${rIn} ${rIn} 0 ${large} 0 ${eI.x.toFixed(2)} ${eI.y.toFixed(2)} Z`;
-}
-
-/**
- * The RideMatch ring — the stack, split evenly around one circle.
- * Sharp and quiet: a thin band, hairlines, tool names outside.
- */
-function TechRing() {
-  const cx = 120;
-  const cy = 120;
-  const rOut = 100;
-  const rIn = 62;
-
-  const ring = useMemo(() => {
-    const step = 360 / RING_TECHS.length;
-    return RING_TECHS.map((name, i) => ({
-      name,
-      start: i * step,
-      end: (i + 1) * step,
-      mid: i * step + step / 2,
-    }));
-  }, []);
-
-  return (
-    <div className="flex flex-col items-center">
-      <div className="relative aspect-square w-full max-w-[280px]" aria-hidden="true">
-        <svg viewBox="0 0 240 240" className="h-full w-full">
-          {/* the band — one thin ring */}
-          <path
-            d={arcPath(cx, cy, rOut, rIn, 0, 360)}
-            fill="rgba(236,230,218,0.045)"
-            stroke="rgba(236,230,218,0.22)"
-            strokeWidth="1"
-          />
-
-          {/* the split — hairlines between the tools */}
-          {ring.map((s) => (
-            <line
-              key={`${s.name}-split`}
-              x1={polar(cx, cy, rIn, s.start).x}
-              y1={polar(cx, cy, rIn, s.start).y}
-              x2={polar(cx, cy, rOut, s.start).x}
-              y2={polar(cx, cy, rOut, s.start).y}
-              stroke="rgba(236,230,218,0.30)"
-              strokeWidth="1"
-            />
-          ))}
-
-          {/* one dot per tool, inside the band */}
-          {ring.map((s) => {
-            const p = polar(cx, cy, 81, s.mid);
-            return <circle key={`${s.name}-dot`} cx={p.x} cy={p.y} r="1.5" fill="rgba(236,230,218,0.4)" />;
-          })}
-
-          {/* the names — outside the band, flat and readable */}
-          {ring.map((s) => {
-            const p = polar(cx, cy, 116, s.mid);
-            return (
-              <text
-                key={`${s.name}-label`}
-                x={p.x}
-                y={p.y}
-                textAnchor="middle"
-                dominantBaseline="middle"
-                className="fill-cream/55"
-                style={{ fontSize: "8.5px", fontFamily: "var(--font-mono)", letterSpacing: "0.16em", textTransform: "uppercase" }}
-              >
-                {s.name}
-              </text>
-            );
-          })}
-
-          {/* center — the project */}
-          <text
-            x={cx}
-            y={cy - 2}
-            textAnchor="middle"
-            className="fill-cream/90"
-            style={{ fontSize: "11px", fontFamily: "var(--font-mono)", letterSpacing: "0.22em", textTransform: "uppercase" }}
-          >
-            RideMatch
-          </text>
-          <text
-            x={cx}
-            y={cy + 14}
-            textAnchor="middle"
-            className="fill-accent"
-            style={{ fontSize: "8px", fontFamily: "var(--font-mono)", letterSpacing: "0.16em" }}
-          >
-            ● live
-          </text>
-        </svg>
-      </div>
-      <p className="mt-4 font-mono text-[8.5px] uppercase tracking-[0.26em] text-cream/40">
-        The stack — seven tools, one ring
-      </p>
-    </div>
-  );
-}
-
-/** Same mindset, different layer — drag the handle to re-split the two sides. */
-function MindsetBlock() {
-  const ref = useRef<HTMLDivElement | null>(null);
-  const [split, setSplit] = useState(50);
-  const [dragging, setDragging] = useState(false);
-  const drag = useRef<{ x: number; base: number } | null>(null);
-
-  const onMove = (clientX: number) => {
-    if (!drag.current || !ref.current) return;
-    const r = ref.current.getBoundingClientRect();
-    const pct = drag.current.base + ((clientX - drag.current.x) / r.width) * 100;
-    setSplit(Math.min(66, Math.max(34, pct)));
-  };
-
-  return (
-    <div
-      ref={ref}
-      className="relative hidden md:block"
-    >
-      <div className="flex items-start" style={{ gap: "2.5rem" }}>
-        {/* UX side */}
-        <div style={{ width: `${split}%`, flex: "0 0 auto", transition: dragging ? "none" : "width 200ms ease" }}>
-          <p className="flex items-center gap-3 font-mono text-[9.5px] uppercase tracking-[0.26em] text-lacquer">
-            <span className="h-px w-6 bg-lacquer/60" aria-hidden="true" />
-            UX
-          </p>
-          <ul className="mt-6 space-y-4">
-            {mindset.map((m, i) => (
-              <li key={m.ux} className="flex items-baseline gap-4 overflow-hidden">
-                <span className="w-6 shrink-0 font-mono text-[9px] tracking-[0.2em] text-lacquer/70">
-                  {String(i + 1).padStart(2, "0")}
-                </span>
-                <span className="truncate text-[15px] text-cream/85">{m.ux}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        {/* the splitter — grab it, drag it */}
-        <div
-          className="group relative -my-2 flex h-full cursor-col-resize touch-none items-center self-stretch py-2"
-          onPointerDown={(e) => {
-            setDragging(true);
-            drag.current = { x: e.clientX, base: split };
-            try {
-              (e.target as Element).setPointerCapture?.(e.pointerId);
-            } catch {
-              /* synthetic or edge-case pointers */
-            }
-          }}
-          onPointerMove={(e) => {
-            if (drag.current) onMove(e.clientX);
-          }}
-          onPointerUp={() => {
-            setDragging(false);
-            drag.current = null;
-          }}
-          onPointerCancel={() => {
-            setDragging(false);
-            drag.current = null;
-          }}
-          aria-hidden="true"
-        >
-          <span
-            className={cn(
-              "h-full w-px bg-cream/15 transition-colors duration-300 group-hover:bg-accent/70",
-              dragging && "bg-accent",
-            )}
-          />
-          <span
-            className={cn(
-              "absolute left-1/2 top-1/2 flex h-9 w-9 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border transition-all duration-300",
-              dragging ? "border-accent bg-accent/10 text-accent" : "border-cream/25 text-cream/60 group-hover:border-accent/80 group-hover:text-accent",
-            )}
-          >
-            <span className="font-mono text-[10px]">⇔</span>
-          </span>
-        </div>
-
-        {/* DevOps side */}
-        <div style={{ width: `${100 - split}%`, flex: "0 0 auto", transition: dragging ? "none" : "width 200ms ease" }}>
-          <p className="flex items-center gap-3 font-mono text-[9.5px] uppercase tracking-[0.26em] text-accent">
-            <span className="h-px w-6 bg-accent/60" aria-hidden="true" />
-            DevOps
-          </p>
-          <ul className="mt-6 space-y-4">
-            {mindset.map((m, i) => (
-              <li key={m.devops} className="flex items-baseline gap-4 overflow-hidden">
-                <span className="w-6 shrink-0 font-mono text-[9px] tracking-[0.2em] text-accent/70">
-                  {String(i + 1).padStart(2, "0")}
-                </span>
-                <span className="truncate text-[15px] text-cream/85">{m.devops}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </div>
-      <p className="mt-8 flex items-center gap-3 font-mono text-[8.5px] uppercase tracking-[0.26em] text-cream/40">
-        <span className="text-cream/60">⇔</span>
-        drag the handle — the same rows, whatever the split
-      </p>
-    </div>
-  );
-}
-
-/** Same mindset, different layer — stacked on small screens. */
-function MindsetStack() {
-  return (
-    <div className="grid gap-12 md:hidden">
-      <div>
-        <p className="flex items-center gap-3 font-mono text-[9.5px] uppercase tracking-[0.26em] text-lacquer">
-          <span className="h-px w-6 bg-lacquer/60" aria-hidden="true" />
-          UX
-        </p>
-        <ul className="mt-6 space-y-4">
-          {mindset.map((m, i) => (
-            <li key={m.ux} className="flex items-baseline gap-4">
-              <span className="w-6 font-mono text-[9px] tracking-[0.2em] text-lacquer/70">
-                {String(i + 1).padStart(2, "0")}
-              </span>
-              <span className="text-[15px] text-cream/85">{m.ux}</span>
-            </li>
-          ))}
-        </ul>
-      </div>
-      <div className="flex justify-center" aria-hidden="true">
-        <span className="font-mono text-[15px] text-cream/40">↓</span>
-      </div>
-      <div>
-        <p className="flex items-center gap-3 font-mono text-[9.5px] uppercase tracking-[0.26em] text-accent">
-          <span className="h-px w-6 bg-accent/60" aria-hidden="true" />
-          DevOps
-        </p>
-        <ul className="mt-6 space-y-4">
-          {mindset.map((m, i) => (
-            <li key={m.devops} className="flex items-baseline gap-4">
-              <span className="w-6 font-mono text-[9px] tracking-[0.2em] text-accent/70">
-                {String(i + 1).padStart(2, "0")}
-              </span>
-              <span className="text-[15px] text-cream/85">{m.devops}</span>
-            </li>
-          ))}
-        </ul>
-      </div>
-    </div>
-  );
-}
-
-/**
- * 04 — The build. Currently building DevOps / Cloud Engineering:
- * one connected technical system, the RideMatch pipeline, and the
- * same mindset written twice.
- */
-
-/** The technical system — eight nodes on one thin line. */
-function StackSystem() {
-  const [active, setActive] = useState<number | null>(null);
-  return (
-    <div className="relative mt-16">
-      {/* the line the stack sits on */}
-      <div className="relative hidden items-center sm:flex">
-        {stackNodes.map((n, i) => (
-          <div key={n.id} className="contents">
-            <button
-              type="button"
-              onMouseEnter={() => setActive(i)}
-              onMouseLeave={() => setActive((cur) => (cur === i ? null : cur))}
-              onFocus={() => setActive(i)}
-              onBlur={() => setActive((cur) => (cur === i ? null : cur))}
-              className="group flex shrink-0 flex-col items-center gap-2.5"
-            >
-              <span
-                className={cn(
-                  "h-[9px] w-[9px] rounded-full border transition-all duration-300",
-                  active === i
-                    ? "border-accent bg-accent shadow-[0_0_12px_rgba(205,242,73,0.8)]"
-                    : "border-cream/30 bg-transparent group-hover:border-cream/60",
-                )}
-                aria-hidden="true"
-              />
-              <span
-                className={cn(
-                  "font-mono text-[8.5px] uppercase tracking-[0.16em] transition-colors duration-300",
-                  active === i ? "text-cream" : "text-cream/45 group-hover:text-cream/70",
-                )}
-              >
-                {n.name}
-              </span>
-            </button>
-            {i < stackNodes.length - 1 && (
-              <span className="relative mx-2 h-px flex-1 bg-cream/12" aria-hidden="true">
-                <span
-                  className="absolute -top-[2.5px] h-[6px] w-[6px] rounded-full bg-lacquer shadow-[0_0_8px_rgba(194,64,47,0.8)]"
-                  style={{ animation: "signal-x 14s linear infinite", animationDelay: `${-14 * (i / stackNodes.length)}s` }}
-                />
-              </span>
-            )}
-          </div>
-        ))}
-      </div>
-
-      {/* mobile — a simple grid */}
-      <div className="grid grid-cols-2 gap-x-6 gap-y-4 sm:hidden">
-        {stackNodes.map((n, i) => (
-          <button
-            key={n.id}
-            type="button"
-            onClick={() => setActive((cur) => (cur === i ? null : i))}
-            className="flex items-center gap-2.5 text-left"
-          >
-            <span
-              className={cn(
-                "h-[7px] w-[7px] shrink-0 rounded-full border transition-all duration-300",
-                active === i
-                  ? "border-accent bg-accent shadow-[0_0_10px_rgba(205,242,73,0.7)]"
-                  : "border-cream/30",
-              )}
-              aria-hidden="true"
-            />
-            <span className={cn("font-mono text-[9px] uppercase tracking-[0.16em]", active === i ? "text-cream" : "text-cream/50")}>
-              {n.name}
-            </span>
-          </button>
-        ))}
-      </div>
-
-      {/* the one line, per node */}
-      <div className="mt-10 h-6" aria-live="polite">
-        {active === null ? (
-          <p className="font-mono text-[9.5px] uppercase tracking-[0.22em] text-cream/35">
-            hover a node
-          </p>
-        ) : (
-          <motion.p
-            key={active}
-            initial={{ opacity: 0, y: 6 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3, ease }}
-            className="flex items-center gap-4 font-mono text-[9.5px] uppercase tracking-[0.22em]"
-          >
-            <span className="text-accent">{stackNodes[active].name}</span>
-            <span className="h-px w-8 bg-cream/20" aria-hidden="true" />
-            <span className="text-cream/60">{stackNodes[active].detail}</span>
-          </motion.p>
-        )}
-      </div>
-    </div>
-  );
-}
 
 /** The RideMatch pipeline — one signal, seven stages. */
 function Pipeline() {
@@ -399,7 +33,7 @@ function Pipeline() {
   const lit = reduced ? rideMatchPipeline.length : stage;
 
   return (
-    <div className="relative mt-16">
+    <div className="relative mt-14">
       {/* the rail */}
       <div className="relative hidden items-center sm:flex">
         {rideMatchPipeline.map((p, i) => (
@@ -416,15 +50,19 @@ function Pipeline() {
               />
               <span
                 className={cn(
-                  "font-mono text-[8.5px] uppercase tracking-[0.16em] transition-colors duration-300",
+                  "text-[15px] leading-tight transition-colors duration-300",
                   lit >= i ? "text-cream" : "text-cream/40",
                 )}
+                style={{ fontFamily: "var(--font-serif)", letterSpacing: "-0.01em" }}
               >
                 {p.node}
               </span>
+              <span className="font-mono text-[8px] uppercase tracking-[0.14em] text-cream/40">
+                {p.tool}
+              </span>
             </div>
             {i < rideMatchPipeline.length - 1 && (
-              <span className="mx-2 h-px flex-1 bg-cream/12" aria-hidden="true" />
+              <span className="mx-3 h-px flex-1 bg-cream/12" aria-hidden="true" />
             )}
           </div>
         ))}
@@ -470,6 +108,57 @@ function Pipeline() {
   );
 }
 
+/** Same row, two sides of the sheet — front: design, back: system. */
+function MindsetBlock() {
+  return (
+    <div>
+      <p className="font-mono text-[9.5px] uppercase tracking-[0.26em] text-cream/40">
+        Same row — the front and the back of the sheet
+      </p>
+      <ul className="mt-8">
+        {mindset.map((row) => (
+          <li
+            key={row.ux}
+            className="grid grid-cols-1 gap-x-10 border-t border-cream/10 py-7 sm:grid-cols-2"
+          >
+            <div className="pr-4 sm:pr-10">
+              <p className="font-serif text-[clamp(1.15rem,2.2vw,1.45rem)] leading-snug tracking-[-0.01em] text-cream/85">
+                {row.ux}
+              </p>
+              <p className="mt-2 font-mono text-[8.5px] uppercase tracking-[0.2em] text-cream/35">
+                {row.uxNote}
+              </p>
+            </div>
+            <div className="mt-6 sm:mt-0 sm:border-l sm:border-cream/10 sm:pl-10">
+              <p className="font-serif text-[clamp(1.15rem,2.2vw,1.45rem)] leading-snug tracking-[-0.01em] italic text-cream/60">
+                {row.devops}
+              </p>
+              <p className="mt-2 font-mono text-[8.5px] uppercase tracking-[0.2em] text-cream/35">
+                {row.opsNote}
+              </p>
+            </div>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+/** The quiet close of the mindset — one instinct, two layers. */
+function MindsetStack() {
+  return (
+    <p className="mt-8 flex flex-wrap items-baseline gap-x-4 gap-y-2 border-t border-cream/10 pt-6 font-mono text-[9px] uppercase tracking-[0.24em] text-cream/40">
+      <span>Design side</span>
+      <span aria-hidden="true" className="text-cream/20">↔</span>
+      <span>System side</span>
+      <span aria-hidden="true" className="text-cream/20">·</span>
+      <span className="text-accent">Same instinct</span>
+      <span aria-hidden="true" className="text-cream/20">·</span>
+      <span>Simplify complexity</span>
+    </p>
+  );
+}
+
 export function BuildSection() {
   return (
     <section
@@ -478,10 +167,10 @@ export function BuildSection() {
       style={{ background: "rgba(10,8,6,0.45)" }}
     >
       <div className="wrap relative py-24 sm:py-32">
-        {/* ── currently building ── */}
+        {/* ── currently building — the stack and the project, one section ── */}
         <div className="max-w-[860px]">
           <p className="font-mono text-[10px] uppercase tracking-[0.28em] text-accent">
-            Currently building
+            05 — Currently building
           </p>
           <h2 className="mt-6 font-serif text-[clamp(2.6rem,6.5vw,5rem)] leading-[1.0] tracking-[-0.02em]">
             DevOps / Cloud
@@ -497,41 +186,26 @@ export function BuildSection() {
           </p>
         </div>
 
-        <StackSystem />
-
-        {/* ── ride match ── */}
-        <div className="mt-28 border-t border-cream/10 pt-16 sm:pt-20">
-          <div className="grid gap-12 lg:grid-cols-12 lg:items-end">
-            <div className="lg:col-span-5">
-              <p className="font-mono text-[9.5px] uppercase tracking-[0.26em] text-accent">
-                Current project
-              </p>
-              <h3 className="mt-5 font-serif text-[clamp(2.6rem,6vw,4.4rem)] leading-[1.0] tracking-[-0.015em]">
-                RideMatch
-              </h3>
-              <p className="mt-6 max-w-[420px] text-[14px] leading-[1.85] text-cream/55">
-                A production-style automotive platform I&apos;m building to
-                deepen my engineering and DevOps skills. From the first commit
-                to monitoring — the signal below never stops.
-              </p>
-            </div>
-            <div className="lg:col-span-7">
-              <div className="grid items-center gap-12 md:grid-cols-[minmax(0,300px)_1fr]">
-                <TechRing />
-                <div>
-                  <Pipeline />
-                  <p className="mt-6 font-mono text-[9.5px] uppercase tracking-[0.22em] text-cream/35">
-                    The deployment path — the ring above, the rails below
-                  </p>
-                </div>
-              </div>
-            </div>
+        <div className="mt-16 border-t border-cream/10 pt-10">
+          <div className="flex flex-wrap items-baseline justify-between gap-x-10 gap-y-3">
+            <p className="font-mono text-[9.5px] uppercase tracking-[0.26em] text-cream/40">
+              The path — code to monitoring
+            </p>
+            <p className="font-mono text-[8.5px] uppercase tracking-[0.24em] text-cream/30">
+              RideMatch · one system, built end to end
+            </p>
+          </div>
+          <div className="mt-9">
+            <Pipeline />
           </div>
         </div>
 
         {/* ── same mindset ── */}
         <div className="mt-28 border-t border-cream/10 pt-16 sm:mt-32 sm:pt-20">
-          <h2 className="font-serif text-[clamp(2.4rem,6vw,4.4rem)] leading-[1.02] tracking-[-0.015em]">
+          <p className="font-mono text-[10px] uppercase tracking-[0.28em] text-cream/40">
+            06 — Same mindset
+          </p>
+          <h2 className="mt-6 font-serif text-[clamp(2.4rem,6vw,4.4rem)] leading-[1.02] tracking-[-0.015em]">
             Same mindset.
             <br />
             <em className="italic text-accent">Different layer.</em>
@@ -540,9 +214,6 @@ export function BuildSection() {
             <MindsetBlock />
             <MindsetStack />
           </div>
-          <p className="mt-14 max-w-[520px] text-[14px] leading-[1.85] text-cream/50">
-            Different layer. Same instinct to simplify complexity.
-          </p>
         </div>
       </div>
     </section>

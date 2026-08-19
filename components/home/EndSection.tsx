@@ -22,7 +22,11 @@ export function EndSection() {
           transition={{ duration: 0.9, ease }}
           className="flex flex-col items-center"
         >
-          <h2 className="font-serif text-[clamp(2.8rem,7vw,5.6rem)] leading-[1.0] tracking-[-0.02em]">
+          <p className="font-mono text-[10px] uppercase tracking-[0.28em] text-cream/40">
+            07 — The close
+          </p>
+
+          <h2 className="mt-6 font-serif text-[clamp(2.8rem,7vw,5.6rem)] leading-[1.0] tracking-[-0.02em]">
             Still designing.
             <br />
             <em className="text-shimmer bg-gradient-to-r from-lacquer via-cyan to-accent bg-clip-text italic text-transparent">

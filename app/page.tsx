@@ -4,6 +4,7 @@ import { site } from "@/data/site";
 import { Atmosphere } from "@/components/home/Atmosphere";
 import { HomeHero } from "@/components/home/HomeHero";
 import { WorkScroller } from "@/components/home/WorkScroller";
+import { CompaniesSection } from "@/components/home/CompaniesSection";
 import { TransitionSection } from "@/components/home/TransitionSection";
 import { BuildSection } from "@/components/home/BuildSection";
 import { EndSection } from "@/components/home/EndSection";
@@ -26,6 +27,7 @@ export default function HomePage() {
         <div className="relative z-10">
           <HomeHero />
           <WorkScroller />
+          <CompaniesSection />
           <TransitionSection />
           <BuildSection />
           <EndSection />
