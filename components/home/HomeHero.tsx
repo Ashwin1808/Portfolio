@@ -99,7 +99,7 @@ export function HomeHero() {
           className="mx-auto flex max-w-[860px] flex-col items-center text-center"
         >
           <motion.div
-            initial={reduced ? "show" : "hidden"}
+            initial={false}
             animate="show"
             transition={{ staggerChildren: 0.06, delayChildren: 0.02 }}
           >
